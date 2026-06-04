@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আবনায়ে দারুন উলুম</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ================== GLOBAL STYLES ================== */
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-tap-highlight-color:transparent; }
+
+/* ===== ANTI-COPY PROTECTION ===== */
+* {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+}
+
+body {
+    background:#ececf3; 
+    overflow-x:hidden; 
+    -webkit-overflow-scrolling:touch; 
+    scroll-behavior: auto !important;
+}
+
+/* Allow selection only in form fields */
+input, select, textarea, #pin {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+}
+
+/* Scroll behavior smooth remove kora hoyeche partially switch control er jonno, HTML a ache but JS overridabe hbe! */
+html { overflow-x:hidden; } 
+body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; scroll-behavior: auto !important; }
+
+.hidden { display: none !important; }
+.app { margin:auto; width:100%; max-width:430px; position:relative; overflow:hidden; min-height:100vh; }
+
+/* =========================================================
+   [1] LOGIN UI ISOLATED STYLES (NO CONFLICT)
+========================================================= */
+#loginView { background:linear-gradient(145deg,#f9fbff,#eef2ff); padding-bottom:100px; }
+#loginView .blur{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none;}
+#loginView .blur1{width:140px;height:140px;background:#6d7cff;top:-40px;right:-20px;}
+#loginView .blur2{width:130px;height:130px;background:#00c6a2;bottom:-40px;left:-30px;}
+#loginView .blur3{width:90px;height:90px;background:#ff9955;top:40%;right:-20px;}
+#loginView .login-header{position:relative;z-index:2;text-align:center;padding:35px 25px 105px;}
+#loginView .top-tag{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:50px;background:rgba(255,255,255,.75);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.5);box-shadow:0 10px 25px rgba(0,0,0,.05);font-size:13px;color:#374151;font-weight:600;margin-bottom:22px;}
+#loginView .logo-main{width:100px;height:100px;margin:auto;border-radius:32px;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);display:flex;justify-content:center;align-items:center;box-shadow:0 15px 40px rgba(0,0,0,.08),inset 0 0 0 1px rgba(255,255,255,.4);margin-bottom:22px;position:relative;}
+#loginView .logo-main::before{content:"";position:absolute;inset:0;border-radius:32px;padding:2px;background:linear-gradient(135deg,#6d7cff,#00c6a2,#ff9955);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;}
+#loginView .logo-main span{font-size:40px;}
+#loginView .login-header h1{font-size:28px;color:#111827;margin-bottom:10px;font-weight:700;}
+#loginView .login-header p{color:#5f6673;font-size:14px;line-height:1.8;max-width:310px;margin:auto;}
+#loginView .login-card{width:90%;margin:-50px auto 0;position:relative;z-index:5;background:rgba(255,255,255,.7);backdrop-filter:blur(22px);border-radius:38px;padding:30px 24px;border:1px solid rgba(255,255,255,.5);box-shadow:0 15px 45px rgba(0,0,0,.08),inset 0 0 0 1px rgba(255,255,255,.4);}
+#loginView .card-title{text-align:center;margin-bottom:26px;}
+#loginView .card-title h2{font-size:24px;color:#111827;margin-bottom:8px;}
+#loginView .card-title p{font-size:13px;color:#6b7280;line-height:1.7;}
+#loginView .input-box{margin-bottom:18px;padding:4px;border-radius:24px;background:linear-gradient(135deg,#6d7cff,#00c6a2,#ff9955);}
+#loginView select, #loginView input{width:100%;padding:18px;border:none;outline:none;border-radius:20px;background:#fff;font-size:15px;color:#111827;font-weight:500;}
+#loginView .login-btn{width:100%;border:none;padding:17px;border-radius:20px;color:#fff;font-size:15px;font-weight:700;background:#bcc4d7;cursor:not-allowed;transition:.3s;}
+#loginView .login-btn.active{background:linear-gradient(135deg,#00b86b,#00d084);cursor:pointer;box-shadow:0 10px 25px rgba(0,176,107,.25);}
+
+.popup-system{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:center;z-index:9999;}
+.popup-system .popup-box{width:88%;max-width:340px;background:#fff;border-radius:28px;padding:28px 22px;text-align:center;animation:popupShow .35s ease;box-shadow:0 20px 45px rgba(0,0,0,.15);}
+.popup-system .popup-buttons{display:flex;gap:10px;}
+.popup-system .popup-buttons button{flex:1;border:none;padding:15px;border-radius:18px;font-size:14px;font-weight:700;cursor:pointer;}
+.popup-system .edit-btn{background:#eef2ff;color:#374151;}
+.popup-system .confirm-btn{background:linear-gradient(135deg,#00b86b,#00d084);color:#fff;}
+@keyframes popupShow{from{opacity:0;transform:scale(.8);}to{opacity:1;transform:scale(1);}}
+.system-footer{position:absolute;bottom:0;width:100%;text-align:center;padding:16px;background:rgba(255,255,255,.7);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.5);color:#555;font-size:13px; z-index:90;}
+
+/* =========================================================
+   LOADER LOGIC UI
+========================================================= */
+.loading-wrapper { position:fixed; top:0; left:0; width:100%; height:100%; background:#f0f4f8; display:flex; justify-content:center; align-items:center; z-index:99999; overflow-y:auto; padding: 20px;}
+.loading-card { background:#ffffff; width:100%; max-width:380px; padding:40px 30px; border-radius:24px; box-shadow:0 15px 35px rgba(0,0,0,.08); text-align:center; border:1px solid #e2e8f0; animation:fadeIn 0.5s ease-out; }
+.spinner-container { position:relative; width:100px; height:100px; margin:0 auto 25px; display:flex; justify-content:center; align-items:center; }
+.spinner-ring { position:absolute; width:100%; height:100%; border-radius:50%; border:4px solid transparent; border-top-color:#198754; border-right-color:#0a3622; animation:spinRing 1s linear infinite; }
+.spinner-ring::before { content:''; position:absolute; top:5px; right:5px; bottom:5px; left:5px; border:3px solid transparent; border-radius:50%; border-bottom-color:#ffb300; border-left-color:#ffd700; animation:spin-reverse 1.5s linear infinite; }
+.icon-box { position:relative; z-index:10; background:#e6f4ea; width:65px; height:65px; border-radius:50%; display:flex; justify-content:center; align-items:center; box-shadow:0 4px 10px rgba(25,135,84,.2); overflow:hidden; }
+.icon-box img { width:100%; height:100%; object-fit:cover; animation:pulse 2s infinite; }
+.loading-card h2 { color:#1e293b; font-size:22px; font-weight:700; margin-bottom:10px; }
+.dots::after { content:'.'; animation:dots 1.5s steps(4, end) infinite; }
+.loading-card p { color:#64748b; font-size:14px; line-height:1.6; margin-bottom:25px; }
+.progress-bar-container { width:100%; height:6px; background:#e2e8f0; border-radius:10px; overflow:hidden; position:relative; }
+.progress-bar { width:50%; height:100%; background:linear-gradient(90deg,#198754,#20c997); border-radius:10px; position:absolute; left:-50%; animation:slideLoad 2s infinite ease-in-out; }
+
+@keyframes spinRing{100%{transform:rotate(360deg);}}
+@keyframes spin-reverse{100%{transform:rotate(-360deg);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);}}
+@keyframes slideLoad{0%{left:-50%;width:30%;}50%{width:50%;}100%{left:100%;width:30%;}}
+@keyframes dots{0%,20%{content:'';}40%{content:'.';}60%{content:'..';}80%,100%{content:'...';}}
+
+/* =========================================================
+   [2] PROFILE PAGE ISOLATED STYLES
+========================================================= */
+#profileView { background:linear-gradient(to bottom,#eef2f7,#ffffff); padding-bottom:110px;}
+#profileView .header { background:linear-gradient(135deg,#116b43,#0b4e31); padding:45px 20px 130px; border-bottom-left-radius:45px; border-bottom-right-radius:45px; position:relative; }
+#profileView .topbar { display:flex; align-items:center; justify-content:space-between; color:#fff; }
+#profileView .profile-card { width:90%; margin:-75px auto 25px; background:#fff; border-radius:30px; padding:25px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08); position:relative; }
+#profileView .profile-img-wrapper { position: relative; width: 120px; height: 120px; margin: -85px auto 10px; display: flex; justify-content: center; align-items: center; z-index: 2; }
+#profileView .golden-spinner { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 4px solid transparent; border-top-color: #FFD700; border-left-color: #FFA500; animation: spinGolden 1s linear infinite; z-index: 1; }
+#profileView .profile-img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 5px solid #e7fff3; background: #fff; position: relative; z-index: 2; }
+@keyframes spinGolden { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+#profileView .profile-card h3 { margin-top:15px; font-size:24px; color:#1a1a1a; font-weight:700; }
+#profileView .profile-card p { color:#666; margin-top:5px; font-size:14px; }
+#profileView .student-badge { display:inline-block; margin-top:14px; background:#e9fff4; color:#0d7a4a; padding:8px 18px; border-radius:30px; font-size:13px; font-weight:700; }
+#profileView .info-section { padding:0 18px; }
+#profileView .section-title { display:flex; align-items:center; gap:10px; margin-bottom:15px; }
+#profileView .section-title .icon { width:35px; height:35px; border-radius:50%; background:#198754; color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; }
+#profileView .section-title h2 { font-size:20px; color:#1f2430; }
+#profileView .info-card { background:#fff; border-radius:22px; padding:18px; margin-bottom:16px; box-shadow:0 4px 14px rgba(0,0,0,0.05); }
+#profileView .info-row { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f1f1; }
+#profileView .info-row:last-child { border-bottom:none; }
+#profileView .info-title { color:#666; font-size:14px; font-weight:500; }
+#profileView .info-value { color:#111; font-size:14px; font-weight:700; text-align:right; }
+#profileView .address-list { display:flex; flex-direction:column; gap:14px; }
+#profileView .address-box { background:linear-gradient(135deg,#f8fffb,#ebfff5); border:1px solid #dff5e8; border-radius:18px; padding:16px 15px; box-shadow:0 4px 10px rgba(0,0,0,0.03); }
+#profileView .address-box span { display:block; font-size:13px; color:#198754; font-weight:600; margin-bottom:8px; }
+#profileView .address-box h4 { font-size:16px; color:#1a1a1a; font-weight:700; }
+#profileView .action-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:15px; padding: 0 0; }
+#profileView .action-btn { background:#fff; border-radius:22px; padding:20px 10px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.05); transition:0.3s; cursor:pointer; }
+#profileView .action-btn:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.1); }
+#profileView .action-icon { font-size:30px; margin-bottom:10px; }
+#profileView .action-btn h3 { font-size:15px; color:#1a1a1a; margin-bottom:6px; }
+#profileView .action-btn p { font-size:12px; color:#777; }
+
+/* =========================================================
+   [3] DASHBOARD STYLES
+========================================================= */
+#dashboardView { background:linear-gradient(to bottom,#ececf3,#f7f7fb); padding-bottom:110px;}
+
+#dashboardView .capsule-back-btn {
+    position: absolute; top: 15px; left: 20px;
+    background: rgba(255, 255, 255, 0.20);
+    color: #ffffff; font-size: 13px; font-weight: 700;
+    padding: 6px 14px; border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px);
+    display: inline-flex; align-items: center; gap: 6px;
+    cursor: pointer; width: fit-content; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; transition: 0.3s ease;
+}
+#dashboardView .capsule-back-btn:active { transform: scale(0.95); }
+
+#dashboardView .header { background:linear-gradient(135deg,#1f7a4d,#0d5c39); height:330px; border-bottom-left-radius:45px; border-bottom-right-radius:45px; padding: 60px 20px 20px 20px; position:relative; }
+#dashboardView .topbar { display:flex; align-items:center; justify-content:space-between; color:#fff; }
+#dashboardView .menu-btn { font-size:30px; cursor:pointer; }
+#dashboardView .topbar h2 { font-size:22px; font-weight:800; }
+
+#dashboardView .profile-box { margin-top:20px; width:100%; border-radius:28px; padding:16px; background:rgba(255,255,255,0.14); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.15); box-shadow:0 8px 20px rgba(0,0,0,0.08); display:flex; align-items:center; gap:14px; }
+#dashboardView .profile-box img { width:70px; height:70px; border-radius:50%; border:3px solid rgba(255,255,255,0.5); object-fit:cover; }
+#dashboardView .profile-box h3 { color:#fff; font-size:20px; font-weight:700; margin-bottom:5px; }
+#dashboardView .profile-box p { color:#e6fff2; font-size:13px; line-height:1.6; }
+
+#dashboardView .message-card { width:90%; margin:-45px auto 25px; padding:22px 18px; border-radius:28px; background:linear-gradient(135deg,#ffffff,#f4fff8); border:1px solid #dff5e8; position:relative; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.06); }
+#dashboardView .message-card::before { content:''; position:absolute; top:-50px; right:-50px; width:160px; height:160px; border-radius:50%; background:rgba(25,135,84,0.07); }
+#dashboardView .message-card::after { content:''; position:absolute; bottom:-70px; left:-70px; width:190px; height:190px; border-radius:50%; background:rgba(32,201,151,0.05); }
+#dashboardView .message-content { position:relative; z-index:2; text-align:center; }
+#dashboardView .message-content h2 { font-size:15px; line-height:2; font-weight:700; color:#157347; }
+#dashboardView .message-content p { margin-top:12px; font-size:11px; color:#5f6f65; letter-spacing:1px; font-weight:600; }
+
+#dashboardView .section-title { display:flex; align-items:center; gap:10px; padding:0 22px; margin-bottom:18px; }
+#dashboardView .section-title .icon { width:35px; height:35px; border-radius:50%; background:#198754; color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; }
+#dashboardView .section-title h2 { font-size:22px; color:#1f2430; font-weight:700; }
+
+#dashboardView .ads-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:0 22px; }
+#dashboardView .ad-card { border-radius:24px; padding:22px 14px; position:relative; overflow:hidden; text-align:center; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.05); transform:translateZ(0); }
+#dashboardView .ad-card:active { transform:scale(0.97); }
+#dashboardView .ad-card::before { content:''; position:absolute; width:150%; height:150%; top:-25%; left:-25%; z-index:0; background:conic-gradient(from 0deg, transparent 60%, var(--glow) 100%); animation:spinDash var(--speed) linear infinite; }
+#dashboardView .ad-card::after { content:''; position:absolute; inset:3px; border-radius:21px; z-index:1; background:var(--bg); }
+@keyframes spinDash{ 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+#dashboardView .ad-card>* { position:relative; z-index:2; }
+#dashboardView .ad-top-icon { font-size:38px; margin-bottom:14px; }
+#dashboardView .ad-card h3 { font-size:16px; color:#1a1a1a; font-weight:700; margin-bottom:10px; }
+#dashboardView .ad-card p { font-size:12px; color:#666; line-height:1.7; margin-bottom:16px; }
+#dashboardView .open-btn { display:inline-flex; align-items:center; justify-content:center; padding:7px 14px; border-radius:30px; font-size:11px; font-weight:700; color:#fff; }
+.card-orange{ --glow:#ff9800; --bg:linear-gradient(135deg,#fffaf3,#ffe7c2,#fffaf3); --speed:6s; } .card-orange .open-btn{ background:linear-gradient(135deg,#ffb347,#ff9800); }
+.card-blue{ --glow:#2196f3; --bg:linear-gradient(135deg,#f3f9ff,#dcefff,#f3f9ff); --speed:7s; } .card-blue .open-btn{ background:linear-gradient(135deg,#42a5f5,#2196f3); }
+.card-green{ --glow:#20c997; --bg:linear-gradient(135deg,#f4fff9,#daf7ea,#f4fff9); --speed:8s; } .card-green .open-btn{ background:linear-gradient(135deg,#38d39f,#20c997); }
+.card-pink{ --glow:#e83e8c; --bg:linear-gradient(135deg,#fff5fa,#ffdff0,#fff5fa); --speed:6.5s; } .card-pink .open-btn{ background:linear-gradient(135deg,#ff5ca8,#e83e8c); }
+
+/* SIDE MENU & MODAL */
+.side-menu { position:fixed; top:0; left:-290px; width:280px; height:100%; background:#fff; z-index:99999; transition:0.35s; padding:20px; overflow-y:auto; box-shadow:0 0 30px rgba(0,0,0,0.18); }
+.side-menu.active { left:0; }
+.menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:99998; opacity:0; visibility:hidden; transition:0.3s; }
+.menu-overlay.active { opacity:1; visibility:visible; }
+.menu-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:25px; }
+.menu-top h2 { color:#157347; font-size:22px; font-weight: 700; }
+.close-btn { font-size:28px; cursor:pointer; }
+.menu-link { width:100%; padding:15px 16px; margin-bottom:14px; border-radius:18px; background:#f4f7f5; display:flex; align-items:center; gap:14px; cursor:pointer; border:1px solid #e5ece8; }
+.menu-link:active { transform:scale(0.97); }
+.menu-icon { font-size:22px; }
+.menu-title { font-size:15px; font-weight:700; color:#1d1d1d; }
+
+.custom-modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:999999; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:0.3s ease; }
+.custom-modal-overlay.active { opacity:1; visibility:visible; }
+.custom-modal-box { width:88%; max-width:350px; background:#ffffff; border-radius:26px; padding:25px 22px; text-align:center; transform:translateY(20px); transition:0.3s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow:0 10px 40px rgba(0,0,0,0.2); }
+.custom-modal-overlay.active .custom-modal-box { transform:translateY(0); }
+.custom-modal-btn { width:100%; padding:16px; border-radius:20px; margin-top:14px; font-size:15px; font-weight:700; border:none; color:#fff; cursor:pointer; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:0.3s; }
+.custom-modal-btn:active { transform:scale(0.96); }
+.modal-btn-short { background:linear-gradient(135deg,#ff9800,#ffb347); }
+.modal-btn-detail { background:linear-gradient(135deg,#1f7a4d,#0d5c39); }
+.modal-btn-cancel { background:#f7f9fa; color:#dc3545; border:2px solid #ffeeee; box-shadow:none; font-weight:600; margin-top:14px; }
+</style>
+</head>
+<body>
+
+
+<!-- STUDENT INFO MODAL -->
+<div class="custom-modal-overlay" id="studentInfoModal">
+    <div class="custom-modal-box">
+        <div style="font-size:45px; margin-bottom: 5px;">🧑‍🎓</div>
+        <h2 style="color: #1a1a1a; margin-bottom: 5px; font-weight:800; font-size: 22px;">ছাত্র পরিচিতি</h2>
+        <p style="color: #666; font-size: 13px; margin-bottom: 25px;">দয়া করে নিচের যেকোনো একটি বিভাগ নির্বাচন করুন</p>
+        <button class="custom-modal-btn modal-btn-short" onclick="window.location.href='সকল ছাত্রের তালিকা.html'">সংক্ষিপ্ত পরিচিতি</button>
+        <button class="custom-modal-btn modal-btn-detail" onclick="window.location.href='সকল ছাত্রের তথ্য.html'">বিস্তারিত পরিচিতি</button>
+        <button class="custom-modal-btn modal-btn-cancel" onclick="document.getElementById('studentInfoModal').classList.remove('active')">বাতিল করুন</button>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingPage" class="loading-wrapper hidden">
+    <div class="loading-card">
+        <div class="spinner-container">
+            <div class="spinner-ring"></div>
+            <div class="icon-box">
+                <img id="dynamicProfileImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Student">
+            </div>
+        </div>
+        <h2>প্রোফাইল তৈরি হচ্ছে<span class="dots"></span></h2>
+        <p>অনুগ্রহ করে অপেক্ষা করুন। আপনার ডাটাবেস সেটআপ এবং তথ্য সার্ভারে সিঙ্ক করা হচ্ছে।</p>
+        <div class="progress-bar-container"><div class="progress-bar"></div></div>
+    </div>
+</div>
+
+<!-- LOGIN VIEW -->
+<div class="app hidden" id="loginView">
+    <div class="blur blur1"></div><div class="blur blur2"></div><div class="blur blur3"></div>
+    <div class="login-header">
+        <div class="top-tag">✨ মুতাওয়াসসিতাহ ২য় বর্ষ।</div>
+        <div class="logo-main">
+            <img src="https://i.ibb.co/kVbLqMqW/IMG-165.png" alt="Logo" style="width: 84px; height: auto;">
+        </div>
+        <h1>দারুল উলুম ধনবাড়ী</h1><h3>পাইটকা, ধনবাড়ী, টাঙ্গাইল</h3><br>
+        <p><h4>নাহবেমীর</h4>জামাতের শিক্ষার্থীদের জন্য সংরক্ষিত এই পোর্টাল।<br>ব্যক্তিগত তথ্যের গোপনীয়তা ও সুরক্ষার খাতিরে শুধুমাত্র অনুমোদিত প্রবেশাধিকার কার্যকর।</p>
+    </div>
+    <div class="login-card">
+        <div class="card-title"><h2>স্টুডেন্ট লগইন 👋</h2><p>আপনার সঠিক তথ্য নির্বাচন করুন</p></div>
+        <div class="input-box"><select id="student" onchange="showFatherNames()"><option value="">আপনার নাম  নির্বাচন করুন</option></select></div>
+        <div id="fatherBox" class="hidden"><div class="input-box"><select id="father" onchange="showPostOffice()"><option value="">পিতার নাম নির্বাচন করুন</option></select></div></div>
+        <div id="postBox" class="hidden"><div class="input-box"><select id="post" onchange="showPinBox()"><option value="">ডাকঘর নির্বাচন করুন</option></select></div></div>
+        <div id="pinBox" class="hidden"><div class="input-box"><input type="password" id="pin" placeholder="পিন কোড লিখুন" onkeyup="checkForm()"></div></div>
+        <button id="loginBtn" class="login-btn" disabled onclick="showWarningPopup()">লগইন করুন</button>
+    </div>
+    <div class="system-footer">©️2026 Developer by <h5>KR Khalidur Rahman Akondo</h5><h5>KR pure application limited Bangladesh</h5></div>
+</div>
+
+<!-- LOGIN WARNING POPUP -->
+<div id="popupSystem" class="popup-system hidden">
+    <div class="popup-box">
+        <h3>নিরাপত্তা সতর্কতা</h3>
+        <p>অন্য কোনো শিক্ষার্থীর তথ্য ব্যবহার করে প্রবেশ করলে আপনার প্রবেশাধিকার সীমাবদ্ধ হতে পারে।<br><br>আপনি কি লগইন চালিয়ে যেতে চান?</p>
+        <div class="popup-buttons">
+            <button class="edit-btn" onclick="closePopup()">এডিট করুন</button>
+            <button class="confirm-btn" onclick="startProfileLoading()">কনফার্ম লগইন</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== PROFILE VIEW (CLEANED) ==================== -->
+<div class="app hidden" id="profileView">
+    <div class="header">
+        <div class="topbar">
+            <div style="width:28px;"></div>
+            <div style="text-align:center; line-height:1.4;">
+                <h2 style="color:#fff; font-size:20px; font-weight:700; margin:0;">দারুল উলুম ধনবাড়ী</h2>
+                <h3 style="color:#d9f5e6; font-size:13px; font-weight:500; margin-top:4px;">পাইটকা, ধনবাড়ী, টাঙ্গাইল</h3>
+                <h5 style="color:#ffffff; font-size:12px; font-weight:600; margin-top:6px; letter-spacing:1px;">ইউজার প্রোফাইল</h5>
+            </div>
+            <div style="width:28px;"></div>
+        </div>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-img-wrapper">
+            <div class="golden-spinner" id="profileSpinner"></div>
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img" id="profileImg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        </div>
+        <h3 id="studentNameProfile">লোড হচ্ছে...</h3>
+        <p id="classInfo">দারুল উলুম ধনবাড়ী</p>
+        <div class="student-badge" id="classBadge"> মুতাওয়াসসিতাহ ২য় বর্ষ। • ছাত্র</div>
+    </div>
+
+    <div class="info-section">
+        <div class="section-title"><div class="icon">👳</div><h2>ব্যক্তিগত তথ্য</h2></div>
+        <div class="info-card">
+            <div class="info-row"><div class="info-title">অভিভাবক</div><div class="info-value" id="fatherNameProfile">...</div></div>
+            <div class="info-row"><div class="info-title">ইমেইল</div><div class="info-value" id="emailProfile">...</div></div>
+            <div class="info-row"><div class="info-title">মোবাইল</div><div class="info-value" id="mobileProfile">...</div></div>
+        </div>
+
+        <div class="section-title"><div class="icon">📍</div><h2>ঠিকানার তথ্য</h2></div>
+        <div class="info-card">
+            <div class="address-list">
+                <div class="address-box"><span>🏠 গ্রাম</span><h4 id="gramProfile">...</h4></div>
+                <div class="address-box"><span>📮 পোস্ট অফিস</span><h4 id="postOfficeProfile">...</h4></div>
+                <div class="address-box"><span>🏛️ থানা</span><h4 id="thanaProfile">...</h4></div>
+                <div class="address-box"><span>🌍 জেলা</span><h4 id="zillaProfile">...</h4></div>
+            </div>
+        </div>
+
+        <div class="section-title"><div class="icon">📚</div><h2>ইউজার বিভাগ</h2></div>
+        
+        <div class="action-grid">
+            <div class="action-btn" onclick="openDashboardSPA()">
+                <div class="action-icon">🕌</div><h3>মুতাওয়াসসিতাহ</h3><p>হোম পেজ <br> আবনায়ে দারুল উলুম</p>
+            </div>
+            <div class="action-btn" onclick="window.location.href='রোজ নামচা .html'">
+                <div class="action-icon">📖</div><h3>রোজ নামচা</h3><p>আপনার রোজ নামচাগুলো লিখে পাঠান</p>
+            </div>
+            <div class="action-btn" onclick="window.location.href='কবিতা .html'">
+                <div class="action-icon">✍️</div><h3>কবিতা</h3><p>কবিতা লিখে পাঠান</p>
+            </div>
+            <div class="action-btn" onclick="window.location.href='কাজ বন্ধ.html'">
+                <div class="action-icon">📜</div><h3>নোট</h3><p>নিজের জীবনের গুরুত্বপূর্ণ বিষয়গুলো নোট করে রাখুন</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div class="app hidden" id="dashboardView">
+    <div class="capsule-back-btn" onclick="goBackToProfile()">
+        <span style="font-size: 16px;">&larr;</span> ফিরে যান
+    </div>
+
+    <div class="header">
+        <div class="topbar">
+            <span class="menu-btn" id="menuBtn">🕌</span>
+            <div style="text-align:center; line-height:1.4;">
+                <h2>মুতাওয়াসসিতাহ ২য় বর্ষ</h2>
+                <p style="color:#d8f3e4; font-size:12px; margin-top:4px; font-weight:500;">Islamic Education & Character Building</p>
+            </div>
+            <span style="font-size:26px;">🕌</span>
+        </div>
+
+        <div class="profile-box">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="profile" id="dashProfileImg">
+            <div>
+                <h3 id="dashNameDisplay">দারুল উলুম ধনবাড়ী</h3>
+                <p>✨ ইলম • আদব • আমল • আখলাক ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-card">
+        <div class="message-content">
+            <div style="font-size:28px; margin-bottom:12px;">✨🕌✨</div>
+            <h2>“ইলম মানুষের অন্তরকে আলোকিত করে,<br>আর উত্তম আখলাক মানুষকে মর্যাদাবান করে তোলে।<br>কুরআন ও সুন্নাহর আলোতেই গড়ে উঠে<br>একটি সুন্দর ইসলামী জীবন।”</h2>
+            <p>🌙 ইলম • আমল • আখলাক 🌙</p>
+        </div>
+    </div>
+
+    <div class="section-title">
+        <div class="icon">📚</div>
+        <h2>মাদ্রাসার বিভাগসমূহ</h2>
+    </div>
+
+    <div class="ads-grid">
+        <div class="ad-card card-orange" onclick="document.getElementById('studentInfoModal').classList.add('active')">
+            <div class="ad-top-icon">🧑‍🎓</div>
+            <h3>ছাত্র পরিচিতি</h3>
+            <p>শিক্ষার্থীদের নাম ও বিস্তারিত তথ্য</p>
+            <div class="open-btn">বিস্তারিত →</div>
+        </div>
+        <div class="ad-card card-blue" onclick="window.location.href='উস্তাদদের মোবাইল নাম্বার.html'">
+            <div class="ad-top-icon">👳</div>
+            <h3>সম্মানিত শিক্ষকবৃন্দ</h3>
+            <p>উস্তাদদের নাম ও মোবাইল নাম্বার</p>
+            <div class="open-btn">দেখুন →</div>
+        </div>
+        <div class="ad-card card-green" onclick="window.location.href='বানী.html'">
+            <div class="ad-top-icon">📚✨🕌</div>
+            <h3>উস্তাদদের বাণী</h3>
+            <p>উস্তাদদের মুখ থেকে সংগ্রহ করা হয়েছে</p>
+            <div class="open-btn">খুলুন →</div>
+        </div>
+        <div class="ad-card card-pink" onclick="window.location.href='অ্যালবাম .html'">
+            <div class="ad-top-icon">🖼️</div>
+            <h3>ছবি গ্যালারি</h3>
+            <p>নতুন ছবি ও স্মৃতি</p>
+            <div class="open-btn">দেখুন →</div>
+        </div>
+        <div class="ad-card card-pink" onclick="window.location.href='পরিচিতি .html'">
+            <div class="ad-top-icon">🕌</div>
+            <h3>মাদ্রাসার পরিচিতি</h3>
+            <p>সংক্ষিপ্ত বর্ণনা</p>
+            <div class="open-btn">খুলুন →</div>
+        </div>
+        <div class="ad-card card-blue" onclick="window.location.href='লক্ষ্য ও উদ্দেশ্য .html'">
+            <div class="ad-top-icon">🎯</div>
+            <h3>লক্ষ্য ও উদ্দেশ্য</h3>
+            <p>দ্বীনি শিক্ষা ও আদর্শ</p>
+            <div class="open-btn">খুলুন →</div>
+        </div>
+
+        <div class="ad-card card-orange" onclick="window.location.href='ফায়দা.html'">
+            <div class="ad-top-icon">🎉🕌🎉</div>
+            <h3>এই অ্যাপ এর উপকারিতা</h3>
+            <p>এই অ্যাপ এর ফায়দা সম্পর্কে জানতে এখানে ক্লিক করুন </p>
+            <div class="open-btn">Open</div>
+        </div>
+        <div class="ad-card card-green" onclick="window.location.href='মলদর্য'">
+            <div class="ad-top-icon">✨🕌</div>
+            <h3>গজল</h3>
+            <p>আবনায়ে দারুল উলুম এর গছল পড়তে ক্লিক করুন</p>
+            <div class="open-btn">খুলুন</div>
+        </div>
+
+<div class="ad-card card-blue" onclick="window.location.href='সদস্যবৃন্দ .html'">
+    <div class="ad-top-icon">
+        <img src="https://i.ibb.co/tTws499y/image.jpg" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+    </div>
+    <h3>KR pure application </h3>
+    <p>সদস্যবৃন্দ</p>
+    <div class="open-btn">পড়ুন →</div>
+</div>
+
+<div class="ad-card card-pink" onclick="window.location.href='কাজ বন্ধ.html'">
+    <div class="ad-top-icon">
+        <img src="https://i.ibb.co/FLpZQWYL/image.png" style="width: 40px; height: 40px; object-fit: cover; display: block; margin: 0 auto;">
+    </div>
+    <h3>অন্যান্য অ্যাপস</h3>
+    <p>আমাদের অন্যান্য অ্যাপস ডাউনলোড করুন </p>
+    <div class="open-btn">খুলুন →</div>
+</div>
+
+
+    </div>
+</div>
+
+<script>
+// ==================== ANTI-COPY PROTECTION ====================
+
+// Right Click Disable
+document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
+
+// Keyboard Shortcuts Disable
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || 
+                      e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        return false;
+    }
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Copy & Cut Disable with Alert
+document.addEventListener('copy', e => {
+    e.preventDefault();
+    alert("❌ এই কন্টেন্ট কপি করা নিষিদ্ধ।\nদয়া করে সঠিক নিয়ম মেনে চলুন।");
+    return false;
+});
+
+document.addEventListener('cut', e => { e.preventDefault(); return false; });
+
+// Touch Long Press Protection
+document.addEventListener('touchstart', e => {
+    if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+
+// ==================== আপনার আগের স্ক্রিপ্ট শুরু ====================
+
+// Dashboard Sidebar
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+const closeBtn = document.getElementById("closeBtn");
+const menuOverlay = document.getElementById("menuOverlay");
+
+menuBtn.onclick = function(){ sideMenu.classList.add("active"); menuOverlay.classList.add("active"); };
+closeBtn.onclick = closeMenu;
+menuOverlay.onclick = closeMenu;
+function closeMenu(){ sideMenu.classList.remove("active"); menuOverlay.classList.remove("active"); }
+
+// SPA Navigation
+function hideAllViews() {
+    document.getElementById("loginView").style.display = "none";
+    document.getElementById("profileView").style.display = "none";
+    document.getElementById("dashboardView").style.display = "none";
+    
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("profileView").classList.add("hidden");
+    document.getElementById("dashboardView").classList.add("hidden");
+}
+
+function openDashboardSPA() {
+    hideAllViews();
+    let rootNode = document.documentElement;
+    rootNode.style.setProperty('scroll-behavior', 'auto', 'important'); 
+    document.body.style.setProperty('scroll-behavior', 'auto', 'important');
+
+    let dashScreen = document.getElementById("dashboardView");
+    dashScreen.classList.remove("hidden");
+    dashScreen.style.display = "block";
+    document.body.style.background = "#ececf3";
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    setTimeout(() => { 
+        rootNode.style.removeProperty('scroll-behavior');
+        document.body.style.removeProperty('scroll-behavior');
+    }, 50); 
+}
+
+function goBackToProfile() {
+    let rootNode = document.documentElement;
+    rootNode.style.setProperty('scroll-behavior', 'auto', 'important'); 
+    document.body.style.setProperty('scroll-behavior', 'auto', 'important');
+    
+    hideAllViews();
+    
+    let proScreen = document.getElementById("profileView");
+    proScreen.classList.remove("hidden");
+    proScreen.style.display = "block";
+    document.body.style.background = "#eef2f7"; 
+    
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    
+    setTimeout(() => { 
+        rootNode.style.removeProperty('scroll-behavior');
+        document.body.style.removeProperty('scroll-behavior');
+    }, 50);  
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBV1PQDsT5vRxjT_nm72uttgkZYwK0tjfE",
+    authDomain: "abnaye-darul-uloom.firebaseapp.com",
+    projectId: "abnaye-darul-uloom",
+    storageBucket: "abnaye-darul-uloom.firebasestorage.app",
+    messagingSenderId: "973857113265",
+    appId: "1:973857113265:web:d04e29b26b442f4d0e0e90"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+document.addEventListener("DOMContentLoaded", () => {
+    let isUserLog = localStorage.getItem("kr_mutawassitah_logged_in");
+    let storedName = localStorage.getItem("logged_student_name");
+    let stdFather = localStorage.getItem("logged_student_father");
+    let stdPin = localStorage.getItem("logged_student_pin");
+
+    if (isUserLog === "true" && storedName && storedName.trim() !== "") {
+        hideAllViews();
+        document.getElementById("profileView").classList.remove("hidden");
+        document.getElementById("profileView").style.display = "block";
+        document.body.style.background = "#eef2f7"; 
+        window.scrollTo({ top: 0, behavior: "instant" });
+        window.loadAllDynamicsUsingMemoryStateData(storedName, stdFather, stdPin);
+    } else {
+        localStorage.clear();
+        hideAllViews();
+        document.getElementById("loginView").classList.remove("hidden");
+        document.getElementById("loginView").style.display = "block";
+        document.body.style.background = "#eef3ff"; 
+        window.scrollTo({ top: 0, behavior: "instant" });
+        loadLoginFormData();
+    }
+});
+
+async function loadLoginFormData() {
+    try {
+        const snapshot = await getDocs(collection(db, "students"));
+        let names = new Set(), fathers = new Set(), posts = new Set();
+        snapshot.forEach(doc => {
+            let d = doc.data();
+            if(d.name) names.add(d.name);
+            if(d.father) fathers.add(d.father);
+            if(d.post) posts.add(d.post);
+        });
+        const populate = (id, dataSet) => {
+            const select = document.getElementById(id);
+            shuffle(Array.from(dataSet)).forEach(item => {
+                let opt = document.createElement("option"); 
+                opt.value = item; 
+                opt.textContent = item; 
+                select.appendChild(opt);
+            });
+        };
+        populate("student", names); populate("father", fathers); populate("post", posts);
+    } catch (error) { console.error("Loader Error:", error); }
+}
+
+window.showFatherNames = () => document.getElementById("fatherBox").classList.remove("hidden");
+window.showPostOffice = () => document.getElementById("postBox").classList.remove("hidden");
+window.showPinBox = () => document.getElementById("pinBox").classList.remove("hidden");
+
+window.checkForm = function(){
+    let btn = document.getElementById("loginBtn");
+    if(document.getElementById("student").value && document.getElementById("father").value && 
+       document.getElementById("post").value && document.getElementById("pin").value.length >= 6){
+        btn.disabled = false; btn.classList.add("active");
+    } else { btn.disabled = true; btn.classList.remove("active"); }
+};
+
+window.showWarningPopup = () => document.getElementById("popupSystem").classList.remove("hidden");
+window.closePopup = () => document.getElementById("popupSystem").classList.add("hidden");
+
+window.startProfileLoading = async function(){
+    let s = document.getElementById("student").value, f = document.getElementById("father").value;
+    let p = document.getElementById("post").value, pin = document.getElementById("pin").value;
+
+    try {
+        const snap = await getDocs(query(collection(db, "students"), where("name","==",s), where("father","==",f), where("pin","==",pin), where("post","==",p)));
+        if(!snap.empty){
+            closePopup();
+            localStorage.setItem("kr_mutawassitah_logged_in", "true");
+            localStorage.setItem("logged_student_name", s);
+            localStorage.setItem("logged_student_father", f);
+            localStorage.setItem("logged_student_pin", pin);
+            
+            document.getElementById("loginView").style.display = "none";
+            const loadingScreen = document.getElementById("loadingPage");
+            
+            let data = snap.docs[0].data();
+            const imgElement = document.getElementById("dynamicProfileImg");
+            
+            let dbImg = data.image || data.imageUrl || data.photo || "";
+            if (dbImg.trim() !== "") { imgElement.src = dbImg; } 
+            else { imgElement.src = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; }
+            
+            loadingScreen.classList.remove("hidden");
+            window.scrollTo({top: 0, behavior: 'instant'}); 
+            
+            setTimeout(() => {
+                loadingScreen.classList.add("hidden");
+                document.body.style.background = "#eef2f7";
+                document.getElementById("profileView").classList.remove("hidden");
+                document.getElementById("profileView").style.display = "block";
+                window.loadAllDynamicsUsingMemoryStateData(s, f, pin); 
+            }, 5500);
+        } else { alert("ব্যর্থ! প্রদত্ত তথ্যগুলো সঠিক নয়।"); closePopup(); }
+    } catch (error) { alert("সার্ভার বা কানেকশন এরর!"); closePopup(); }
+};
+
+window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, stdPin) {
+    if (!stdName || !stdFather || !stdPin) return;
+
+    try {
+        const q = query(collection(db, "students"), where("name", "==", stdName), where("father", "==", stdFather), where("pin", "==", stdPin));
+        const snapshot = await getDocs(q);
+        
+        if (!snapshot.empty) {
+            const data = snapshot.docs[0].data();
+            
+            if (document.getElementById("studentNameProfile")) document.getElementById("studentNameProfile").innerText = data.name || "নাম নেই";
+            if (document.getElementById("dashNameDisplay")) document.getElementById("dashNameDisplay").innerText = data.name || "দারুল উলুম ধনবাড়ী";
+            if (document.getElementById("fatherNameProfile")) document.getElementById("fatherNameProfile").innerText = data.father || "পাওয়া যায়নি";
+            if (document.getElementById("classBadge")) document.getElementById("classBadge").innerHTML = (data.title || "মুতাওয়াসসিতাহ") + " &bull; ছাত্র";
+            
+            let getMailStr = "";
+            if(data.socials && data.socials.email){ getMailStr = data.socials.email.trim(); }
+            if (document.getElementById("emailProfile")) document.getElementById("emailProfile").innerText = (!getMailStr || getMailStr === "") ? "তথ্য দেওয়া নেই" : getMailStr;
+            
+            let getMobile = data.mobile || ""; 
+            if (document.getElementById("mobileProfile")) document.getElementById("mobileProfile").innerText = (getMobile.trim() === "") ? "তথ্য দেওয়া নেই" : getMobile;
+            
+            let vlg = data.village || ""; if (document.getElementById("gramProfile")) document.getElementById("gramProfile").innerText = (vlg === "") ? "তথ্য দেওয়া নেই" : vlg;
+            let po = data.post || ""; if (document.getElementById("postOfficeProfile")) document.getElementById("postOfficeProfile").innerText = (po === "") ? "তথ্য দেওয়া নেই" : po;
+            let th = data.thana || ""; if (document.getElementById("thanaProfile")) document.getElementById("thanaProfile").innerText = (th === "") ? "তথ্য দেওয়া নেই" : th;
+            let zla = data.district || ""; if (document.getElementById("zillaProfile")) document.getElementById("zillaProfile").innerText = (zla === "") ? "তথ্য দেওয়া নেই" : zla;
+            
+            let finalImage = data.image || data.imageUrl || data.photo || data.picture || "";
+            let backupLink = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+            
+            if (finalImage && finalImage.trim() !== "") {
+                if (document.getElementById("profileImg")) document.getElementById("profileImg").src = finalImage;
+                if (document.getElementById("dashProfileImg")) document.getElementById("dashProfileImg").src = finalImage; 
+            } else {
+                if (document.getElementById("profileImg")) document.getElementById("profileImg").src = backupLink;
+                if (document.getElementById("dashProfileImg")) document.getElementById("dashProfileImg").src = backupLink; 
+            }
+        }
+    } catch (error) { 
+        console.error("Global Loader Parsing Context Handler Error:", error); 
+    } finally { 
+        let sp = document.getElementById("profileSpinner");
+        if(sp) sp.classList.add("hidden"); 
+    }
+}
+</script>
+</body>
+</html>
