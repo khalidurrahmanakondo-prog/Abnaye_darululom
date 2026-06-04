@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>রোজ নামচা • দারুল উলুম ধনবাড়ী</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* আগের সকল ডিজাইন অক্ষুণ্ণ রাখা হয়েছে */
+html, body { background-color: #060713 !important; min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; }
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+.lock-text { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
+.input-box, textarea { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
+body{ font-family:'Poppins',sans-serif; background: radial-gradient(circle at top left, rgba(88, 28, 135, 0.78) 0%, transparent 45%), radial-gradient(circle at bottom right, rgba(29, 78, 216, 0.68) 0%, transparent 50%), linear-gradient(135deg, #090b16 0%, #060711 100%); background-attachment: fixed; color:white; }
+
+/* ফিরে যান বাটন স্টাইল */
+.back-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.back-capsule-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50px; /* ক্যাপসুল আকৃতি */
+    background: transparent; /* কোনো ব্যাকগ্রাউন্ড নেই */
+    color: #c0b6f2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.back-capsule-btn:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.container{ width:100%; padding:24px 16px 40px; position: relative; }
+.header{ max-width:520px; margin:auto; text-align:center; padding-top:15px; }
+.top-badge{ display:inline-block; padding:10px 18px; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); font-size:13px; letter-spacing:1px; font-weight:600; color:#c0b6f2; }
+.main-title{ margin-top:20px; font-size:38px; font-weight:800; line-height:1.25; text-shadow:0 4px 25px rgba(0,0,0,.6); }
+.address{ margin-top:12px; font-size:14px; line-height:1.8; opacity:.75; color:#cbd5e1; }
+.title-line{ width:110px; height:5px; margin:24px auto; border-radius:999px; background:linear-gradient(135deg,#8b5cf6,#3b82f6); box-shadow:0 0 20px rgba(139,92,246,.55); }
+.logo-box{ width:110px; height:110px; margin:auto; border-radius:35px; background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center; font-size:48px; border:1px solid rgba(255,255,255,.08); box-shadow: 0 10px 35px rgba(0,0,0,.5), inset 0 0 18px rgba(255,255,255,.02); }
+.forum-title{ margin-top:22px; font-size:30px; font-weight:700; background:linear-gradient(135deg,#ffffff,#d8b4fe); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.description{ margin:18px auto 0; max-width:420px; font-size:15px; line-height:2; opacity:.85; color:#cbd5e1; }
+
+.main-card{ width:100%; max-width:520px; margin:35px auto 0; padding:24px; border-radius:34px; background: rgba(15, 20, 35, 0.55); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 25px 55px rgba(0,0,0,.5), inset 0 0 15px rgba(255,255,255,.01); }
+.label{ font-size:14px; font-weight:600; margin-bottom:10px; opacity:.9; color:#e2e8f0; }
+.input-box{ width:100%; padding:17px 18px; border:none; outline:none; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); color:white; font-size:15px; margin-bottom:20px; transition:.25s; }
+.input-box:focus{ border:1px solid rgba(139,92,246,.5); box-shadow:0 0 0 4px rgba(139,92,246,.15); }
+textarea{ min-height:300px; resize:none; line-height:2; }
+
+.verify-wrap{ display:flex; gap:12px; margin-bottom:18px; }
+.verify-btn{ width:135px; border:none; border-radius:20px; background:rgba(255,255,255,.08); color:white; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; transition:.3s ease; box-shadow:0 4px 12px rgba(0,0,0,.15); pointer-events:none; }
+.spinner { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-loading { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.btn-success { background: linear-gradient(135deg, #22c55e, #15803d); }
+.success-circle { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; border: 2px solid white; font-size: 14px; font-weight: bold; color: white; }
+.btn-error { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.error-circle { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; border: 2px solid white; font-size: 14px; font-weight: bold; color: white; }
+.send-btn{ width:100%; padding:18px; border:none; border-radius:22px; background:linear-gradient(135deg,#8b5cf6,#6d28d9); color:white; font-size:16px; font-weight:700; cursor:pointer; transition:.25s; box-shadow:0 12px 28px rgba(109,40,217,.35); }
+.send-btn:active{ transform:scale(.98); }
+.success-page { display: none; text-align: center; padding: 20px 10px; }
+.success-icon-box { width: 90px; height: 90px; margin: 10px auto 25px; border-radius: 50%; background: linear-gradient(135deg, #22c55e, #16a34a); display: flex; align-items: center; justify-content: center; font-size: 42px; color: white; }
+.success-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff, #bbf7d0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.success-desc { font-size: 14px; line-height: 1.8; color: #94a3b8; margin-bottom: 30px; }
+.secondary-btn { width: 100%; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; background: rgba(255, 255, 255, 0.05); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: .25s; }
+.footer{ text-align:center; padding-top:28px; font-size:13px; opacity:.65; line-height:2; }
+@media(max-width:600px){ .main-title{ font-size:31px; } .forum-title{ font-size:26px; } .main-card{ padding:20px; } .back-button-container { top: 15px; left: 15px; } }
+</style>
+</head>
+
+<body>
+
+    <div class="header lock-text">
+        <div class="top-badge">DARUL ULUM DHANBARI</div>
+        <h1 class="main-title">দারুল উলুম ধনবাড়ী</h1>
+        <p class="address">পাইটকা, ধনবাড়ী, টাঙ্গাইল</p>
+        <div class="title-line"></div>
+        <div class="logo-box">📔</div>
+        <h2 class="forum-title">রোজ নামচা ফরম</h2>
+        <p class="description">শিক্ষার্থীদের নিয়মিত কার্যক্রম ও ডায়েরি এখানে জমা দিন।</p>
+    </div>
+
+    <div class="main-card">
+        <div id="poemFormBlock">
+            <div class="label lock-text">স্টুডেন্ট পিন</div>
+            <div class="verify-wrap">
+                <input type="password" id="studentPin" class="input-box" placeholder="আপনার পিন লিখুন" style="margin-bottom:0;" oninput="handlePinTyping()" maxlength="10">
+                <button id="verifyBtn" class="verify-btn lock-text">
+                    <span id="btnText">যাচাই করুন</span>
+                    <div id="btnSpinner" class="spinner"></div>
+                </button>
+            </div>
+
+            <div class="label lock-text">তারিখ সিলেক্ট করুন</div>
+            <input type="date" id="journalDate" class="input-box">
+
+            <div class="label lock-text">শিরোনাম</div>
+            <input type="text" id="poemTitle" class="input-box" placeholder="আজকের শিরোনাম..." maxlength="60">
+
+            <div class="label lock-text">রোজ নামচা (বিস্তারিত লিখুন)</div>
+            <textarea id="poemText" class="input-box" placeholder="বিস্তারিত লিখুন..." maxlength="8000"></textarea>
+
+            <button class="send-btn lock-text" onclick="sendJournal()">📤 রোজ নামচা জমা দিন</button>
+        </div>
+
+        <div id="successPageBlock" class="success-page lock-text">
+            <div class="success-icon-box">✓</div>
+            <h3 class="success-title">আলহামদুলিল্লাহ!</h3>
+            <p class="success-title" style="font-size: 18px; margin-top: -5px;">সফলভাবে জমা হয়েছে</p>
+            <p class="success-desc">আপনার রোজ নামচাটি সংরক্ষিত হয়েছে।</p>
+            <button class="secondary-btn" onclick="showFormAgain()">✍ আরেকটি রোজ নামচা লিখুন</button>
+        </div>
+    </div>
+    <div class="footer lock-text">KR Pure Bot • Journal System</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBV1PQDsT5_nm72uttgkZYwK0tjfE",
+    authDomain: "abnaye-darul-uloom.firebaseapp.com",
+    projectId: "abnaye-darul-uloom",
+    storageBucket: "abnaye-darul-uloom.firebasestorage.app",
+    messagingSenderId: "973857113265",
+    appId: "1:973857113265:web:d04e29b26b442f4d0e0e90"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentStudent = null;
+let typingTimer; 
+const doneTypingInterval = 400; 
+
+window.handlePinTyping = function() {
+    clearTimeout(typingTimer);
+    resetVerifyButton(); 
+    let pin = document.getElementById("studentPin").value.trim();
+    if (pin.length >= 6) typingTimer = setTimeout(autoVerifyStudent, doneTypingInterval);
+}
+
+function resetVerifyButton() {
+    let btn = document.getElementById("verifyBtn");
+    let btnText = document.getElementById("btnText");
+    let spinner = document.getElementById("btnSpinner");
+    btn.className = "verify-btn lock-text";
+    btnText.innerHTML = "যাচাই করুন";
+    btnText.style.display = "inline";
+    spinner.style.display = "none";
+    currentStudent = null;
+}
+
+async function autoVerifyStudent() {
+    let pin = document.getElementById("studentPin").value.trim();
+    let btn = document.getElementById("verifyBtn");
+    let btnText = document.getElementById("btnText");
+    let spinner = document.getElementById("btnSpinner");
+    btn.className = "verify-btn btn-loading lock-text";
+    btnText.style.display = "none";
+    spinner.style.display = "block";
+    try {
+        const querySnapshot = await getDocs(collection(db, "students"));
+        let studentFound = null;
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.pin && data.pin.toString() === pin) studentFound = data;
+        });
+        if (studentFound) {
+            btn.className = "verify-btn btn-success lock-text";
+            spinner.style.display = "none";
+            btnText.style.display = "inline";
+            btnText.innerHTML = `<span class="success-circle">✓</span>`;
+            currentStudent = studentFound;
+            currentStudent.typedPin = pin;
+        } else {
+            btn.className = "verify-btn btn-error lock-text";
+            spinner.style.display = "none";
+            btnText.style.display = "inline";
+            btnText.innerHTML = `<span class="error-circle">✗</span>`;
+        }
+    } catch (error) {
+        console.error(error);
+        btn.className = "verify-btn btn-error lock-text";
+        spinner.style.display = "none";
+        btnText.innerHTML = "Error";
+    }
+}
+
+window.sendJournal = async function(){
+    let inputPin = document.getElementById("studentPin").value.trim();
+    if(currentStudent === null || currentStudent.typedPin !== inputPin){
+        alert("নিরাপত্তা ত্রুটি! অনুগ্রহ করে প্রথমে সঠিক পিন দিয়ে ভেরিফাই করুন।");
+        return;
+    }
+    let date = document.getElementById("journalDate").value;
+    let title = document.getElementById("poemTitle").value.trim();
+    let content = document.getElementById("poemText").value.trim();
+
+    if(!date || title.length < 3 || content.length < 20){
+        alert("অনুগ্রহ করে সকল ঘর পূরণ করুন (ন্যূনতম ২০ অক্ষর)।");
+        return;
+    }
+
+    try {
+        let customDocId = `${currentStudent.name || "Student"} (${date})`;
+        await setDoc(doc(db, "roj_namcha", customDocId), {
+            studentName: currentStudent.name || "অজ্ঞাত",
+            verificationPin: inputPin,
+            date: date,
+            title: title,
+            content: content,
+            status: "review",
+            time: Date.now()
+        });
+        document.getElementById("poemFormBlock").style.display = "none";
+        document.getElementById("successPageBlock").style.display = "block";
+    } catch (error) {
+        alert("ডাটা জমা দিতে ব্যর্থ হয়েছে।");
+        console.error(error);
+    }
+}
+
+window.showFormAgain = function() {
+  document.getElementById("successPageBlock").style.display = "none";
+  document.getElementById("poemFormBlock").style.display = "block";
+  document.getElementById("poemTitle").value = "";
+  document.getElementById("poemText").value = "";
+  document.getElementById("studentPin").value = "";
+  resetVerifyButton();
+}
+
+document.addEventListener('contextmenu', (e) => { if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault(); });
+</script>
+</body>
+</html>
