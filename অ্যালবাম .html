@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ছাত্র এলবাম</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;700&family=Poppins:wght=300;400;500;600;700&family=Teko:wght=500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body{
+    background:
+    linear-gradient(135deg,#020617,#0f172a,#111827,#1e293b);
+
+    min-height:100vh;
+
+    font-family:'Poppins',sans-serif;
+
+    padding:20px;
+
+    overflow-x:hidden;
+}
+
+/* Main Container */
+
+.container{
+    width:100%;
+    max-width:480px;
+    margin:auto;
+}
+
+/* TOP ACTION BAR FOR BACK BUTTON */
+.top-action-bar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+/* CAPSULE BACK BUTTON (DARK PREMIUN GLASS STYLE) */
+.fixed-back-btn {
+    background: rgba(255, 255, 255, 0.03);
+    color: #f8fafc;
+    padding: 8px 22px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.fixed-back-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    transform: translateX(-3px);
+}
+
+/* Madrasa Banner */
+
+.top-banner{
+
+    position:relative;
+
+    height:260px;
+
+    border-radius:35px;
+
+    overflow:hidden;
+
+    margin-bottom:22px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.45);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.top-banner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(0.55);
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    padding:20px;
+}
+
+.overlay h1{
+
+    font-size:34px;
+
+    font-family:'Cinzel',serif;
+
+    color:white;
+
+    margin-bottom:8px;
+
+    text-shadow:0 5px 15px rgba(0,0,0,0.6);
+
+    letter-spacing:2px;
+}
+
+.overlay p{
+
+    color:#e2e8f0;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+/* Album Title */
+
+.album-title{
+
+    position:relative;
+
+    margin-bottom:28px;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    border-radius:28px;
+
+    padding:24px 20px;
+
+    text-align:center;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.album-title::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    background:
+    rgba(34,197,94,0.15);
+
+    border-radius:50%;
+
+    top:-70px;
+    left:-60px;
+}
+
+.album-title::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    background:
+    rgba(59,130,246,0.14);
+
+    border-radius:50%;
+
+    bottom:-80px;
+    right:-70px;
+}
+
+.album-title h2{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:44px;
+
+    color:white;
+
+    letter-spacing:5px;
+
+    font-family:'Teko',sans-serif;
+
+    line-height:1;
+}
+
+.album-title h3{
+
+    position:relative;
+
+    z-index:2;
+
+    color:#cbd5e1;
+
+    margin-top:8px;
+
+    font-size:15px;
+
+    letter-spacing:4px;
+}
+
+/* Student Cards */
+
+.student-list{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+.card{
+
+    position:relative;
+
+    border-radius:32px;
+
+    overflow:hidden;
+
+    background:
+    rgba(255,255,255,0.05);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,0.45);
+
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:520px;
+    object-fit:cover;
+    display:block;
+}
+
+/* Glow */
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(168,85,247,0.15),
+    rgba(59,130,246,0.10),
+    rgba(34,197,94,0.12)
+    );
+
+    opacity:0;
+
+    transition:0.4s;
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    .top-banner{
+        height:220px;
+    }
+
+    .overlay h1{
+        font-size:26px;
+    }
+
+    .album-title h2{
+        font-size:36px;
+    }
+
+    .card img{
+        height:430px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOP ACTION BAR WITH CAPSULE BACK BUTTON -->
+    <div class="top-action-bar">
+
+    </div>
+
+    <!-- Madrasa Banner -->
+
+    <div class="top-banner">
+
+        <img src="https://images.unsplash.com/photo-1512632578888-169bbbc64f33?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="overlay">
+            <h1>DARUL ULUM</h1>
+            <p>
+                International Islamic Madrasa<br>
+                Dhaka • Bangladesh
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Album Design -->
+
+    <div class="album-title">
+
+        <h2>STUDENT</h2>
+        <h3>ALBUM COLLECTION</h3>
+
+    </div>
+
+    <!-- Student Images -->
+
+    <div class="student-list">
+ 
+        <div class="card">
+            <img src="https://i.ibb.co/p66skM94/1779824565367.jpg">
+        </div>
+
+       <div class="card">
+            <img src="https://i.ibb.co/q3FT5SyT/1779824570321.jpg">
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/pr0Xg28p/1779824572769.jpg">
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/RTdjz8Ld/1779824537757.jpg">
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/vCLNwf2D/1779824669261.jpg">
+        </div>
+
+        <div class="card">
+            <img src="https://i.ibb.co/JRBtv2w9/IMG-356.png">
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    // ফিরে যান বাটনের ডিরেক্টরি ফাংশন
+    function goToDashboard() {
+        window.location.href = 'ড্যাশবোর্ড.html';
+    }
+</script>
+
+</body>
+</html>
