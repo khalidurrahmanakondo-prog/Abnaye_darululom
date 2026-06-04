@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মাদ্রাসার ওস্তাদদের ফুল স্ক্রিন তালিকা</title>
+    <style>
+        /* গলোবাল এবং ফুল স্ক্রিন স্টাইল */
+        :root {
+            --primary-color: #0A4D34; /* ইসলামিক ডার্ক গ্রিন */
+            --gold-color: #D4AF37;    /* রাজকীয় সোনালী রঙ */
+            --gold-light: #FAF5E6;    /* হালকা সোনালী হাইলাইট */
+            --text-dark: #2C3E50;
+            --bg-light: #F4F7F5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            width: 100%;
+        }
+
+        /* ফিরে যান বাটন স্টাইল */
+        .back-button-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-capsule-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px; /* ক্যাপসুল আকৃতি */
+            background: transparent; /* কোনো ব্যাকগ্রাউন্ড নেই */
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-capsule-btn:hover {
+            color: var(--gold-color);
+            border-color: var(--gold-color);
+        }
+
+        /* ফুল স্ক্রিন কন্টেইনার */
+        .full-screen-container {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 40px 20px;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* মাদ্রাসার নাম ও ঠিকানা (প্রিমিয়াম হেডার) */
+        .madrasa-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .madrasa-header h1 {
+            color: var(--primary-color);
+            font-size: 38px;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+        }
+
+        .madrasa-header .slogan {
+            color: var(--gold-color);
+            font-size: 18px;
+            margin: 0 0 6px 0;
+            font-weight: 600;
+        }
+
+        .madrasa-header .address {
+            color: #7F8C8D;
+            font-size: 15px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .madrasa-header::after {
+            content: "🕌";
+            display: block;
+            font-size: 24px;
+            color: var(--gold-color);
+            margin-top: 15px;
+        }
+
+        /* সূচিপত্র বাটন সেকশন */
+        .index-box {
+            background: #FAFAFA;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 0 auto 50px auto;
+            max-width: 1200px;
+        }
+
+        .index-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .index-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .index-btn {
+            padding: 12px 30px;
+            background-color: #fff;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+        }
+
+        /* 👑 বড় এরিয়া (জামাত সেকশন) */
+        .jamat-section {
+            margin: 0 auto 60px auto;
+            max-width: 95%; 
+            position: relative;
+            border-radius: 20px;
+            padding: 4px; 
+            background: var(--primary-color);
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .jamat-inner {
+            background: #fff;
+            border-radius: 17px;
+            padding: 50px 30px 30px 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .jamat-legend {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--primary-color);
+            padding: 8px 35px;
+            border-radius: 30px;
+            border: 2px solid var(--gold-color);
+            z-index: 5;
+            white-space: nowrap;
+        }
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        .jamat-section:target {
+            background: conic-gradient(from var(--angle), var(--gold-color), #fff, var(--gold-color), var(--primary-color), var(--gold-color));
+            animation: rotateBorder 1.5s linear infinite, stopLoading 3.5s forwards;
+        }
+
+        .jamat-section:target .jamat-inner {
+            background-color: var(--gold-light);
+            animation: resetBg 3.5s forwards;
+        }
+
+        @keyframes rotateBorder {
+            to { --angle: 360deg; }
+        }
+
+        @keyframes stopLoading {
+            0% { box-shadow: 0 0 35px rgba(212, 175, 55, 0.6); }
+            90% { background: conic-gradient(from var(--angle), var(--gold-color), #fff, var(--gold-color), var(--primary-color), var(--gold-color)); box-shadow: 0 0 35px rgba(212, 175, 55, 0.6); }
+            100% { background: var(--primary-color); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        }
+
+        @keyframes resetBg {
+            0% { background-color: var(--gold-light); }
+            90% { background-color: var(--gold-light); }
+            100% { background-color: #fff; }
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .teacher-profile {
+            background: #ffffff;
+            border: 1px solid var(--gold-color);
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-sizing: border-box; 
+        }
+
+        .teacher-info {
+            margin-bottom: 20px;
+        }
+
+        .main-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .upadhi-title {
+            font-size: 15px;
+            color: #E67E22; 
+            font-weight: bold;
+            font-style: italic;
+            background: #FEF5ED;
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+
+        .phone-button, .phone-button:hover, .phone-button:active, .phone-button:focus {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary-color), #166D4E) !important;
+            color: white !important;
+            text-decoration: none !important;
+            padding: 14px 20px !important;
+            border-radius: 50px !important;
+            font-weight: bold !important;
+            border: 1px solid var(--gold-color) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            transform: none !important; 
+            box-shadow: 0 4px 10px rgba(11, 70, 50, 0.2) !important; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="full-screen-container">
+    <div class="madrasa-header">
+        <h1>দারুল উলুম ধনবাড়ী </h1>
+        <p class="slogan">দ্বীনি শিক্ষার একটি আন্তর্জাতিক মানসম্পন্ন প্রতিষ্ঠান</p>
+        <p class="address">📍 পাইটকা, ধনবাড়ী, টাঙ্গাইল </p>
+    </div>
+
+    <div class="index-box">
+        <div class="index-title">📖 জামাত ভিত্তিক সূচিপত্র (ক্লিক করুন)</div>
+        <div class="index-buttons">
+            <a href="#kitab-area" class="index-btn">কিতাব বিভাগের উস্তাদগণ </a>
+            <a href="#hifz-area" class="index-btn">হিফজ বিভাগের উস্তাদগণ </a>
+            <a href="#baburchi-area" class="index-btn">রান্নার উস্তাদগণ (বাবুর্চি)</a>
+            <a href="#course-area" class="index-btn">কোর্সের ওস্তাদ</a>
+            <a href="#math-area" class="index-btn">গণিত বিশেষজ্ঞ</a>
+        </div>
+    </div>
+
+    <!-- কিতাব বিভাগ -->
+    <div class="jamat-section" id="kitab-area">
+        <div class="jamat-legend">কিতাব বিভাগের উস্তাদবৃন্দ</div>
+        <div class="jamat-inner">
+            <div class="cards-container">
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা নাজমুল হাসান</h2>
+                        <span class="upadhi-title">👑 বাবা হুজুর</span>
+                    </div>
+                    <a href="tel:01710-737846" class="phone-button">📞 01710-737846 <br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা যুবায়ের আহমদ</h2>
+                        <span class="upadhi-title">👑 নেএকোনার হুজুর</span>
+                    </div>
+                    <a href="tel:01778-603747" class="phone-button">📞 01778-603747<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা আব্দুল্লাহ আল মামুন</h2>
+                        <span class="upadhi-title">👑 গাজীপুরী হুজুর</span>
+                    </div>
+                    <a href="tel: 01993820301" class="phone-button">📞 01993820301 <br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা মুযযাম্মিল হক</h2>
+                        <span class="upadhi-title">👑 ফুলবাড়িয়ার হুজুর</span>
+                    </div>
+                    <a href="tel:01628766761" class="phone-button">📞 01628766761<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা তাওহীদ আলতাফ</h2>
+                        <span class="upadhi-title">👑 হালুয়াঘাটী হুজুর</span>
+                    </div>
+                    <a href="tel:01687684027" class="phone-button">📞 01687684027<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা রিয়াজুদ্দিন মাহদী</h2>
+                        <span class="upadhi-title">👑 গফরগাঁওয়ের হুজুর</span>
+                    </div>
+                    <a href="tel:01710234599" class="phone-button">📞 01710234599<br>কল করতে ক্লিক করুন</a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা তরিকুল ইসলাম</h2>
+                        <span class="upadhi-title">👑 ফলদার হুজুর</span>
+                    </div>
+                    <a href="tel:01707607860" class="phone-button">📞 01707607860 <br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা সাইদুর রহমান</h2>
+                        <span class="upadhi-title">👑 রশিদপুরী হুজুর</span>
+                    </div>
+                    <a href="tel:01770770067" class="phone-button">📞 01770770067
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাস্টার মতিউর রহমান</h2>
+                        <span class="upadhi-title">👑 ধনবাড়ির হুজুর</span>
+                    </div>
+                    <a href="tel:01913496870" class="phone-button">📞 01913496870<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাস্টার হাসিবুল হাসান শান্ত</h2>
+                        <span class="upadhi-title">👑 বকলবাড়ী হুজুর</span>
+                    </div>
+                    <a href="tel:01687481155" class="phone-button">📞 01687481155<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা আবু সুফিয়ান</h2>
+                        <span class="upadhi-title">👑 ঈশ্বরগঞ্জী হুজুর</span>
+                    </div>
+                    <a href="tel:01618121408" class="phone-button">📞 01618121408<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা আল আমিন</h2>
+                        <span class="upadhi-title">👑 বানরগাছী হুজুর</span>
+                    </div>
+                    <a href="tel:01617872252" class="phone-button">📞 01617872252<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা এনামুল হাসান</h2>
+                        <span class="upadhi-title">👑 ভালুকজানের হুজুর</span>
+                    </div>
+                    <a href="tel:01610337073" class="phone-button">📞 01610337073<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা আল আমিন</h2>
+                        <span class="upadhi-title">👑 চাটমোহরের হুজুর</span>
+                    </div>
+                    <a href="tel:01710812825" class="phone-button">📞 01710812825<br>কল করতে ক্লিক করুন </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- হিফজ বিভাগ -->
+    <div class="jamat-section" id="hifz-area">
+        <div class="jamat-legend">হিফজ বিভাগের উস্তাদগণ</div>
+        <div class="jamat-inner">
+            <div class="cards-container">
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা রিয়াদ হোসাইন</h2>
+                        <span class="upadhi-title">👑 মোমেনশাহীর হুজুর</span>
+                    </div>
+                    <a href="tel:01877625965" class="phone-button">📞 01877625965<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">হাফেজ মোঃ ইলিয়াস হাসান</h2>
+                        <span class="upadhi-title">👑 পাইষ্কার হুজুর</span>
+                    </div>
+                    <a href="tel:01775110786" class="phone-button">📞 01775110786<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">হাফেজ মোঃ আল মামুন</h2>
+                        <span class="upadhi-title">👑 কালীবাড়ির হুজুর</span>
+                    </div>
+                    <a href="tel:01891847845" class="phone-button">📞 01891847845<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">হাফেজ মোঃ সারোয়ার হোসেন</h2>
+                        <span class="upadhi-title">👑 গাবতলী হুজুর</span>
+                    </div>
+                    <a href="tel:01920676672" class="phone-button">📞 01920676672<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">হাফেজ মোহাম্মদ রাকিবুল ইসলাম</h2>
+                        <span class="upadhi-title">👑 মুক্তাগাছার হুজুর</span>
+                    </div>
+                    <a href="tel:01943216712" class="phone-button">📞 01943216712<br>কল করতে ক্লিক করুন </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- বাবুর্চি -->
+    <div class="jamat-section" id="baburchi-area">
+        <div class="jamat-legend">বাবুর্চিদের নাম</div>
+        <div class="jamat-inner">
+            <div class="cards-container">
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মোহাম্মদ মুর্তজা</h2>
+                    </div>
+                    <a href="tel:01844865786" class="phone-button">📞 01844865786<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মোহাম্মদ আবু হারিস</h2>
+                    </div>
+                    <a href="tel:01843679339" class="phone-button">📞 01843679339<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মোহাম্মদ শেখ ফরিদ</h2>
+                    </div>
+                    <a href="tel:01859297931" class="phone-button">📞 01859297931<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মোহাম্মদ আকরাম হোসেন</h2>
+                    </div>
+                    <a href="tel:01944435927" class="phone-button">📞 01944435927<br>কল করতে ক্লিক করুন </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- কোর্সের ওস্তাদ -->
+    <div class="jamat-section" id="course-area">
+        <div class="jamat-legend">কোর্সের ওস্তাদ</div>
+        <div class="jamat-inner">
+            <div class="cards-container">
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা আব্দুল্লাহ আল মামুন</h2>
+                        <span class="upadhi-title">👑 গাজীপুরী হুজুর</span><br>
+                        <span class="upadhi-title">✍️ উর্দু হাতের লেখা </span>
+                    </div>
+                    <a href="tel:01993820301" class="phone-button">📞 01993820301<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাওলানা রিয়াজুদ্দিন মাহদী</h2>
+                        <span class="upadhi-title">👑 গফরগাঁওয়ের হুজুর</span>
+                        <span class="upadhi-title">✍️ আরবি এবং  খত্তে রূকয়া</span>
+                    </div>
+                    <a href="tel:01710234599" class="phone-button">📞 01710234599<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">শহিদুল ইসলাম</h2>
+                        <span class="upadhi-title">👑 বাংলা এবং দেয়ালিকা</span>
+                    </div>
+                    <a href="tel:01338540954" class="phone-button">📞 01338540954<br>কল করতে ক্লিক করুন </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- গণিত বিশেষজ্ঞ -->
+    <div class="jamat-section" id="math-area">
+        <div class="jamat-legend">গণিত বিশেষজ্ঞ</div>
+        <div class="jamat-inner">
+            <div class="cards-container">
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাস্টার মতিউর রহমান</h2>
+                        <span class="upadhi-title">👑 ধনবাড়ির হুজুর</span>
+                    </div>
+                    <a href="tel:01913496870" class="phone-button">📞 01913496870<br>কল করতে ক্লিক করুন </a>
+                </div>
+                <div class="teacher-profile">
+                    <div class="teacher-info">
+                        <h2 class="main-name">মাস্টার হাসিবুল হাসান শান্ত</h2>
+                        <span class="upadhi-title">👑 বকলবাড়ী হুজুর</span>
+                    </div>
+                    <a href="tel:01687481155" class="phone-button">📞 01687481155<br>কল করতে ক্লিক করুন </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
