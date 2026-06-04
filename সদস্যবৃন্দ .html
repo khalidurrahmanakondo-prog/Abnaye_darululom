@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কেআর পিওর অ্যাপ্লিকেশন লিমিটেড | গ্লোবাল এক্সিকিউটিভ প্রোফাইল</title>
+    <style>
+        /* ফন্ট ও কোর গ্লোবাল স্টাইল */
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #030712;
+            color: #f8fafc;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(170, 124, 17, 0.03) 0%, transparent 40%);
+            padding-top: 20px;
+        }
+
+        /* গ্লোবাল কন্টেইনার */
+        .wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 20px 40px 20px;
+        }
+
+        /* TOP ACTION BAR FOR BACK BUTTON */
+        .top-action-bar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 30px;
+        }
+
+        /* CAPSULE BACK BUTTON (LAXURY GOLDEN STYLE) */
+        .fixed-back-btn {
+            background: transparent;
+            color: #ebd07f;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 30px;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.05);
+        }
+
+        .fixed-back-btn:hover {
+            color: #030712;
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateX(-3px);
+        }
+
+        /* প্রফেশনাল হিরো ব্যানার ও হেডার */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        /* ব্র্যান্ড লোগো স্টাইল */
+        .brand-logo {
+            width: 130px;
+            height: 130px;
+            border-radius: 24px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 40%, #ebd07f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* সূচিপত্র ডিজাইন */
+        .toc-box {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
+        }
+
+        .toc-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            padding-bottom: 12px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.04);
+            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateX(5px);
+        }
+
+        /* সিঙ্গেল কলাম লেআউট কন্টেইনার */
+        .column-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* প্রিমিয়াম লাক্সারি গোল্ডেন এরিয়া/কার্ড ডিজাইন - হালকা সোনালী লুক */
+        .luxury-card {
+            background: rgba(17, 24, 39, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.35); 
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            scroll-margin-top: 40px; 
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.06); 
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .luxury-card:hover {
+            transform: translateY(-4px);
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.18);
+        }
+
+        /* রু্টংবার বা লোডিং বার অ্যানিমেশন */
+        .luxury-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #d4af37, #fff, #d4af37, transparent);
+            transition: none;
+        }
+
+        /* সূচিপত্র থেকে যখন কোনো এরিয়াতে আসা হবে তখন রু্টংবারের মতো কাজ করবে */
+        .luxury-card:target::after {
+            animation: রু্টংবারঅ্যানিমেশন 3s ease-in-out;
+        }
+
+        @keyframes রু্টংবারঅ্যানিমেশন {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .luxury-card:target {
+            border-color: #d4af37;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
+        }
+
+        h2.section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ebd07f; 
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        p.desc {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        /* লিস্ট ও আইটেম স্টাইল */
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.01);
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .feature-text strong {
+            color: #fff;
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .feature-text span {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* প্রোফাইল হাইলাইট স্টাইল */
+        .executive-profile {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .avatar-glow {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        /* টেকনিক্যাল গ্রিড ব্লক */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tech-box {
+            background: rgba(255,255,255,0.01);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .tech-box h5 {
+            color: #ebd07f;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .tech-box p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* সদস্যবৃন্দ গ্রিড এবং স্টাইল - হালকা গ্লো ও সেন্টারড লুক */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .member-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 20px;
+            padding: 25px 20px 20px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.04);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .member-box:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.01);
+        }
+
+        /* ছবির উপরে পদবী ট্যাগ - পুরোপুরি মাঝখানে */
+        .member-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            color: #030712;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 8px;
+            margin: 0 auto 12px auto;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+        }
+
+        /* ছাত্রের ছবি - পুরোপুরি মাঝখানে */
+        .member-img {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            display: block;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .member-box:hover .member-img {
+            border-color: #d4af37;
+        }
+
+        .member-info h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .member-info p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .member-work {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            border-left: 3px solid #d4af37;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        /* যোগাযোগ বাটন সেকশন */
+        .contact-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .email-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            color: #030712;
+            text-decoration: none;
+            padding: 16px 36px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .email-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.5);
+        }
+
+        /* ফুটার */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        footer p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        footer .glow-text {
+            color: #fff;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.3rem; }
+            .luxury-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    
+    <!-- হেডার -->
+    <header>
+        <img src="https://i.imgur.com/EocnbUz.jpeg" alt="লোগো" class="brand-logo">
+        <br>
+        <div class="brand-badge">অনুমোদিত ইকোসিস্টেম</div>
+        <h1>কেআর পিওর অ্যাপ্লিকেশন লিমিটেড</h1>
+        <p class="tagline">বিশুদ্ধ কোডিং, অভেদ্য সাইবার নিরাপত্তা এবং যুগোপযোগী ডিজিটাল উদ্ভাবনে বিশ্বস্ত এক আন্তর্জাতিক মানের দেশীয় ব্র্যান্ড।</p>
+    </header>
+
+    <!-- সূচিপত্র সেকশন -->
+    <nav class="toc-box">
+        <div class="toc-title">📋 প্রাতিষ্ঠানিক সূচিপত্র</div>
+        <div class="toc-grid">
+            <a href="#পরিচিতি" class="toc-link"><span>১.</span> করপোরেট পরিচিতি ও মালিকানা</a>
+            <a href="#অবস্থান" class="toc-link"><span>২.</span> অবস্থান ও বৈশ্বিক নেটওয়ার্ক</a>
+            <a href="#দর্শন" class="toc-link"><span>৩.</span> নামকরণের পটভূমি ও দর্শন</a>
+            <a href="#লক্ষ্য" class="toc-link"><span>৪.</span> ভিশন ও মিশন স্টেটমেন্ট</a>
+            <a href="#বিভাগ" class="toc-link"><span>৫.</span> কার্যকরী কর্মবিভাগসমূহ</a>
+            <a href="#পোর্টফোলিও" class="toc-link"><span>৬.</span> গ্লোবাল প্রজেক্ট পোর্টফোলিও</a>
+            <a href="#প্রযুক্তি" class="toc-link"><span>৭.</span> মেথডোলজি ও প্রযুক্তিগত মানদণ্ড</a>
+            <a href="#সদস্যবৃন্দ" class="toc-link"><span>৮.</span> প্রাতিষ্ঠানিক সদস্যবৃন্দ</a>
+        </div>
+    </nav>
+
+    <!-- মূল কন্টেন্ট -->
+    <div class="column-container">
+        
+        <!-- ১. করপোরেট পরিচিতি ও মালিকানা -->
+        <div id="পরিচিতি" class="luxury-card">
+            <h2 class="section-title">🌐 ১. করপোরেট পরিচিতি ও মালিকানা</h2>
+            <p class="desc">এটি বাংলাদেশে প্রতিষ্ঠিত একটি অগ্রগামী, সম্পূর্ণ স্বাধীন এবং স্বয়ংসম্পূর্ণ আইটি ও সফটওয়্যার সল্যুশন প্রস্তুতকারী প্রতিষ্ঠান। মেধা, গভীর কোডিং প্যাশন এবং শতভাগ সততার সমন্বয়ে গঠিত এই ব্র্যান্ডটি একক দূরদর্শী নেতৃত্বে দেশের তথ্যপ্রযুক্তি খাতে এক নতুন বিপ্লবের সূচনা করেছে।</p>
+            <div class="executive-profile">
+                <div class="avatar-glow">👨‍💻</div>
+                <div>
+                    <h4 style="color: #fff; font-size: 1.1rem;"> KR Khalidur Rahman Akondo </h4>
+                    <p style="color: #d4af37; font-size: 0.85rem; text-transform: uppercase;">প্রতিষ্ঠাতা এবং প্রধান স্থপতি</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ২. অবস্থান ও গ্লোবাল নেটওয়ার্ক -->
+        <div id="অবস্থান" class="luxury-card">
+            <h2 class="section-title">📍 ২. অবস্থান ও বৈশ্বিক নেটওয়ার্ক</h2>
+            <p class="desc" style="margin-bottom: 15px;"><strong style="color: #fff;">প্রধান কার্যালয়:</strong> বাংলাদেশ</p>
+            <p class="desc">আমাদের সেবার ভৌগোলিক পরিধি স্থানীয় সীমানা ছাড়িয়ে গ্লোবাল ক্লাউড নেটওয়ার্ক এবং আন্তর্জাতিক অ্যাপ স্টোরের মাধ্যমে বিশ্বজুড়ে বিস্তৃত। আধুনিক ক্লাউড কম্পিউটিং এবং ডিসট্রিবিউটেড ইনফ্রাস্ট্রাকচারের কল্যাণে এই প্রতিষ্ঠান সম্পূর্ণ ভার্চুয়াল ও রিমোটলি তাদের বৈশ্বিক কার্যক্রম সফলভাবে পরিচালনা করে।</p>
+        </div>
+
+        <!-- ৩. নামকরণের পটভূমি ও দর্শন -->
+        <div id="দর্শন" class="luxury-card">
+            <h2 class="section-title">💡 ৩. নামকরণের পটভূমি ও দর্শন</h2>
+            <p class="desc" style="margin-bottom: 15px;">বর্তমান গ্লোবাল ডিজিটাল বাজারে অসংখ্য ক্ষতিকর ম্যালওয়্যার, স্পাইওয়্যার, ক্লোন অ্যাপ্লিকেশন এবং ডেটা ম্যানিপুলেশনের ঝুঁকি রয়েছে। এই হ্যাকিং ও স্প্যামিংয়ের ভিড়ে ব্যবহারকারীদের শতভাগ খাঁটি, পরিচ্ছন্ন, নিরাপদ এবং কোনো বিরক্তিকর বিজ্ঞাপন ছাড়া একটি প্রিমিয়াম সার্ভিস দেওয়ার কঠোর নৈতিক মানসিকতা থেকেই এই ব্র্যান্ডের জন্ম।</p>
+            <p class="desc">কোডিংয়ের নিখুঁত আর্কিটেকচার ও কাজের সর্বোচ্চ স্বচ্ছতা নিশ্চিত করার এই মূল দর্শনের সাথে যুক্ত হয়েছে এর প্রতিষ্ঠাতা খলিদুর রহমান আকন্দের নামের সিগনেচার রূপ <span style="color: #d4af37; font-weight: 600;">"KR"</span>, যা প্রযুক্তির দুনিয়ায় সততা ও আস্থার এক অনন্য আন্তর্জাতিক প্রতীক।</p>
+        </div>
+
+        <!-- ৪. ভিশন ও মিশন স্টেটমেন্ট -->
+        <div id="লক্ষ্য" class="luxury-card">
+            <h2 class="section-title">🎯 ৪. ভিশন ও মিশন স্টেটমেন্ট</h2>
+            <p class="desc" style="margin-bottom: 15px;"><strong style="color: #fff;">মিশন:</strong> তথ্যপ্রযুক্তির অত্যন্ত জটিল গাণিতিক ও ব্যাকএন্ড গোলকধাঁধাকে সাধারণ মানুষের কাছে সহজ, সাবলীল, প্রাঞ্জল এবং দৈনিক ব্যবহার উপযোগী এলিট ডিজিটাল টুলে রূপান্তর করা।</p>
+            <p class="desc"><strong style="color: #fff;">ভিশন:</strong> কৃত্রিম বুদ্ধিমত্তা ও নেক্সট-জেনারেশন সাইবার সিকিউরিটি ফ্রেমওয়ার্কের সঠিক ব্যবহারের মাধ্যমে প্রতিটি স্মার্টফোনে একটি সুরক্ষিত ও দেশীয় প্রযুক্তির ছোঁয়া পৌঁছে দেওয়া এবং আন্তর্জাতিক বাজারে শীর্ষস্থানে নেতৃত্ব দেওয়া।</p>
+        </div>
+
+        <!-- ৫. কার্যকরী কর্মবিভাগসমূহ -->
+        <div id="বিভাগ" class="luxury-card">
+            <h2 class="section-title">🗂️ ৫. কার্যকরী কর্মবিভাগসমূহ</h2>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">
+                        <strong>এডু-টেক এবং ইউটিলিটি অ্যাপ্লিকেশনস</strong>
+                        <span>শিক্ষামূলক এবং দৈনন্দিন ব্যবহারিক হিসাব-নিকাশ সহজ করার জন্য বিশেষায়িত অ্যাপ্লিকেশন শাখা।</span>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-text">
+                        <strong>স্মার্ট অটোমেশন এবং টেলিগ্রাম বটস</strong>
+                        <span>ব্যবসা এবং ডেটা প্রসেসিং ব্যবস্থাকে সম্পূর্ণ স্বয়ংক্রিয় করার লক্ষ্যে কাস্টম বট শাখা।</span>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-text">
+                        <strong>ক্লাউড ডাটাবেজ এবং সাইবার সিকিউরিটি</strong>
+                        <span>ব্যবহারকারীর ডেটার অভেদ্য সুরক্ষা, সার্ভার ফায়ারওয়্যাল এবং সোর্স কোড প্রোটেকশন শাখা।</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ৬. গ্লোবাল প্রজেক্ট পোর্টফোলিও -->
+        <div id="পোর্টফোলিও" class="luxury-card">
+            <h2 class="section-title">⚙️ ৬. গ্লোবাল প্রজেক্ট পোর্টফোলিও</h2>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div style="font-size: 1.5rem; margin-top: 3px;">📐</div>
+                    <div class="feature-text">
+                        <strong>কেআর ক্যালকুলেটর ক এবং খ</strong>
+                        <span>ক্যালকুলেটর 'ক' অনেক লাইনের সোর্স কোডের সমন্বয়ে তৈরি এবং আন্তর্জাতিক স্টোরে সার্টিফাইড, যা গাণিতিক সমস্যার নিখুঁত সমাধান দেয়। ক্যালকুলেটর 'খ' ডিজিটাল জমি পরিমাপ পদ্ধতি নিয়ে তৈরি হচ্ছে।</span>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div style="font-size: 1.5rem; margin-top: 3px;">🤖</div>
+                    <div class="feature-text">
+                        <strong>কেআর টাকা ইনকাম বট</strong>
+                        <span>রিয়েল-টাইম মেসেজিং বট, যা সম্পূর্ণ স্বয়ংক্রিয় কাস্টম রেফারেল, দৈনিক টাস্ক এবং ডেটা প্রসেসিং মেকানিজমে সার্ভিস দেয়।</span>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div style="font-size: 1.5rem; margin-top: 3px;">🌐</div>
+                    <div class="feature-text">
+                        <strong>ডাইনামিক ক্লাউড আর্কিটেকচার</strong>
+                        <span>ফ্রন্টএন্ডের সাথে হাই-পারফরম্যান্স ক্লাউড ডাটাবেজের নিখুঁত ফিউশন, যা রিয়েল-টাইম রেসপন্স নিশ্চিত করে।</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ৭. মেথডোলজি ও প্রযুক্তিগত মানদণ্ড -->
+        <div id="প্রযুক্তি" class="luxury-card">
+            <h2 class="section-title">🛠️ ৭. মেথডোলজি ও প্রযুক্তিগত মানদণ্ড</h2>
+            <div class="tech-grid">
+                <div class="tech-box">
+                    <h5>📲 মোবাইল টার্মিনাল ডেভেলপমেন্ট</h5>
+                    <p>মোবাইল-বেসড লিনাক্স টার্মিনাল এনভায়রনমেন্ট ব্যবহার করে অ্যাডভান্সড স্ক্রিপ্টিং করা হয়।</p>
+                </div>
+                <div class="tech-box">
+                    <h5>🛡️ এন্টারপ্রাইজ সিকিউরিটি</h5>
+                    <p>অ্যাডভান্সড সিকিউরিটি রুলস এবং সোর্স কোড মিনিফিকেশন প্রযুক্তির সাহায্যে সর্বোচ্চ ডেটা নিরাপত্তা নিশ্চিত করা হয়।</p>
+                </div>
+                <div class="tech-box">
+                    <h5>🔄 গিটহাব সিঙ্ক</h5>
+                    <p>গিটহাবের মাধ্যমে অ্যাপ্লিকেশনের ইন্টারনাল পলিসি ও নোটিশ রিয়েল-টাইমে সিঙ্ক এবং আপডেট করা হয়।</p>
+                </div>
+                <div class="tech-box">
+                    <h5>🇧🇩 খাঁটি ইউজার এক্সপেরিয়েন্স</h5>
+                    <p>সিস্টেম রিপোর্ট এবং ইন্টারফেসে কৃত্রিম বা অস্পষ্ট শব্দ বর্জন করে সম্পূর্ণ নির্ভুল ও মার্জিত মাতৃভাষা ব্যবহার করা হয়।</p>
+                </div>
+            </div>
+        </div>
+<!-- ৮. সদস্যবৃন্দ -->
+<div id="সদস্যবৃন্দ" class="members-section">
+    <h2 class="section-title">👥 ৮. প্রাতিষ্ঠানিক সদস্যবৃন্দ</h2>
+
+    <p class="desc">
+        আমাদের এই বিশেষ প্রজেক্টে অংশগ্রহণকারী দক্ষ ও পরিশ্রমী ছাত্র বা মেম্বারদের তালিকা নিচে দেওয়া হলো:
+    </p>
+
+    <div class="member-grid">
+
+        <div class="member-box">
+            <div class="member-tag">ডেভেলপার</div>
+            <img src="https://i.ibb.co/5g22Pt0C/1780564411567.jpg" class="member-img">
+            <div class="member-info">
+                <h4>KR Khalidur Rahman Akondo</h4>
+                <p>মোঃ রাসেল আকন্দ</p>
+            </div>
+        </div>
+
+        <div class="member-box">
+            <div class="member-tag">অ্যাডমিন</div>
+            <img src="https://i.ibb.co/B5wsNccW/IMG-20260604-WA0000.jpg" class="member-img">
+            <div class="member-info">
+                <h4>TF তোফায়েল আহমাদ</h4>
+                <p>মোঃ আব্দুল গফুর</p>
+            </div>
+        </div>
+
+        <div class="member-box">
+            <div class="member-tag">পরামর্শদাতা</div>
+            <img src="https://i.ibb.co/prwvVX9F/IMG-870.png" class="member-img">
+            <div class="member-info">
+                <h4>মোঃ মাসউদুর রহমান</h4>
+                <p>মোঃ আবু মাসউদ</p>
+            </div>
+        </div>
+
+        <div class="member-box">
+            <div class="member-tag">পিন জেনারেটর</div>
+            <img src="https://i.ibb.co/PGbnWnF6/IMG-016.jpg" class="member-img">
+            <div class="member-info">
+                <h4>মোঃ সিয়াম মাহমুদ</h4>
+                <p>মোঃ আসাদুজ্জামান</p>
+            </div>
+        </div>
+
+        <div class="member-box">
+            <div class="member-tag">বানান সম্পাদক</div>
+            <img src="https://i.ibb.co/4R2Pq2Ms/IMG-677.png" class="member-img">
+            <div class="member-info">
+                <h4>মোঃ রাশেদুজ্জামান রাশেদ</h4>
+                <p>মোঃ আবু বকর সিদ্দিক</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+        <div class="member-box" style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2);">
+            <div class="member-tag" style="background: #d4af37; color: black; padding: 5px 10px; bord
+    <!-- যোগাযোগ বাটন সেকশন -->
+    <div class="contact-section">
+        <a href="mailto:krpureapplication@gmail.com" class="email-btn">
+            📧 আমাদের সাথে যোগাযোগ করুন
+        </a>
+    </div>
+
+    <!-- ফুটার -->
+    <footer>
+        <p>© ২০২৬ <span class="glow-text">KR pure application limited Bangladesh </span>। সর্বস্বত্ব সংরক্ষিত।</p>
+        <p style="font-size: 0.85rem; margin-top: 8px; color: rgba(255,255,255,0.3);">বিশ্বব্যাপী স্থপতি KR Khalidur Rahman Akondo </p>
+    </footer>
+</div>
+
+<script>
+    // ফিরে যান বাটনের জাভাস্ক্রিপ্ট ফাংশন
+    function goToDashboard() {
+        window.location.href = 'ড্যাশবোর্ড.html';
+    }
+</script>
+
+</body>
+</html>
