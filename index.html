@@ -210,15 +210,14 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
 </head>
 <body>
 
-
 <!-- STUDENT INFO MODAL -->
 <div class="custom-modal-overlay" id="studentInfoModal">
     <div class="custom-modal-box">
         <div style="font-size:45px; margin-bottom: 5px;">🧑‍🎓</div>
         <h2 style="color: #1a1a1a; margin-bottom: 5px; font-weight:800; font-size: 22px;">ছাত্র পরিচিতি</h2>
         <p style="color: #666; font-size: 13px; margin-bottom: 25px;">দয়া করে নিচের যেকোনো একটি বিভাগ নির্বাচন করুন</p>
-        <button class="custom-modal-btn modal-btn-short" onclick="window.location.href='সকল ছাত্রের তালিকা.html'">সংক্ষিপ্ত পরিচিতি</button>
-        <button class="custom-modal-btn modal-btn-detail" onclick="window.location.href='সকল ছাত্রের তথ্য.html'">বিস্তারিত পরিচিতি</button>
+        <button class="custom-modal-btn modal-btn-short" onclick="navigateToSubPage('সকল ছাত্রের তালিকা.html')">সংক্ষিপ্ত পরিচিতি</button>
+        <button class="custom-modal-btn modal-btn-detail" onclick="navigateToSubPage('সকল ছাত্রের তথ্য.html')">বিস্তারিত পরিচিতি</button>
         <button class="custom-modal-btn modal-btn-cancel" onclick="document.getElementById('studentInfoModal').classList.remove('active')">বাতিল করুন</button>
     </div>
 </div>
@@ -247,7 +246,7 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
             <img src="https://i.ibb.co/kVbLqMqW/IMG-165.png" alt="Logo" style="width: 84px; height: auto;">
         </div>
         <h1>দারুল উলুম ধনবাড়ী</h1><h3>পাইটকা, ধনবাড়ী, টাঙ্গাইল</h3><br>
-        <p><h4>নাহবেমীর</h4>জামাতের শিক্ষার্থীদের জন্য সংরক্ষিত এই পোর্টাল।<br>ব্যক্তিগত তথ্যের গোপনীয়তা ও সুরক্ষার খাতিরে শুধুমাত্র অনুমোদিত প্রবেশাধিকার কার্যকর।</p>
+        <p><h4>নাহবেমীর</h4>জামাতের শিক্ষার্থীদের জন্য সংরক্ষিত এই পোর্টাল।<br>ব্যক্তিগত তথ্যের গোপনীয়তা ও সুরক্ষার খাتیরে শুধুমাত্র অনুমোদিত প্রবেশাধিকার কার্যকর।</p>
     </div>
     <div class="login-card">
         <div class="card-title"><h2>স্টুডেন্ট লগইন 👋</h2><p>আপনার সঠিক তথ্য নির্বাচন করুন</p></div>
@@ -264,7 +263,7 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
 <div id="popupSystem" class="popup-system hidden">
     <div class="popup-box">
         <h3>নিরাপত্তা সতর্কতা</h3>
-        <p>অন্য কোনো শিক্ষার্থীর তথ্য ব্যবহার করে প্রবেশ করলে আপনার প্রবেশাধিকার সীমাবদ্ধ হতে পারে।<br><br>আপনি কি লগইন চালিয়ে যেতে চান?</p>
+        <p>অন্য কোনো শিক্ষার্থীর তথ্য ব্যবহার করে প্রবেশ করলে আপনার প্রবেশাধিকার সীমাবদ্ধ হতে পারে。<br><br>আপনি কি লগইন চালিয়ে যেতে চান?</p>
         <div class="popup-buttons">
             <button class="edit-btn" onclick="closePopup()">এডিট করুন</button>
             <button class="confirm-btn" onclick="startProfileLoading()">কনফার্ম লগইন</button>
@@ -302,7 +301,6 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
             <div class="info-row"><div class="info-title">অভিভাবক</div><div class="info-value" id="fatherNameProfile">...</div></div>
             <div class="info-row"><div class="info-title">ইমেইল</div><div class="info-value" id="emailProfile">...</div></div>
             <div class="info-row"><div class="info-title">মোবাইল</div><div class="info-value" id="mobileProfile">...</div></div>
-            <!-- ★ পিন কোড দেখানোর জন্য নতুন রো -->
             <div class="info-row"><div class="info-title">পিন কোড</div><div class="info-value" id="pinProfile">...</div></div>
         </div>
 
@@ -380,69 +378,67 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
             <p>শিক্ষার্থীদের নাম ও বিস্তারিত তথ্য</p>
             <div class="open-btn">বিস্তারিত →</div>
         </div>
-        <div class="ad-card card-blue" onclick="window.location.href='উস্তাদদের মোবাইল নাম্বার.html'">
+        <div class="ad-card card-blue" onclick="navigateToSubPage('উস্তাদদের মোবাইল নাম্বার.html')">
             <div class="ad-top-icon">👳</div>
             <h3>সম্মানিত শিক্ষকবৃন্দ</h3>
             <p>উস্তাদদের নাম ও মোবাইল নাম্বার</p>
             <div class="open-btn">দেখুন →</div>
         </div>
-        <div class="ad-card card-green" onclick="window.location.href='বানী.html'">
+        <div class="ad-card card-green" onclick="navigateToSubPage('বানী.html')">
             <div class="ad-top-icon">📚✨🕌</div>
             <h3>উস্তাদদের বাণী</h3>
             <p>উস্তাদদের মুখ থেকে সংগ্রহ করা হয়েছে</p>
             <div class="open-btn">খুলুন →</div>
         </div>
-        <div class="ad-card card-pink" onclick="window.location.href='অ্যালবাম .html'">
+        <div class="ad-card card-pink" onclick="navigateToSubPage('অ্যালবাম .html')">
             <div class="ad-top-icon">🖼️</div>
             <h3>ছবি গ্যালারি</h3>
             <p>নতুন ছবি ও স্মৃতি</p>
             <div class="open-btn">দেখুন →</div>
         </div>
-        <div class="ad-card card-pink" onclick="window.location.href='পরিচিতি .html'">
+        <div class="ad-card card-pink" onclick="navigateToSubPage('পরিচিতি .html')">
             <div class="ad-top-icon">🕌</div>
             <h3>মাদ্রাসার পরিচিতি</h3>
             <p>সংক্ষিপ্ত বর্ণনা</p>
             <div class="open-btn">খুলুন →</div>
         </div>
-        <div class="ad-card card-blue" onclick="window.location.href='লক্ষ্য ও উদ্দেশ্য .html'">
+        <div class="ad-card card-blue" onclick="navigateToSubPage('লক্ষ্য ও উদ্দেশ্য .html')">
             <div class="ad-top-icon">🎯</div>
             <h3>লক্ষ্য ও উদ্দেশ্য</h3>
             <p>দ্বীনি শিক্ষা ও আদর্শ</p>
             <div class="open-btn">খুলুন →</div>
         </div>
 
-        <div class="ad-card card-orange" onclick="window.location.href='ফায়দা.html'">
+        <div class="ad-card card-orange" onclick="navigateToSubPage('ফায়দা.html')">
             <div class="ad-top-icon">🎉🕌🎉</div>
             <h3>এই অ্যাপ এর উপকারিতা</h3>
             <p>এই অ্যাপ এর ফায়দা সম্পর্কে জানতে এখানে ক্লিক করুন </p>
             <div class="open-btn">Open</div>
         </div>
-        <div class="ad-card card-green" onclick="window.location.href='মলদর্য'">
+        <div class="ad-card card-green" onclick="navigateToSubPage('মলদর্য')">
             <div class="ad-top-icon">✨🕌</div>
             <h3>গজল</h3>
             <p>আবনায়ে দারুল উলুম এর গছল পড়তে ক্লিক করুন</p>
             <div class="open-btn">খুলুন</div>
         </div>
 
-<div class="ad-card card-blue" onclick="window.location.href='সদস্যবৃন্দ .html'">
-    <div class="ad-top-icon">
-        <img src="https://i.ibb.co/tTws499y/image.jpg" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-    </div>
-    <h3>KR pure application </h3>
-    <p>সদস্যবৃন্দ</p>
-    <div class="open-btn">পড়ুন →</div>
-</div>
+        <div class="ad-card card-blue" onclick="navigateToSubPage('সদস্যবৃন্দ .html')">
+            <div class="ad-top-icon">
+                <img src="https://i.ibb.co/tTws499y/image.jpg" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <h3>KR pure application </h3>
+            <p>সদস্যবৃন্দ</p>
+            <div class="open-btn">পড়ুন →</div>
+        </div>
 
-<div class="ad-card card-pink" onclick="window.location.href='কাজ বন্ধ.html'">
-    <div class="ad-top-icon">
-        <img src="https://i.ibb.co/FLpZQWYL/image.png" style="width: 40px; height: 40px; object-fit: cover; display: block; margin: 0 auto;">
-    </div>
-    <h3>অন্যান্য অ্যাপস</h3>
-    <p>আমাদের অন্যান্য অ্যাপস ডাউনলোড করুন </p>
-    <div class="open-btn">খুলুন →</div>
-</div>
-
-
+        <div class="ad-card card-pink" onclick="navigateToSubPage('কাজ বন্ধ.html')">
+            <div class="ad-top-icon">
+                <img src="https://i.ibb.co/FLpZQWYL/image.png" style="width: 40px; height: 40px; object-fit: cover; display: block; margin: 0 auto;">
+            </div>
+            <h3>অন্যান্য অ্যাপস</h3>
+            <p>আমাদের অন্যান্য অ্যাপস ডাউনলোড করুন </p>
+            <div class="open-btn">খুলুন →</div>
+        </div>
     </div>
 </div>
 
@@ -483,6 +479,12 @@ if (closeBtn) closeBtn.onclick = closeMenu;
 if (menuOverlay) menuOverlay.onclick = closeMenu;
 function closeMenu(){ if(sideMenu) sideMenu.classList.remove("active"); if(menuOverlay) menuOverlay.classList.remove("active"); }
 
+// Sub-page navigation helper so browser back brings them back to dashboard
+function navigateToSubPage(url) {
+    sessionStorage.setItem("came_from_dashboard", "true");
+    window.location.href = url;
+}
+
 // SPA Navigation
 function hideAllViews() {
     document.getElementById("loginView").style.display = "none";
@@ -495,9 +497,7 @@ function hideAllViews() {
 }
 
 function openDashboardSPA() {
-    // ★ ড্যাশবোর্ডে যাওয়ার সময় current_view সেভ করা
-    localStorage.setItem("current_view", "dashboard");
-
+    sessionStorage.setItem("current_view", "dashboard");
     hideAllViews();
     let rootNode = document.documentElement;
     rootNode.style.setProperty('scroll-behavior', 'auto', 'important'); 
@@ -516,9 +516,7 @@ function openDashboardSPA() {
 }
 
 function goBackToProfile() {
-    // ★ প্রোফাইলে ফেরার সময় current_view আপডেট
-    localStorage.setItem("current_view", "profile");
-
+    sessionStorage.removeItem("current_view");
     let rootNode = document.documentElement;
     rootNode.style.setProperty('scroll-behavior', 'auto', 'important'); 
     document.body.style.setProperty('scroll-behavior', 'auto', 'important');
@@ -561,28 +559,35 @@ document.addEventListener("DOMContentLoaded", () => {
     let storedName = localStorage.getItem("logged_student_name");
     let stdFather = localStorage.getItem("logged_student_father");
     let stdPin = localStorage.getItem("logged_student_pin");
-    let currentView = localStorage.getItem("current_view") || "profile";
-
+    
     if (isUserLog === "true" && storedName && storedName.trim() !== "") {
         hideAllViews();
 
-        // ★ আগের ভিউ অনুযায়ী খোলা
-        if (currentView === "dashboard") {
+        // Check if user came back from sub-pages
+        let cameFromDash = sessionStorage.getItem("came_from_dashboard");
+        let activeView = sessionStorage.getItem("current_view");
+
+        if (cameFromDash === "true" || activeView === "dashboard") {
+            sessionStorage.removeItem("came_from_dashboard");
+            sessionStorage.setItem("current_view", "dashboard");
             document.getElementById("dashboardView").classList.remove("hidden");
             document.getElementById("dashboardView").style.display = "block";
             document.body.style.background = "#ececf3";
         } else {
+            // Default on fresh open or refresh: show Profile Page
+            sessionStorage.removeItem("current_view");
             document.getElementById("profileView").classList.remove("hidden");
             document.getElementById("profileView").style.display = "block";
             document.body.style.background = "#eef2f7";
         }
+
         window.scrollTo({ top: 0, behavior: "instant" });
         window.loadAllDynamicsUsingMemoryStateData(storedName, stdFather, stdPin);
 
-        // ★ প্রতি ৮ সেকেন্ডে ব্যান স্ট্যাটাস চেক
         startBanChecker(storedName, stdFather, stdPin);
     } else {
         localStorage.clear();
+        sessionStorage.clear();
         hideAllViews();
         document.getElementById("loginView").classList.remove("hidden");
         document.getElementById("loginView").style.display = "block";
@@ -640,7 +645,6 @@ window.startProfileLoading = async function(){
             closePopup();
             const data = snap.docs[0].data();
 
-            // ★ BAN CHECK
             if (data.isManual === true) {
                 localStorage.setItem("kr_mutawassitah_logged_in", "true");
                 localStorage.setItem("logged_student_name", s);
@@ -654,7 +658,7 @@ window.startProfileLoading = async function(){
             localStorage.setItem("logged_student_name", s);
             localStorage.setItem("logged_student_father", f);
             localStorage.setItem("logged_student_pin", pin);
-            localStorage.setItem("current_view", "profile"); // নতুন লগইনে প্রোফাইল দিয়ে শুরু
+            sessionStorage.removeItem("current_view");
             
             document.getElementById("loginView").style.display = "none";
             const loadingScreen = document.getElementById("loadingPage");
@@ -674,7 +678,6 @@ window.startProfileLoading = async function(){
                 document.getElementById("profileView").style.display = "block";
                 window.loadAllDynamicsUsingMemoryStateData(s, f, pin);
 
-                // ★ লগইন সফল হলে চেকার চালু
                 startBanChecker(s, f, pin);
             }, 5500);
         } else { alert("ব্যর্থ! প্রদত্ত তথ্যগুলো সঠিক নয়।"); closePopup(); }
@@ -691,7 +694,6 @@ window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, 
         if (!snapshot.empty) {
             const data = snapshot.docs[0].data();
 
-            // ★ BAN CHECK
             if (data.isManual === true) {
                 window.location.href = "ban_page.html";
                 return;
@@ -702,7 +704,6 @@ window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, 
             if (document.getElementById("fatherNameProfile")) document.getElementById("fatherNameProfile").innerText = data.father || "পাওয়া যায়নি";
             if (document.getElementById("classBadge")) document.getElementById("classBadge").innerHTML = (data.title || "মুতাওয়াসসিতাহ") + " &bull; ছাত্র";
             
-            // ★ পিন কোড দেখানো
             if (document.getElementById("pinProfile")) document.getElementById("pinProfile").innerText = data.pin || stdPin || "তথ্য নেই";
 
             let getMailStr = "";
@@ -736,7 +737,6 @@ window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, 
     }
 }
 
-// ★★★ প্রতি ৮ সেকেন্ডে Firebase চেক করে isManual true হলে ban_page.html এ পাঠাবে ★★★
 function startBanChecker(name, father, pin) {
     if (window.banCheckerInterval) clearInterval(window.banCheckerInterval);
 
@@ -759,7 +759,7 @@ function startBanChecker(name, father, pin) {
         } catch (e) {
             console.error("Ban checker error:", e);
         }
-    }, 8000); // ৮ সেকেন্ড পর পর চেক
+    }, 8000);
 }
 </script>
 </body>
