@@ -2,414 +2,835 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ছাত্র এলবাম</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;700&family=Poppins:wght=300;400;500;600;700&family=Teko:wght=500;600&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>সিম্পল অ্যালবাম ও পারভেজ ভেরিফিকেশন প্যানেল</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&family=Teko:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body{
-    background:
-    linear-gradient(135deg,#020617,#0f172a,#111827,#1e293b);
-
-    min-height:100vh;
-
-    font-family:'Poppins',sans-serif;
-
-    padding:20px;
-
-    overflow-x:hidden;
-}
-
-/* Main Container */
-
-.container{
-    width:100%;
-    max-width:480px;
-    margin:auto;
-}
-
-/* TOP ACTION BAR FOR BACK BUTTON */
-.top-action-bar {
+html, body {
+    margin: 0;
+    padding: 0;
     width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
+    height: 100%;
+    overflow: hidden !important;
+    background: #020617;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-/* CAPSULE BACK BUTTON (DARK PREMIUN GLASS STYLE) */
-.fixed-back-btn {
-    background: rgba(255, 255, 255, 0.03);
-    color: #f8fafc;
-    padding: 8px 22px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 30px;
-    outline: none;
-    cursor: pointer;
+.main-scroll-wrap {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: linear-gradient(135deg,#020617,#0f172a,#111827,#1e293b);
+    padding: 20px;
+    scrollbar-width: none !important;
+}
+
+.main-scroll-wrap::-webkit-scrollbar {
+    display: none !important;
+}
+
+* { box-sizing: border-box; }
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    padding-bottom: 40px;
+}
+
+.top-banner {
+    position: relative;
+    height: 260px;
+    border-radius: 35px;
+    overflow: hidden;
+    margin-bottom: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+}
+
+.top-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.55);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.overlay h1 {
+    font-size: 34px;
+    font-family: 'Cinzel', serif;
+    color: white;
+    margin-bottom: 8px;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    letter-spacing: 2px;
+}
+
+.overlay p {
+    color: #e2e8f0;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.album-title {
+    position: relative;
+    margin-bottom: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 28px;
+    padding: 24px 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.album-title h2 {
+    font-size: 44px;
+    color: white;
+    letter-spacing: 5px;
+    font-family: 'Teko', sans-serif;
+    line-height: 1;
+    margin: 0;
+}
+
+.album-title h3 {
+    color: #cbd5e1;
+    margin: 8px 0 0 0;
+    font-size: 15px;
+    letter-spacing: 4px;
+}
+
+.student-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card {
+    border-radius: 28px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+}
+
+.img-container {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.img-container img {
+    width: 100%;
+    max-height: 380px;
+    object-fit: contain;
+    border-radius: 16px;
+    display: block;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(15, 23, 42, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.action-buttons {
     display: flex;
     align-items: center;
-    gap: 8px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 10px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
     transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
 }
 
-.fixed-back-btn:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-    transform: translateX(-3px);
+.action-btn:active {
+    transform: scale(0.95);
 }
 
-/* Madrasa Banner */
-
-.top-banner{
-
-    position:relative;
-
-    height:260px;
-
-    border-radius:35px;
-
-    overflow:hidden;
-
-    margin-bottom:22px;
-
-    box-shadow:
-    0 15px 40px rgba(0,0,0,0.45);
-
-    border:
-    1px solid rgba(255,255,255,0.08);
+.action-btn.liked {
+    background: rgba(239, 68, 68, 0.25) !important;
+    border-color: rgba(239, 68, 68, 0.6) !important;
+    color: #f87171 !important;
 }
 
-.top-banner img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    filter:brightness(0.55);
+.img-number-btn {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+    font-weight: 600;
 }
 
-.overlay{
-    position:absolute;
-    inset:0;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    padding:20px;
+.comment-toggle-btn {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #c084fc;
 }
 
-.overlay h1{
-
-    font-size:34px;
-
-    font-family:'Cinzel',serif;
-
-    color:white;
-
-    margin-bottom:8px;
-
-    text-shadow:0 5px 15px rgba(0,0,0,0.6);
-
-    letter-spacing:2px;
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
 }
 
-.overlay p{
-
-    color:#e2e8f0;
-
-    font-size:14px;
-
-    line-height:1.7;
+.comment-input-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
-/* Album Title */
-
-.album-title{
-
-    position:relative;
-
-    margin-bottom:28px;
-
-    background:
-    linear-gradient(
-    135deg,
-    rgba(255,255,255,0.08),
-    rgba(255,255,255,0.03)
-    );
-
-    border:
-    1px solid rgba(255,255,255,0.08);
-
-    border-radius:28px;
-
-    padding:24px 20px;
-
-    text-align:center;
-
-    overflow:hidden;
-
-    backdrop-filter:blur(10px);
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,0.35);
+.comment-input-box input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: white;
+    font-size: 12px;
+    outline: none;
 }
 
-.album-title::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:180px;
-    height:180px;
-
-    background:
-    rgba(34,197,94,0.15);
-
-    border-radius:50%;
-
-    top:-70px;
-    left:-60px;
+.comment-input-box button {
+    background: #38bdf8;
+    color: #0f172a;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
 }
 
-.album-title::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:180px;
-    height:180px;
-
-    background:
-    rgba(59,130,246,0.14);
-
-    border-radius:50%;
-
-    bottom:-80px;
-    right:-70px;
+.comment-input-box button:disabled {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    cursor: not-allowed;
 }
 
-.album-title h2{
-
-    position:relative;
-
-    z-index:2;
-
-    font-size:44px;
-
-    color:white;
-
-    letter-spacing:5px;
-
-    font-family:'Teko',sans-serif;
-
-    line-height:1;
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 250px;
+    overflow-y: auto;
 }
 
-.album-title h3{
-
-    position:relative;
-
-    z-index:2;
-
-    color:#cbd5e1;
-
-    margin-top:8px;
-
-    font-size:15px;
-
-    letter-spacing:4px;
+.fb-comment-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
 }
 
-/* Student Cards */
-
-.student-list{
-    display:flex;
-    flex-direction:column;
-    gap:24px;
+.fb-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #38bdf8;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
 }
 
-.card{
-
-    position:relative;
-
-    border-radius:32px;
-
-    overflow:hidden;
-
-    background:
-    rgba(255,255,255,0.05);
-
-    border:
-    1px solid rgba(255,255,255,0.08);
-
-    backdrop-filter:blur(10px);
-
-    box-shadow:
-    0 12px 35px rgba(0,0,0,0.45);
-
-    transition:0.4s;
+.fb-comment-bubble {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 8px 14px;
+    max-width: 75%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    word-break: break-word;
 }
 
-.card:hover{
-    transform:translateY(-8px);
+.fb-comment-user {
+    font-size: 11px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 2px;
 }
 
-.card img{
-    width:100%;
-    height:520px;
-    object-fit:cover;
-    display:block;
+.fb-comment-text {
+    font-size: 12px;
+    color: #e2e8f0;
 }
 
-/* Glow */
-
-.card::before{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-    linear-gradient(
-    135deg,
-    rgba(168,85,247,0.15),
-    rgba(59,130,246,0.10),
-    rgba(34,197,94,0.12)
-    );
-
-    opacity:0;
-
-    transition:0.4s;
+.outside-comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 4px;
 }
 
-.card:hover::before{
-    opacity:1;
+.edit-comment-btn, .delete-comment-btn {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
 }
 
-/* Responsive */
-
-@media(max-width:600px){
-
-    .top-banner{
-        height:220px;
-    }
-
-    .overlay h1{
-        font-size:26px;
-    }
-
-    .album-title h2{
-        font-size:36px;
-    }
-
-    .card img{
-        height:430px;
-    }
-
+.edit-comment-btn {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
 }
 
+.delete-comment-btn {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+.pin-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.pin-card {
+    background: #0f172a;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.pin-card h4 {
+    color: white;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.pin-card p {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+.pin-card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 4px;
+    outline: none;
+    margin-bottom: 16px;
+}
+
+.pin-modal-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.pin-modal-btns button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.pin-submit-btn { background: #38bdf8; color: #0f172a; }
+.pin-cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; }
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="main-scroll-wrap">
+    <div class="container">
+        <div class="top-banner">
+            <img id="bannerImage" src="" alt="Banner">
+            <div class="overlay">
+                <h1>DARUL ULUM</h1>
+                <p>International Islamic Madrasa<br>Paitka • Dhonbari • Tangail</p>
+            </div>
+        </div>
 
-    <!-- TOP ACTION BAR WITH CAPSULE BACK BUTTON -->
-    <div class="top-action-bar">
+        <div class="album-title">
+            <h2>STUDENT</h2>
+            <h3>ALBUM COLLECTION</h3>
+        </div>
 
+        <div class="student-list" id="studentListContainer">
+        </div>
     </div>
-
-    <!-- Madrasa Banner -->
-
-    <div class="top-banner">
-
-        <img src="https://images.unsplash.com/photo-1512632578888-169bbbc64f33?q=80&w=1200&auto=format&fit=crop">
-
-        <div class="overlay">
-            <h1>DARUL ULUM</h1>
-            <p>
-                International Islamic Madrasa<br>
-                Paitka • Dhonbari • Tangail
-            </p>
-        </div>
-
-    </div>
-
-    <!-- Album Design -->
-
-    <div class="album-title">
-
-        <h2>STUDENT</h2>
-        <h3>ALBUM COLLECTION</h3>
-
-    </div>
-
-    <!-- Student Images -->
-
-    <div class="student-list">
- 
-        <div class="card">
-            <img src="https://i.ibb.co/p66skM94/1779824565367.jpg">
-        </div>
-
-       <div class="card">
-            <img src="https://i.ibb.co/q3FT5SyT/1779824570321.jpg">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/prwvVX9F/IMG-870.png">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/pr0Xg28p/1779824572769.jpg">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/RTdjz8Ld/1779824537757.jpg">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/3m5KG6r2/1780565392594.jpg">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/vCLNwf2D/1779824669261.jpg">
-        </div>
-
-        <div class="card">
-            <img src="https://i.ibb.co/JRBtv2w9/IMG-356.png">
-        </div>
-
-    </div>
-
 </div>
 
-<script>
-    // ফিরে যান বাটনের ডিরেক্টরি ফাংশন
-    function goToDashboard() {
-        window.location.href = 'ড্যাশবোর্ড.html';
-    }
-</script>
+<div class="pin-modal" id="pinModal">
+    <div class="pin-card">
+        <h4><i class="fa-solid fa-lock"></i> পিন ভেরিফিকেশন</h4>
+        <p id="pinModalTitle">আপনার স্টুডেন্ট পিনটি দিন</p>
+        <input type="password" id="studentPinInput" placeholder="PIN" maxlength="6">
+        <div class="pin-modal-btns">
+            <button class="pin-cancel-btn" id="cancelPinBtn">বাতিল</button>
+            <button class="pin-submit-btn" id="submitPinBtn">যাচাই করুন</button>
+        </div>
+    </div>
+</div>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, updateDoc, increment, collection, setDoc, getDocs, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBV1PQDsT5vRxjT_nm72uttgkZYwK0tjfE",
+    authDomain: "abnaye-darul-uloom.firebaseapp.com",
+    databaseURL: "https://abnaye-darul-uloom-default-rtdb.firebaseio.com",
+    projectId: "abnaye-darul-uloom",
+    storageBucket: "abnaye-darul-uloom.firebasestorage.app",
+    messagingSenderId: "973857113265",
+    appId: "1:973857113265:web:d04e29b26b442f4d0e0e90",
+    measurementId: "G-JF6778L7TL"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let activeCommentData = null;
+  let activeLikeData = null;
+  let editingCommentId = null; 
+
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('copy', event => event.preventDefault());
+  document.addEventListener('selectstart', event => event.preventDefault());
+
+  async function loadBannerFromFirebase() {
+      try {
+          const bannerDocRef = doc(db, "student_album", "banner");
+          const bannerSnap = await getDoc(bannerDocRef);
+          if (bannerSnap.exists()) {
+              const bannerData = bannerSnap.data();
+              const bannerUrl = bannerData.banner_img || bannerData.url || bannerData.img || Object.values(bannerData)[0];
+              if (bannerUrl) document.getElementById('bannerImage').src = bannerUrl;
+          }
+      } catch (err) { console.error(err); }
+  }
+
+  function triggerLikeProcess(numOnly, btnElement) {
+      activeLikeData = { numOnly, btnElement };
+      activeCommentData = null;
+      document.getElementById('studentPinInput').value = '';
+      document.getElementById('pinModalTitle').innerText = "লাইক দিতে আপনার স্টুডেন্ট পিনটি দিন";
+      document.getElementById('pinModal').style.display = 'flex';
+  }
+
+  async function loadComments(numOnly, listContainer) {
+      try {
+          listContainer.innerHTML = '<span style="font-size:11px; color:#888;">কমেন্ট লোড হচ্ছে...</span>';
+          
+          const commentsSubColRef = collection(db, "student_album", "sample_student", `ছাত্রদের_কমেন্ট_${numOnly}`);
+          const querySnapshot = await getDocs(commentsSubColRef);
+          listContainer.innerHTML = '';
+
+          // কমেন্ট সংখ্যা আপডেট করা
+          const commentCountSpan = document.getElementById(`comment-count-${numOnly}`);
+          if(commentCountSpan) commentCountSpan.innerText = querySnapshot.size;
+
+          if(querySnapshot.empty) {
+              listContainer.innerHTML = '<span style="font-size:11px; color:#666;">কোনো কমেন্ট নেই।</span>';
+              return;
+          }
+
+          const currentTime = Date.now();
+
+          querySnapshot.forEach((docSnap) => {
+              const data = docSnap.data();
+              const commentId = docSnap.id; 
+              const commentTime = data.createdAt || currentTime;
+              const isEditable = (currentTime - commentTime) < 60000; 
+
+              const fbItem = document.createElement('div');
+              fbItem.className = 'fb-comment-item';
+
+              let avatarHtml = '';
+              if (data.userPhoto) {
+                  avatarHtml = `<img src="${data.userPhoto}" class="fb-avatar" alt="Avatar">`;
+              } else {
+                  const firstLetter = (data.userName || commentId || 'S').charAt(0).toUpperCase();
+                  avatarHtml = `<div class="fb-avatar">${firstLetter}</div>`;
+              }
+
+              const outsideActionsHtml = isEditable 
+                  ? `<div class="outside-comment-actions">
+                        <button class="edit-comment-btn" title="এডিট করুন"><i class="fa-solid fa-pen"></i></button>
+                        <button class="delete-comment-btn" title="ডিলিট করুন"><i class="fa-solid fa-trash"></i></button>
+                     </div>`
+                  : ``;
+
+              fbItem.innerHTML = `
+                  ${avatarHtml}
+                  <div class="fb-comment-bubble">
+                      <div class="fb-comment-user">${data.userName || commentId}</div>
+                      <div class="fb-comment-text">${data.text}</div>
+                  </div>
+                  ${outsideActionsHtml}
+              `;
+
+              if(isEditable) {
+                  const editBtn = fbItem.querySelector('.edit-comment-btn');
+                  const delBtn = fbItem.querySelector('.delete-comment-btn');
+
+                  if(editBtn) {
+                      editBtn.addEventListener('click', () => {
+                          const inputField = document.getElementById(`comment-input-${numOnly}`);
+                          inputField.value = data.text;
+                          const sendBtn = document.getElementById(`comment-send-${numOnly}`);
+                          sendBtn.removeAttribute('disabled');
+                          editingCommentId = commentId;
+                          inputField.focus();
+                      });
+                  }
+
+                  if(delBtn) {
+                      delBtn.addEventListener('click', async () => {
+                          if(confirm("আপনি কি নিশ্চিতভাবে এই কমেন্টটি ডিলিট করতে চান?")) {
+                              await deleteDoc(doc(db, "student_album", "sample_student", `ছাত্রদের_কমেন্ট_${numOnly}`, commentId));
+                              fbItem.remove();
+                              refreshPhotoStats(numOnly);
+                          }
+                      });
+                  }
+              }
+
+              listContainer.appendChild(fbItem);
+          });
+      } catch(err) {
+          console.error("কমেন্ট লোড সমস্যা:", err);
+          listContainer.innerHTML = '';
+      }
+  }
+
+  function triggerCommentProcess(numOnly, inputField, listContainer) {
+      const text = inputField.value.trim();
+      if(text.length < 3) return;
+
+      activeCommentData = { numOnly, text, inputField, listContainer };
+      activeLikeData = null; 
+      document.getElementById('studentPinInput').value = '';
+      
+      const modalTitle = document.getElementById('pinModalTitle');
+      if (editingCommentId) {
+          modalTitle.innerText = "কমেন্ট এডিট করতে আপনার পিনটি দিন";
+      } else {
+          modalTitle.innerText = "কমেন্ট পাঠাতে আপনার স্টুডেন্ট পিনটি দিন";
+      }
+
+      document.getElementById('pinModal').style.display = 'flex';
+  }
+
+  async function verifyPinAndSaveAction() {
+      const pin = document.getElementById('studentPinInput').value.trim();
+      if(!pin) {
+          alert("অনুগ্রহ করে আপনার পিনটি লিখুন!");
+          return;
+      }
+
+      document.getElementById('pinModal').style.display = 'none';
+
+      try {
+          const studentsRef = collection(db, "students");
+          const qPin = query(studentsRef, where("pin", "==", pin));
+          const querySnap = await getDocs(qPin);
+
+          if(querySnap.empty) {
+              alert("❌ পিন সঠিক নয়! কোনো শিক্ষার্থী পাওয়া যায়নি।");
+              return;
+          }
+
+          const studentData = querySnap.docs[0].data();
+          const studentName = studentData.name || "শিক্ষার্থী";
+          const studentPhoto = (studentData.image && studentData.image.trim() !== "") ? studentData.image : null;
+
+          localStorage.setItem('verified_student_name', studentName);
+
+          const docRef = doc(db, "student_album", "sample_student");
+          const docSnap = await getDoc(docRef);
+          let imgLink = "";
+          
+          if (activeLikeData) {
+              const { numOnly, btnElement } = activeLikeData;
+
+              if(docSnap.exists()) {
+                  imgLink = docSnap.data()[`img${numOnly}`] || "";
+              }
+
+              const subLikeDocRef = doc(db, "student_album", "sample_student", `ছাত্রদের_লাইক_${numOnly}`, studentName);
+              const subLikeSnap = await getDoc(subLikeDocRef);
+
+              if (!subLikeSnap.exists()) {
+                  await updateDoc(docRef, { [`like_${numOnly}`]: increment(1) });
+                  await setDoc(subLikeDocRef, {
+                      studentName: studentName,
+                      imageUrl: imgLink,
+                      imageNumber: numOnly,
+                      likedAt: Date.now()
+                  });
+              }
+
+              btnElement.classList.add('liked');
+              const icon = btnElement.querySelector('i');
+              icon.className = 'fa-solid fa-heart';
+              icon.style.color = '#ef4444';
+              activeLikeData = null;
+
+              refreshPhotoStats(numOnly);
+          } 
+          else if (activeCommentData) {
+              const { numOnly, text, inputField, listContainer } = activeCommentData;
+
+              if(docSnap.exists()) {
+                  imgLink = docSnap.data()[`img${numOnly}`] || "";
+              }
+
+              const targetCommentId = editingCommentId ? editingCommentId : studentName;
+
+              const commentDocRef = doc(db, "student_album", "sample_student", `ছাত্রদের_কমেন্ট_${numOnly}`, targetCommentId);
+              await setDoc(commentDocRef, {
+                  text: text,
+                  userName: studentName,
+                  userPhoto: studentPhoto,
+                  imageUrl: imgLink,
+                  imageNumber: numOnly,
+                  createdAt: Date.now()
+              }, { merge: true });
+
+              editingCommentId = null;
+              inputField.value = '';
+              const sendBtn = document.getElementById(`comment-send-${numOnly}`);
+              sendBtn.setAttribute('disabled', 'true');
+              loadComments(numOnly, listContainer);
+              activeCommentData = null;
+
+              refreshPhotoStats(numOnly);
+          }
+
+      } catch(err) {
+          console.error("পিন যাচাই ও সংরক্ষণে সমস্যা:", err);
+          alert("প্রসেস করতে সমস্যা হয়েছে!");
+      }
+  }
+
+  async function refreshPhotoStats(numOnly) {
+      try {
+          // লাইক সংখ্যা লোড ও আপডেট
+          const likesColRef = collection(db, "student_album", "sample_student", `ছাত্রদের_লাইক_${numOnly}`);
+          const likesSnap = await getDocs(likesColRef);
+
+          const likeCountSpan = document.getElementById(`like-count-${numOnly}`);
+          if(likeCountSpan) likeCountSpan.innerText = likesSnap.size;
+
+          // কমেন্ট সংখ্যা লোড ও আপডেট
+          const commentsColRef = collection(db, "student_album", "sample_student", `ছাত্রদের_কমেন্ট_${numOnly}`);
+          const commentsSnap = await getDocs(commentsColRef);
+
+          const commentCountSpan = document.getElementById(`comment-count-${numOnly}`);
+          if(commentCountSpan) commentCountSpan.innerText = commentsSnap.size;
+
+          const currentStudentName = localStorage.getItem('verified_student_name');
+          if (currentStudentName) {
+              const myLikeDocRef = doc(db, "student_album", "sample_student", `ছাত্রদের_লাইক_${numOnly}`, currentStudentName);
+              const myLikeSnap = await getDoc(myLikeDocRef);
+
+              const likeBtn = document.getElementById(`like-btn-${numOnly}`);
+              if (likeBtn && myLikeSnap.exists()) {
+                  likeBtn.classList.add('liked');
+                  const icon = likeBtn.querySelector('i');
+                  if (icon) {
+                      icon.className = 'fa-solid fa-heart';
+                      icon.style.color = '#ef4444';
+                  }
+                  likeBtn.style.background = 'rgba(239, 68, 68, 0.25)';
+                  likeBtn.style.borderColor = 'rgba(239, 68, 68, 0.6)';
+                  likeBtn.style.color = '#f87171';
+              }
+          }
+      } catch(e) {
+          console.error("স্ট্যাটস আপডেট ত্রুটি:", e);
+      }
+  }
+
+  async function loadAlbumFromFirebase() {
+      const container = document.getElementById('studentListContainer');
+      loadBannerFromFirebase();
+
+      try {
+          const docRef = doc(db, "student_album", "sample_student");
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+              const data = docSnap.data();
+              let validImageCount = 0;
+
+              container.innerHTML = ''; 
+
+              const keys = Object.keys(data)
+                  .filter(k => k.startsWith('img'))
+                  .sort((a, b) => parseInt(a.replace('img', '')) - parseInt(b.replace('img', '')));
+
+              for (const fieldName of keys) {
+                  const imgUrl = data[fieldName];
+
+                  if (imgUrl && typeof imgUrl === 'string' && imgUrl.trim() !== "") {
+                      validImageCount++;
+                      const numOnly = fieldName.replace('img', '');
+
+                      const cardDiv = document.createElement('div');
+                      cardDiv.className = 'card';
+                      cardDiv.innerHTML = `
+                          <div class="img-container">
+                              <img src="${imgUrl}" alt="${fieldName}" loading="lazy">
+                          </div>
+                          <div class="card-footer">
+                              <div class="action-buttons">
+                                  <button class="action-btn like-btn" id="like-btn-${numOnly}">
+                                      <i class="fa-regular fa-heart"></i> 
+                                      <span class="like-count" id="like-count-${numOnly}">0</span>
+                                  </button>
+
+                                  <button class="action-btn img-number-btn" title="ছবির নাম্বার">
+                                      <i class="fa-solid fa-image"></i> ছবি নং #${numOnly}
+                                  </button>
+                                  
+                                  <button class="action-btn comment-toggle-btn" id="comment-btn-${numOnly}">
+                                      <i class="fa-regular fa-comment"></i> কমেন্ট 
+                                      <span id="comment-count-${numOnly}" style="margin-left: 2px;">0</span>
+                                  </button>
+                              </div>
+                              
+                              <div class="comment-section" id="comment-section-${numOnly}">
+                                  <div class="comment-input-box">
+                                      <input type="text" placeholder="কমেন্ট লিখুন (আকার-ইকার সহ কমপক্ষে ৩ অক্ষর)..." id="comment-input-${numOnly}">
+                                      <button id="comment-send-${numOnly}" disabled>পাঠান</button>
+                                  </div>
+                                  <div class="comments-list" id="comments-list-${numOnly}"></div>
+                              </div>
+                          </div>
+                      `;
+                      container.appendChild(cardDiv);
+
+                      const likeBtn = cardDiv.querySelector(`#like-btn-${numOnly}`);
+                      likeBtn.addEventListener('click', () => triggerLikeProcess(numOnly, likeBtn));
+
+                      const commentToggleBtn = cardDiv.querySelector(`#comment-btn-${numOnly}`);
+                      const commentSection = cardDiv.querySelector(`#comment-section-${numOnly}`);
+                      const commentInput = cardDiv.querySelector(`#comment-input-${numOnly}`);
+                      const commentSendBtn = cardDiv.querySelector(`#comment-send-${numOnly}`);
+                      const commentsList = cardDiv.querySelector(`#comments-list-${numOnly}`);
+
+                      commentToggleBtn.addEventListener('click', () => {
+                          const isVisible = commentSection.style.display === 'block';
+                          commentSection.style.display = isVisible ? 'none' : 'block';
+
+                          if(!isVisible) {
+                              loadComments(numOnly, commentsList);
+                          }
+                      });
+
+                      commentInput.addEventListener('input', () => {
+                          const val = commentInput.value;
+                          if (val.trim().length >= 3) {
+                              commentSendBtn.removeAttribute('disabled');
+                          } else {
+                              commentSendBtn.setAttribute('disabled', 'true');
+                              editingCommentId = null; 
+                          }
+                      });
+
+                      commentSendBtn.addEventListener('click', () => {
+                          if (!commentSendBtn.hasAttribute('disabled')) {
+                              triggerCommentProcess(numOnly, commentInput, commentsList);
+                          }
+                      });
+
+                      refreshPhotoStats(numOnly);
+                  }
+              }
+
+              if (validImageCount === 0) {
+                  container.innerHTML = '<p style="color:white; text-align:center; padding:20px;">কোনো ছবি পাওয়া যায়নি।</p>';
+              }
+          }
+      } catch (error) {
+          console.error("ডেটা লোড সমস্যা: ", error);
+      }
+  }
+
+  document.getElementById('cancelPinBtn').addEventListener('click', () => {
+      document.getElementById('pinModal').style.display = 'none';
+      editingCommentId = null;
+      activeLikeData = null;
+      activeCommentData = null;
+  });
+
+  document.getElementById('submitPinBtn').addEventListener('click', verifyPinAndSaveAction);
+
+  window.addEventListener('DOMContentLoaded', loadAlbumFromFirebase);
+</script>
 </body>
 </html>
