@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ছাত্র প্রোফাইল সার্চ বোর্ড</title>
 
+<!-- Firebase App & Firestore (Compat Version) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -12,7 +13,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* পুরো পেজে টেক্সট সিলেকশন বা কপি করা বন্ধ করা হয়েছে এবং লং-প্রেস পপআপ বন্ধ করা হয়েছে */
 body {
     -webkit-user-select: none; 
     -moz-user-select: none; 
@@ -20,92 +20,92 @@ body {
     user-select: none; 
     -webkit-touch-callout: none; 
 }
-
-/* শুধুমাত্র কপি বাটন এবং ইনপুট ফিল্ডের জন্য সিলেকশন অন রাখা হয়েছে */
 input, .copy-btn {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
 }
-
-/* বাটনগুলোর লং-প্রেস বা ডিফল্ট মেনু বন্ধ করার জন্য */
-button, a {
-    -webkit-touch-callout: none;
-}
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;align-items:center;gap:15px;scroll-behavior:smooth;min-height:100vh;}
 
-/* ফিরে যান বাটন স্টাইল */
-.back-button-container {
-    width: 100%;
-    max-width: 430px;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: -5px;
-}
-
-.back-capsule-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid rgba(25, 135, 84, 0.3);
-    border-radius: 50px; /* ক্যাপসুল আকৃতি */
-    background: transparent; /* কোনো ব্যাকগ্রাউন্ড নেই */
-    color: #198754;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-.back-capsule-btn:hover {
-    color: #0a3622;
-    border-color: #0a3622;
-}
-
-body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;align-items:center;gap:15px;scroll-behavior:smooth;}
 .header-title{background:linear-gradient(135deg,#0a3622,#198754);color:white;padding:16px 20px;border-radius:14px;font-size:18px;font-weight:700;text-align:center;width:100%;max-width:430px;box-shadow:0 8px 15px rgba(25,135,84,.2);}
 .search-container{width:100%;max-width:430px;}
 .search-input{width:100%;padding:14px 20px;font-size:15px;border:2px solid #198754;border-radius:25px;outline:none;background:#fff;box-shadow:0 5px 15px rgba(0,0,0,.05);font-weight:500;}
+
+/* ফায়ারবেস সিঙ্ক ও লাইভ কাউন্টার বক্স */
+.sync-loading-box {
+    display: flex;
+    background: #fff3cd;
+    border: 2px dashed #ffeeba;
+    color: #856404;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    max-width: 430px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 auto;
+}
+
+.status-oval-badge {
+    background: #fef2f2;
+    border: 2px dashed #fca5a5;
+    color: #dc2626;
+    padding: 14px 22px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    max-width: 430px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    line-height: 1.4;
+    margin: 0 auto;
+}
+
 .suggest-list-container{width:100%;max-width:430px;display:none;flex-direction:column;gap:12px;margin-top:5px;background:#fff;padding:12px;border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,.05);border:1px dashed #cbd5e1;}
 .suggest-item{background:linear-gradient(135deg,#0a3622,#14532d);color:white;border-radius:50px;padding:12px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;box-shadow:0 6px 12px rgba(10,54,34,.18);transition:.2s;width:100%;}
 .suggest-item:active{transform:scale(.97);}
 .suggest-img{width:65px;height:65px;border-radius:50%;object-fit:cover;border:2.5px solid #ffb300;background:#fff;flex-shrink:0;}
+.suggest-emoji-box{width:65px;height:65px;border-radius:50%;border:2.5px solid #ffb300;background:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
 .suggest-info{display:flex;flex-direction:column;gap:3px;justify-content:center;padding-right:10px;}
 .suggest-serial{font-size:12px;color:#ffd700;font-weight:600;}
 .suggest-name{font-size:16px;font-weight:700;color:#fff;line-height:1.3;}
 .highlight-match{color:#34d399;font-weight:800;}
 .suggest-dept{font-size:12px;color:#cbd5e1;font-weight:500;}
-.status-error-text{color:#ef4444;font-weight:700;font-size:14px;text-align:center;padding:14px;background:#fef2f2;border:1px dashed #fca5a5;border-radius:12px;width:100%;}
+
 .divider-text{width:100%;max-width:430px;font-size:14px;font-weight:700;color:#475569;margin-top:15px;border-bottom:2px solid #cbd5e1;padding-bottom:5px;}
 .profiles-wrapper-container{width:100%;max-width:430px;display:flex;flex-direction:column;gap:25px;}
-.profile-area-wrapper{position:relative;width:100%;padding:4px;border-radius:23px;overflow:hidden;background:#e2e8f0;box-shadow:0 10px 30px rgba(0,0,0,.08);transition:.5s;scroll-margin-top:15px;}
+
+.profile-area-wrapper{position:relative;width:100%;padding:7px;border-radius:26px;background:#e2e8f0;box-shadow:0 10px 30px rgba(0,0,0,.08);transition:.5s;scroll-margin-top:15px;transform:translateZ(0);will-change:transform;}
 .profile-area-wrapper.highlight-focus{transform:scale(1.04);box-shadow:0 0 30px rgba(25,135,84,.5);}
-.profile-area-wrapper::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent,transparent,transparent,#ffd700,#ffb300,transparent);animation:spin 4s linear infinite;}
-.profile-area-wrapper.reverse-spin::before{animation:spin-reverse 4s linear infinite;}
-@keyframes spin{100%{transform:rotate(360deg);}}
-@keyframes spin-reverse{100%{transform:rotate(-360deg);}}
-.profile-card{background:#fff;width:100%;border-radius:20px;overflow:hidden;position:relative;z-index:1;}
+
+.profile-card{background:#fff;width:100%;border-radius:20px;overflow:hidden;position:relative;z-index:1;padding-bottom:12px;}
 .profile-top{background:linear-gradient(135deg,#0a3622,#198754);padding:35px 20px 25px;text-align:center;position:relative;}
 .serial-badge{position:relative;z-index:1;background:rgba(255,215,0,.2);color:#ffd700;border:1px solid #ffd700;display:inline-block;padding:3px 12px;border-radius:15px;font-size:11px;font-weight:700;margin-bottom:12px;}
-.profile-img{width:100px;height:100px;border-radius:50%;border:3px solid #fff;position:relative;z-index:1;object-fit:cover;box-shadow:0 5px 15px rgba(0,0,0,.2);display:block;margin:0 auto;background:#fff;}
+.profile-img{width:100px;height:100px;border-radius:50%;border:3px solid #fff;position:relative;z-index:1;object-fit:cover;box-shadow:0 5px 15px rgba(0,0,0,.2);display:block;margin:0 auto;background:#e2e8f0;}
+.profile-emoji-box{width:100px;height:100px;border-radius:50%;border:3px solid #fff;position:relative;z-index:1;box-shadow:0 5px 15px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;margin:0 auto;background:#fff;font-size:45px;}
 .profile-name{position:relative;z-index:1;color:#fff;font-size:19px;font-weight:700;margin-top:10px;}
 .profile-tag{position:relative;z-index:1;background:#20c997;color:#fff;display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin-top:6px;}
-.profile-info{padding:20px;}
-.info-container{background:#f8fafc;border:1px solid #edf2f7;border-radius:12px;padding:5px 15px;margin-bottom:25px;}
+.info-container{background:#f8fafc;border:1px solid #edf2f7;border-radius:12px;padding:5px 15px;margin:20px 20px 15px 20px;}
 .info-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed #e2e8f0;gap:10px;}
 .info-row:last-child{border-bottom:none;}
 .info-label{font-size:13px;color:#64748b;font-weight:600;flex-shrink:0;}
 .info-data{font-size:13px;color:#1e293b;font-weight:700;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;word-break:break-word;}
 .mobile-icon-wrapper{display:flex;align-items:center;gap:6px;margin-right:4px;min-height:22px;}
-.m-icon{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;background:transparent;}
-.m-icon i.fa-whatsapp{color:#25D366;font-size:21px;}
-.m-icon svg{width:30px;height:30px;}
 .highlight-data{color:#dc3545;font-weight:800;}
 .copy-btn{background:#e6f4ea;border:1px solid #198754;color:#198754;width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:11px;display:inline-flex;align-items:center;justify-content:center;transition:.2s;}
 .copy-btn:active{transform:scale(.85);background:#198754;color:#fff;}
+
+.social-section-box{padding:0 20px;margin-bottom:8px;}
 .social-title{font-size:14px;font-weight:700;color:#334155;margin-bottom:12px;border-bottom:2px dashed #cbd5e1;padding-bottom:5px;}
 .social-column{display:flex;flex-direction:column;gap:10px;width:100%;align-items:flex-start;}
 .social-btn{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:55%;min-width:180px;height:40px;border-radius:20px;text-decoration:none;color:#fff;font-size:13px;font-weight:600;padding-left:18px;transition:.2s;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,.08); border:none;}
@@ -122,11 +122,19 @@ body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;ali
 
 <div class="toast" id="toastMsg">কপি হয়েছে! ✅</div>
 
-
 <div class="header-title">🎓 ছাত্র প্রোফাইল সার্চ বোর্ড</div>
 <div class="search-container">
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 মুতাওয়াসসিতাহ ছাত্রদের নাম লিখুন..." oninput="filterProfiles()">
 </div>
+
+<!-- ফায়ারবেস সিঙ্ক ও লাইভ কাউন্টার বক্স -->
+<div id="syncLoadingBox" class="sync-loading-box">
+    <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
+        <i class="fas fa-sync-alt fa-spin"></i> <span id="syncStatusText">ফায়ারবেসের সাথে দ্রুত সিঙ্ক করা হচ্ছে...</span>
+    </div>
+    <div id="syncDetailsText" style="font-size: 12px; color: #a16207; font-weight: 700; margin-top: 4px;">অপেক্ষা করুন...</div>
+</div>
+
 <div id="suggestList" class="suggest-list-container"></div>
 <div id="dividerText" class="divider-text">📋 সকল ছাত্রের বিস্তারিত প্রোফাইল বোর্ড</div>
 <div id="profilesContainer" class="profiles-wrapper-container"></div>
@@ -141,10 +149,14 @@ const firebaseConfig = {
     appId: "1:973857113265:web:d04e29b26b442f4d0e0e90"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const db = firebase.firestore();
 
-const students =[
+window.activeStudents = [];
+
+const rawSourceData = [
   {
     id: "student_rashed",
     pin: "284764",
@@ -1484,39 +1496,147 @@ email: ""
   },
 ];
 
-async function syncDataToFirebase(dataList) {
+async function fastSyncAndFetchFromFirebase() {
+    const collectionRef = db.collection("students");
+    document.getElementById('profilesContainer').innerHTML = "";
+
     try {
-        const batch = db.batch();
-        const snapshot = await db.collection("students").get();
-        const dbIds = snapshot.docs.map(doc => doc.id);
-        const localIds = dataList.map(s => s.id);
-        for (const student of dataList) {
-            const docRef = db.collection("students").doc(student.id);
-            batch.set(docRef, student);
-        }
-        for (const id of dbIds) {
-            if (!localIds.includes(id)) {
-                const docRef = db.collection("students").doc(id);
-                batch.delete(docRef);
+        // ১. ফায়ারবেসের বর্তমান সব ডেটা একবারে নিয়ে আসা (মিলি সেকেন্ডের মধ্যে দ্রুত প্রসেসিংয়ের জন্য)
+        let querySnapshot = await collectionRef.get();
+        let firebaseDocsMap = new Map();
+        querySnapshot.forEach(doc => {
+            firebaseDocsMap.set(doc.id, doc.data());
+        });
+
+        let batch = db.batch();
+        let codeIds = new Set(rawSourceData.map(item => item.id));
+
+        // ২. কোডিংয়ের ডেটাগুলো চেক করা: যদি ফায়ারবেসে না থাকে তবে যোগ হবে, 
+        // আর যদি ফায়ারবেসে আগে থেকেই থাকে তবে কোডের ডেটা দিয়ে ওভাররাইট হবে না (যাতে ফায়ারবেসের পরিবর্তনগুলো সুরক্ষিত থাকে)
+        for (let item of rawSourceData) {
+            let docRef = collectionRef.doc(item.id);
+            if (!firebaseDocsMap.has(item.id)) {
+                batch.set(docRef, {
+                    ...item,
+                    isManual: false,
+                    isAllowed: true,
+                    isBanned: false
+                });
             }
         }
+
+        // ৩. কোডিংয়ে নেই অথচ ফায়ারবেসে রয়েছে—এমন ডেটাগুলোর মধ্যে যেগুলো ম্যানুয়ালি তৈরি নয় (isManual: true বা আলাদা আইডি), সেগুলোকে ডিলিট করার জন্য চিহ্নিত করা
+        for (let [docId, docData] of firebaseDocsMap.entries()) {
+            if (!codeIds.has(docId)) {
+                // যদি ফায়ারবেস ডেটাটি ম্যানুয়ালভাবে তৈরি করা হয় (isManual: true), তবে তা মোছা হবে না।
+                if (docData.isManual === true) {
+                    continue; 
+                }
+                batch.delete(collectionRef.doc(docId));
+            }
+        }
+
+        // একসাথে সব ব্যাচ অপারেশন মিলি সেকেন্ডে সম্পন্ন করা
         await batch.commit();
-        console.log("Firebase Sync Successful!");
-    } catch (e) {
-        console.error("Firebase Sync Error: ", e);
+
+        // ৪. সবশেষ ফায়ারবেস থেকে ফ্রেশ ডেটা ফেচ করে স্ক্রিনে রেন্ডার করা
+        let finalSnapshot = await collectionRef.get();
+        let totalFirebaseCount = finalSnapshot.size;
+        let fetchedStudents = [];
+        let syncedCount = 0;
+
+        let container = document.getElementById('profilesContainer');
+        let allCardsHtml = "";
+
+        finalSnapshot.forEach(doc => {
+            let studentData = doc.data();
+            studentData.id = doc.id;
+
+            if (studentData.isBanned === true || studentData.isAllowed === false) {
+                return;
+            }
+
+            if (!studentData.socials) studentData.socials = {};
+            if (studentData.mobile) {
+                let rawMobile = studentData.mobile.toString();
+                let number = rawMobile.replace(/[^\d]/g,"");
+                if(number.startsWith("0")) number = "88" + number;
+                if(rawMobile.toLowerCase().includes("wa")) studentData.socials.wa = `https://wa.me/${number}`;
+                if(rawMobile.toLowerCase().includes("imo")) studentData.socials.imo = `imo://chat?phone=${number}`;
+            }
+
+            syncedCount++;
+            studentData.originalIndex = syncedCount;
+            fetchedStudents.push(studentData);
+            window.activeStudents = fetchedStudents;
+
+            allCardsHtml += generateProfileCardHtml(studentData, syncedCount);
+        });
+
+        container.innerHTML = allCardsHtml;
+
+        let syncedBN = convertToBanglaNumber(syncedCount);
+        let totalBN = convertToBanglaNumber(totalFirebaseCount);
+        let syncDetails = document.getElementById('syncDetailsText');
+        if(syncDetails) {
+            syncDetails.innerHTML = `মোট ছাত্র: ${totalBN} জন | সফলভাবে সিঙ্ক সম্পন্ন! ✅`;
+        }
+
+        setTimeout(() => {
+            document.getElementById('syncLoadingBox').style.display = "none";
+        }, 300);
+
+        if (fetchedStudents.length === 0) {
+            container.innerHTML = `
+                <div class="status-oval-badge">
+                    <span>⚠️ ফায়ারবেস ডাটাবেজে কোনো ছাত্র পাওয়া যায়নি।</span>
+                </div>
+            `;
+        }
+
+    } catch (err) {
+        console.error("Firebase sync error: ", err);
+        document.getElementById('syncLoadingBox').innerHTML = `<span style="color:#dc2626;">❌ ফায়ারবেস ডাটা সিঙ্ক করতে সমস্যা হয়েছে!</span>`;
     }
 }
 
-students.forEach((student, index) => {
-    student.originalIndex = index + 1;
-    if(!student.id) student.id="student_"+(index+1); 
-    if(!student.socials) student.socials={}; 
-    let rawMobile=student.mobile.toString(); 
-    let number=rawMobile.replace(/[^\d]/g,""); 
-    if(number.startsWith("0")) number="88"+number; 
-    if(rawMobile.toLowerCase().includes("wa")) student.socials.wa=`https://wa.me/${number}`; 
-    if(rawMobile.toLowerCase().includes("imo")) student.socials.imo=`imo://chat?phone=${number}`; 
-});
+function generateProfileCardHtml(student, index) {
+    let serialNo = convertToBanglaNumber(index);
+    let bloodRow = student.blood ? `<div class="info-row"><span class="info-label">রক্তের গ্রুপ</span><span class="info-data highlight-data">${student.blood}</span></div>` : '';
+    let emailRow = student.socials?.email ? `<div class="info-row"><span class="info-label">ইমেইল</span><span class="info-data">${student.socials.email}</span></div>` : '';
+    let studentMediaHtml = renderImageHtml(student.image, false);
+    
+    let socialBtns = [];
+    socialBtns.push(createSocialButton(student.socials?.fb, 'fb', '<i class="fab fa-facebook-f"></i>', 'Facebook'));
+    socialBtns.push(createSocialButton(student.socials?.yt, 'yt', '<i class="fab fa-youtube"></i>', 'YouTube'));
+    socialBtns.push(createSocialButton(student.socials?.tg, 'tg', '<i class="fab fa-telegram-plane"></i>', 'Telegram'));
+    socialBtns.push(createSocialButton(student.socials?.ig, 'ig', '<i class="fab fa-instagram"></i>', 'Instagram'));
+    socialBtns.push(createSocialButton(student.socials?.tk, 'tk', '<i class="fab fa-tiktok"></i>', 'TikTok'));
+    socialBtns.push(createSocialButton(student.socials?.wa, 'wa', '<i class="fab fa-whatsapp"></i>', 'WhatsApp'));
+    
+    if (student.socials?.email) {
+        socialBtns.push(`<button class="social-btn email" onclick="handleBtnClick(this, 'mailto:${student.socials.email}')"><i class="fas fa-envelope"></i> Email</button>`);
+    }
+    if(isValidSocialLink(student.socials?.imo)){
+        const imoIcon = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="white"/><circle cx="50" cy="50" r="40" fill="#1286eb"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins',sans-serif" font-weight="800" font-size="28" fill="white">imo</text></svg>`;
+        socialBtns.push(`<button class="social-btn imo" onclick="handleBtnClick(this, '${getClickableUrl(student.socials.imo)}')">${imoIcon} IMO</button>`);
+    }
+    
+    const activeBtns = socialBtns.filter(btn => btn !== '');
+    let socialSection = activeBtns.length > 0 ? `<div class="social-section-box"><div class="social-title">সোশ্যাল মিডিয়া সংযোগ</div><div class="social-column">${activeBtns.join('')}</div></div>` : `<div class="social-section-box"><div class="social-title">সোশ্যাল মিডিয়া সংযোগ</div><div class="no-social-text">⚠️ উক্ত ছাত্রের কোনো সোশ্যাল মিডিয়া লিংক নেই</div></div>`;
+    
+    let rawMobile = student.mobile || "";
+    let cleanMobileNumber = rawMobile.replace(/[^\d]/g,"");
+    let lowerMobile = rawMobile.toLowerCase();
+    let inlineMobileIconsHtml = "";
+    
+    if(lowerMobile.includes("wa")){ inlineMobileIconsHtml += `<i class="fab fa-whatsapp" style="color:#25D366; font-size:18px; margin-right:5px;"></i>`; }
+    if(lowerMobile.includes("imo")){ inlineMobileIconsHtml += `<svg viewBox="0 0 100 100" style="width:18px; height:18px; margin-right:5px;"><circle cx="50" cy="50" r="48" fill="white"/><circle cx="50" cy="50" r="40" fill="#1286eb"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins',sans-serif" font-weight="800" font-size="28" fill="white">imo</text></svg>`; }
+    
+    let inlineMobileIcons = inlineMobileIconsHtml ? `<div class="mobile-icon-wrapper">${inlineMobileIconsHtml}</div>` : `<div class="mobile-icon-wrapper"></div>`;
+    
+    return `<div class="profile-area-wrapper" id="${student.id}"><div class="profile-card"><div class="profile-top"><div class="serial-badge">ক্রমিক নং: ${serialNo}</div>${studentMediaHtml}<h2 class="profile-name">${student.name}</h2><div class="profile-tag">${student.title || 'মুতাওয়াসসিতাহ'}</div></div><div class="info-container"><div class="info-row"><span class="info-label">পিতার নাম</span><span class="info-data">${student.father || ''}</span></div><div class="info-row"><span class="info-label">গ্রাম</span><span class="info-data">${student.village || ''}</span></div><div class="info-row"><span class="info-label">পোস্ট অফিস</span><span class="info-data">${student.post || ''}</span></div><div class="info-row"><span class="info-label">থানা</span><span class="info-data">${student.thana || ''}</span></div><div class="info-row"><span class="info-label">জেলা</span><span class="info-data">${student.district || ''}</span></div><div class="info-row"><span class="info-label">জিপ কোড</span><span class="info-data">${student.zip || ''}</span></div><div class="info-row"><span class="info-label">জন্ম তারিখ</span><span class="info-data">${student.dob || ''}</span></div>${bloodRow}${emailRow}<div class="info-row"><span class="info-label">মোবাইল</span><span class="info-data">${inlineMobileIcons}${cleanMobileNumber}<button class="copy-btn" onclick="copyNumber('${cleanMobileNumber}')">📋</button></span></div></div>${socialSection}</div></div>`;
+}
 
 function handleBtnClick(el, url) {
     if (url.startsWith('mailto:')) {
@@ -1528,84 +1648,143 @@ function handleBtnClick(el, url) {
     el.disabled = true;
     const win = window.open(url, '_blank');
     setTimeout(() => {
-        if (!win || win.closed || typeof win.closed === 'undefined') {
-            el.innerHTML = "ব্যর্থ হয়েছে, পুনরায় চেষ্টা করুন";
-            setTimeout(() => { 
-                el.innerHTML = originalContent; 
-                el.disabled = false; 
-            }, 3000);
-        } else {
-            el.innerHTML = originalContent;
-            el.disabled = false;
-        }
-    }, 7000);
+        el.innerHTML = originalContent;
+        el.disabled = false;
+    }, 3000);
 }
 
 function createSocialButton(url, className, iconHtml, label) {
     if (!isValidSocialLink(url)) return '';
     let validUrl = getClickableUrl(url);
-    return `<button class="social-btn ${className}" onclick="handleBtnClick(this, '${validUrl}')" oncontextmenu="return false;">${iconHtml} ${label}</button>`;
+    return `<button class="social-btn ${className}" onclick="handleBtnClick(this, '${validUrl}')">${iconHtml} ${label}</button>`;
 }
 
-function getProfileImage(imgLink){return (imgLink && imgLink.trim()!=="")?imgLink:"https://via.placeholder.com/100x100.png?text=No+Image";}
-function scrollToStudent(elementId){document.getElementById('searchInput').value=""; document.getElementById('suggestList').style.display="none"; document.getElementById('dividerText').style.display="block"; document.getElementById('profilesContainer').style.display="flex"; const element=document.getElementById(elementId); if(element){ element.scrollIntoView({behavior:'smooth',block:'start'}); element.classList.add('highlight-focus'); setTimeout(()=>element.classList.remove('highlight-focus'),2000); }}
-function highlightText(text,query){if(!query) return text; const regex=new RegExp(`(${query})`,'gi'); return text.replace(regex, `<span class="highlight-match">$1</span>`);}
-function renderSuggestList(dataList,query,isError=false){const suggestContainer=document.getElementById('suggestList'); if(isError){suggestContainer.style.display="flex"; suggestContainer.innerHTML=`<div class="status-error-text">❌ সার্চ অনুযায়ী কোনো ছাত্র পাওয়া যায়নি!</div>`; return;} if(dataList.length===0){suggestContainer.style.display="none"; return;} suggestContainer.style.display="flex"; let html=''; dataList.forEach((student)=>{let serialNo=convertToBanglaNumber(student.originalIndex); let highlightedName=highlightText(student.name,query); let studentImg=getProfileImage(student.image); html+=`<div class="suggest-item" onclick="scrollToStudent('${student.id}')"><img src="${studentImg}" class="suggest-img"><div class="suggest-info"><span class="suggest-serial">ক্রমিক নং: ${serialNo}</span><span class="suggest-name">${highlightedName}</span><span class="suggest-dept">${student.title}</span></div></div>`;}); suggestContainer.innerHTML=html;}
-function isValidSocialLink(url){if(!url || typeof url!=='string') return false; let trimmed=url.trim().toLowerCase(); return !(trimmed==="" || trimmed==="#" || trimmed.includes("wrong_link"));}
-function getClickableUrl(url){let finalUrl=url.trim(); if(!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://') && !finalUrl.startsWith('imo://') && !finalUrl.startsWith('mailto:')){if(finalUrl.includes('.')) return 'https://'+finalUrl;} return finalUrl;}
-
-function renderFullProfiles(dataList){
-    const container=document.getElementById('profilesContainer'); 
-    let html=''; 
-    dataList.forEach((student,index)=>{
-        let serialNo=convertToBanglaNumber(student.originalIndex); 
-        let spinClass=index%2!==0 ? 'reverse-spin' : ''; 
-        let bloodRow=student.blood?`<div class="info-row"><span class="info-label">রক্তের গ্রুপ</span><span class="info-data highlight-data">${student.blood}</span></div>`:''; 
-        let emailRow=student.socials.email?`<div class="info-row"><span class="info-label">ইমেইল</span><span class="info-data">${student.socials.email}</span></div>`:''; 
-        let studentImg=getProfileImage(student.image); 
-        let socialBtns=[]; 
-        socialBtns.push(createSocialButton(student.socials?.fb,'fb','<i class="fab fa-facebook-f"></i>','Facebook')); 
-        socialBtns.push(createSocialButton(student.socials?.yt,'yt','<i class="fab fa-youtube"></i>','YouTube')); 
-        socialBtns.push(createSocialButton(student.socials?.tg,'tg','<i class="fab fa-telegram-plane"></i>','Telegram')); 
-        socialBtns.push(createSocialButton(student.socials?.ig,'ig','<i class="fab fa-instagram"></i>','Instagram')); 
-        socialBtns.push(createSocialButton(student.socials?.tk,'tk','<i class="fab fa-tiktok"></i>','TikTok')); 
-        socialBtns.push(createSocialButton(student.socials?.wa,'wa','<i class="fab fa-whatsapp"></i>','WhatsApp')); 
-        if (student.socials?.email) {
-            socialBtns.push(`<button class="social-btn email" onclick="handleBtnClick(this, 'mailto:${student.socials.email}')" oncontextmenu="return false;"><i class="fas fa-envelope"></i> Email</button>`);
-        }
-        if(isValidSocialLink(student.socials?.imo)){
-            const imoIcon=`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="white"/><circle cx="50" cy="50" r="40" fill="#1286eb"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins',sans-serif" font-weight="800" font-size="28" fill="white">imo</text></svg>`; 
-            socialBtns.push(`<button class="social-btn imo" onclick="handleBtnClick(this, '${getClickableUrl(student.socials.imo)}')" oncontextmenu="return false;">${imoIcon} IMO</button>`);
-        } 
-        const activeBtns=socialBtns.filter(btn=>btn!==''); 
-        let socialSection=activeBtns.length>0?`<div class="social-title">সোশ্যাল মিডিয়া সংযোগ</div><div class="social-column">${activeBtns.join('')}</div>`:`<div class="social-title">সোশ্যাল মিডিয়া সংযোগ</div><div class="no-social-text">⚠️ উক্ত ছাত্রের কোনো সোশ্যাল মিডিয়া লিংক নেই</div>`; 
-        let rawMobile=student.mobile||""; 
-        let cleanMobileNumber=rawMobile.replace(/[^\d]/g,""); 
-        let lowerMobile = rawMobile.toLowerCase();
-        let inlineMobileIconsHtml = "";
-        
-        if(lowerMobile.includes("wa")){inlineMobileIconsHtml += `<i class="fab fa-whatsapp" style="color:#25D366; font-size:18px; margin-right:5px;"></i>`;}
-        if(lowerMobile.includes("imo")){inlineMobileIconsHtml += `<svg viewBox="0 0 100 100" style="width:18px; height:18px; margin-right:5px;"><circle cx="50" cy="50" r="48" fill="white"/><circle cx="50" cy="50" r="40" fill="#1286eb"/><text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Poppins',sans-serif" font-weight="800" font-size="28" fill="white">imo</text></svg>`;}
-        
-        let inlineMobileIcons = inlineMobileIconsHtml ? `<div class="mobile-icon-wrapper">${inlineMobileIconsHtml}</div>` : `<div class="mobile-icon-wrapper"></div>`; 
-        html+=`<div class="profile-area-wrapper ${spinClass}" id="${student.id}"><div class="profile-card"><div class="profile-top"><div class="serial-badge">ক্রমিক নং: ${serialNo}</div><img src="${studentImg}" class="profile-img"><h2 class="profile-name">${student.name}</h2><div class="profile-tag">${student.title}</div></div><div class="profile-info"><div class="info-container"><div class="info-row"><span class="info-label">পিতার নাম</span><span class="info-data">${student.father}</span></div><div class="info-row"><span class="info-label">গ্রাম</span><span class="info-data">${student.village}</span></div><div class="info-row"><span class="info-label">পোস্ট অফিস</span><span class="info-data">${student.post}</span></div><div class="info-row"><span class="info-label">থানা</span><span class="info-data">${student.thana}</span></div><div class="info-row"><span class="info-label">জেলা</span><span class="info-data">${student.district}</span></div><div class="info-row"><span class="info-label">জিপ কোড</span><span class="info-data">${student.zip}</span></div><div class="info-row"><span class="info-label">জন্ম তারিখ</span><span class="info-data">${student.dob}</span></div>${bloodRow}${emailRow}<div class="info-row"><span class="info-label">মোবাইল</span><span class="info-data">${inlineMobileIcons}${cleanMobileNumber}<button class="copy-btn" onclick="copyNumber('${cleanMobileNumber}')">📋</button></span></div></div>${socialSection}</div></div></div>`;
-    }); 
-    container.innerHTML=html;
-}
-
-function filterProfiles(){const query=document.getElementById('searchInput').value.trim().toLowerCase(); const dividerText=document.getElementById('dividerText'); const profilesContainer=document.getElementById('profilesContainer'); if(query===""){renderSuggestList([], "", false); dividerText.style.display="block"; profilesContainer.style.display="flex"; return;} dividerText.style.display="none"; profilesContainer.style.display="none"; const filtered=students.filter(student=> (student.name||"").toLowerCase().includes(query)); if(filtered.length>0){renderSuggestList(filtered,query,false);}else{renderSuggestList([], "", true);}}
-function convertToBanglaNumber(numberStr){const banglaDigits={'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'}; return numberStr.toString().replace(/[0-9]/g,w=>banglaDigits[w]);}
-function copyNumber(text){if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(showToast);}else{let textArea=document.createElement("textarea"); textArea.value=text; textArea.style.position="fixed"; textArea.style.left="-9999px"; document.body.appendChild(textArea); textArea.focus(); textArea.select(); try{document.execCommand('copy'); showToast();}catch(err){console.error(err);} document.body.removeChild(textArea);}}
-function showToast(){const toast=document.getElementById("toastMsg"); toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),2500);}
-
-window.onload=()=>{
-    try{
-        renderFullProfiles(students);
-        syncDataToFirebase(students);
-    }catch(error){
-        console.error(error); 
-        document.getElementById("profilesContainer").innerHTML=`<div class="status-error-text">❌ কোনো ছাত্রের তথ্য ভুল থাকার কারণে সমস্যা হয়েছে</div>`;
+function renderImageHtml(imgLink, isSuggest = false) {
+    let imgClass = isSuggest ? "suggest-img" : "profile-img";
+    let emojiClass = isSuggest ? "suggest-emoji-box" : "profile-emoji-box";
+    
+    if (imgLink && imgLink.trim() !== "") {
+        return `<img src="${imgLink}" class="${imgClass}" onerror="this.onerror=null; this.outerHTML='<div class=\\'${emojiClass}\\'>👳‍♂️</div>';">`;
+    } else {
+        return `<div class="${emojiClass}">👳‍♂️</div>`;
     }
+}
+
+function scrollToStudent(elementId){
+    document.getElementById('searchInput').value = "";
+    document.getElementById('suggestList').style.display = "none";
+    document.getElementById('dividerText').style.display = "block";
+    document.getElementById('profilesContainer').style.display = "flex";
+    const element = document.getElementById(elementId);
+    if(element){
+        element.scrollIntoView({behavior:'smooth', block:'start'});
+        element.classList.add('highlight-focus');
+        setTimeout(() => element.classList.remove('highlight-focus'), 2000);
+    }
+}
+
+function highlightText(text, query){
+    if(!query) return text;
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, `<span class="highlight-match">$1</span>`);
+}
+
+function renderSuggestList(dataList, query, isError = false){
+    const suggestContainer = document.getElementById('suggestList');
+    if(isError){
+        suggestContainer.style.display = "flex";
+        suggestContainer.innerHTML = `<div class="status-oval-badge" style="margin:0 auto; width:100%;">❌ সার্চ অনুযায়ী কোনো ছাত্রের নাম মেলেনি!</div>`;
+        return;
+    }
+    if(dataList.length === 0){
+        suggestContainer.style.display = "none";
+        return;
+    }
+    suggestContainer.style.display = "flex";
+    let html = '';
+    dataList.forEach((student) => {
+        let serialNo = convertToBanglaNumber(student.originalIndex);
+        let highlightedName = highlightText(student.name, query);
+        let studentMediaHtml = renderImageHtml(student.image, true);
+        html += `<div class="suggest-item" onclick="scrollToStudent('${student.id}')">${studentMediaHtml}<div class="suggest-info"><span class="suggest-serial">ক্রমিক নং: ${serialNo}</span><span class="suggest-name">${highlightedName}</span><span class="suggest-dept">${student.title || 'মুতাওয়াসসিতাহ'}</span></div></div>`;
+    });
+    suggestContainer.innerHTML = html;
+}
+
+function isValidSocialLink(url){
+    if(!url || typeof url !== 'string') return false;
+    let trimmed = url.trim().toLowerCase();
+    return !(trimmed === "" || trimmed === "#" || trimmed.includes("wrong_link"));
+}
+
+function getClickableUrl(url){
+    let finalUrl = url.trim();
+    if(!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://') && !finalUrl.startsWith('imo://') && !finalUrl.startsWith('mailto:')){
+        if(finalUrl.includes('.')) return 'https://' + finalUrl;
+    }
+    return finalUrl;
+}
+
+function filterProfiles(){
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const dividerText = document.getElementById('dividerText');
+    const profilesContainer = document.getElementById('profilesContainer');
+    
+    let dataSource = window.activeStudents || [];
+    
+    if(query === ""){
+        renderSuggestList([], "", false);
+        dividerText.style.display = "block";
+        profilesContainer.style.display = "flex";
+        return;
+    }
+    
+    dividerText.style.display = "none";
+    profilesContainer.style.display = "none";
+    
+    const filtered = dataSource.filter(student => (student.name || "").toLowerCase().includes(query));
+    
+    if(filtered.length > 0){
+        renderSuggestList(filtered, query, false);
+    } else {
+        renderSuggestList([], "", true);
+    }
+}
+
+function convertToBanglaNumber(numberStr){
+    const banglaDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    return numberStr.toString().replace(/[0-9]/g, w => banglaDigits[w]);
+}
+
+function copyNumber(text){
+    if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(showToast);
+    } else {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast();
+        } catch(err) {
+            console.error(err);
+        }
+        document.body.removeChild(textArea);
+    }
+}
+
+function showToast(){
+    const toast = document.getElementById("toastMsg");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+window.onload = () => {
+    fastSyncAndFetchFromFirebase();
 };
 </script>
 </body>
