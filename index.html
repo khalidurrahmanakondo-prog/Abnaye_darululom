@@ -246,7 +246,7 @@ body { background:#ececf3; overflow-x:hidden; -webkit-overflow-scrolling:touch; 
             <img src="https://i.ibb.co/kVbLqMqW/IMG-165.png" alt="Logo" style="width: 84px; height: auto;">
         </div>
         <h1>দারুল উলুম ধনবাড়ী</h1><h3>পাইটকা, ধনবাড়ী, টাঙ্গাইল</h3><br>
-        <p><h4>নাহবেমীর</h4>জামাতের শিক্ষার্থীদের জন্য সংরক্ষিত এই পোর্টাল।<br>ব্যক্তিগত তথ্যের গোপনীয়তা ও সুরক্ষার খাتیরে শুধুমাত্র অনুমোদিত প্রবেশাধিকার কার্যকর।</p>
+        <p><h4>নাহবেমীর</h4>জামাতের শিক্ষার্থীদের জন্য সংরক্ষিত এই পোর্টাল।<br>ব্যক্তিগত তথ্যের গোপনীয়তা ও  সুরুক্ষার্থে শুধুমাত্র অনুমোদিত প্রবেশাধিকার কার্যকর।</p>
     </div>
     <div class="login-card">
         <div class="card-title"><h2>স্টুডেন্ট লগইন 👋</h2><p>আপনার সঠিক তথ্য নির্বাচন করুন</p></div>
@@ -645,7 +645,8 @@ window.startProfileLoading = async function(){
             closePopup();
             const data = snap.docs[0].data();
 
-            if (data.isManual === true) {
+            // চেক করা হচ্ছে isAllowed ফিল্ড ফলস কি না, অথবা isManual ট্রু কি না
+            if (data.isAllowed === false || data.isManual === true) {
                 localStorage.setItem("kr_mutawassitah_logged_in", "true");
                 localStorage.setItem("logged_student_name", s);
                 localStorage.setItem("logged_student_father", f);
@@ -694,7 +695,7 @@ window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, 
         if (!snapshot.empty) {
             const data = snapshot.docs[0].data();
 
-            if (data.isManual === true) {
+            if (data.isAllowed === false || data.isManual === true) {
                 window.location.href = "ban_page.html";
                 return;
             }
@@ -740,6 +741,7 @@ window.loadAllDynamicsUsingMemoryStateData = async function(stdName, stdFather, 
 function startBanChecker(name, father, pin) {
     if (window.banCheckerInterval) clearInterval(window.banCheckerInterval);
 
+    // প্রতি ৫ সেকেন্ড পর পর ব্যাকগ্রাউন্ডে চেক করা
     window.banCheckerInterval = setInterval(async () => {
         try {
             const q = query(
@@ -751,7 +753,8 @@ function startBanChecker(name, father, pin) {
             const snapshot = await getDocs(q);
             if (!snapshot.empty) {
                 const data = snapshot.docs[0].data();
-                if (data.isManual === true) {
+                // যদি isAllowed ফিল্ড false হয় অথবা isManual true হয়, তাহলে ban_page.html এ রিডাইরেক্ট করবে
+                if (data.isAllowed === false || data.isManual === true) {
                     clearInterval(window.banCheckerInterval);
                     window.location.href = "ban_page.html";
                 }
@@ -759,7 +762,7 @@ function startBanChecker(name, father, pin) {
         } catch (e) {
             console.error("Ban checker error:", e);
         }
-    }, 8000);
+    }, 5000);
 }
 </script>
 </body>
