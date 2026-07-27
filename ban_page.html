@@ -178,7 +178,6 @@ body{
   margin-bottom: 15px;
   letter-spacing: 1px;
   -webkit-font-smoothing: antialiased;
-  /* ইনপুট বক্সে যাতে ইউজার লিখতে পারে, তাই এটি text রাখা হলো */
   -webkit-user-select: text;
   user-select: text;
 }
@@ -272,7 +271,7 @@ body{
 
 <b>মুতাওয়াসসিতাহ</b> অ্যাপে থাকা আপনার এই অ্যাকাউন্টটি
 
-আজ চিরতরে এবং স্থায়ীভাবে ব্যান করা হয়েছে。
+আজ চিরতরে এবং স্থায়ীভাবে ব্যান করা হয়েছে।
 
 আমাদের কেন্দ্রীয় নজরদারি ও নিরাপত্তা সিস্টেমের মাধ্যমে
 
@@ -282,7 +281,7 @@ body{
 
 এই অ্যাকাউন্টটি শুধু বাতিলই করা হয়নি, বরং আপনার সমস্ত ডিজিটাল অ্যাক্সেস
 
-এবং ডাটাবেজের সাথে আপনার সমস্ত সংযোগ চিরতরে বিচ্ছিন্ন করে দেওয়া হয়েছে。
+এবং ডাটাবেজের সাথে আপনার সমস্ত সংযোগ চিরতরে বিচ্ছিন্ন করে দেওয়া হয়েছে।
 
 যদি আপনার কাছে এমনটা মনে হয় যে আপনি কোনো ধরনের দোষ বা অপরাধ করেননি,
 
@@ -330,7 +329,7 @@ body{
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-import { getFirestore, collection, getDocs, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, writeBatch, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBV1PQDsT5vRxjT_nm72uttgkZYwK0tjfE",
@@ -385,7 +384,6 @@ modalSubmitBtn.addEventListener('click', async () => {
         querySnapshot.forEach((document) => {
             const data = document.data();
             if (data.pin && String(data.pin).trim() === enteredPin) {
-                // ফায়ারবেস থেকে ফোন নম্বর (mobile) ও সোশ্যাল মিডিয়া (socials) বাদ দিয়ে বাকি সব ডেটা ফেচ করা হচ্ছে
                 matchedStudent = {
                     id: data.id || document.id,
                     name: data.name || "নাম পাওয়া যায়নি",
@@ -410,7 +408,7 @@ modalSubmitBtn.addEventListener('click', async () => {
 
 অ্যাপের নাম: মুতাওয়াসসিতাহ
 ব্র্যান্ড: KR Pure Application Limited BD
-ডেভেলপার: KR Khalidur Rahman Akondo
+দেবাপার: KR Khalidur Rahman Akondo
 
 ---
 শিক্ষার্থীর তথ্য (ফোন নম্বর ও সোশ্যাল মিডিয়া ব্যতীত):
@@ -460,36 +458,39 @@ ${base64EncodedData}
     }
 });
 
-async function copyStudentsToAccountBan() {
-    try {
-        const studentsRef = collection(db, 'students');
-        const querySnapshot = await getDocs(studentsRef);
+// প্রতি ৫ সেকেন্ড পর পর লোকাল স্টোরেজে থাকা ইনফো দিয়ে ডেটাবেজ চেক করবে এবং অনুমতি পেলে ইনডেক্সে রিডাইরেক্ট করবে
+function startRealtimePermissionChecker() {
+    const savedName = localStorage.getItem("logged_student_name");
+    const savedFather = localStorage.getItem("logged_student_father");
+    const savedPin = localStorage.getItem("logged_student_pin");
 
-        if (querySnapshot.empty) return;
+    if (!savedName || !savedPin) return;
 
-        const batch = writeBatch(db);
-
-        querySnapshot.forEach((document) => {
-            const studentId = document.id;
-            const data = document.data();
-            const banDocRef = doc(db, 'account_ban', studentId);
-
-            batch.set(banDocRef, {
-                Father: data.father || data.Father || "",   
-                id: data.id || studentId,    
-                isBanned: false,            
-                name: data.name || "",       
-                pin: data.pin || ""          
-            }, { merge: true }); 
-        });
-
-        await batch.commit();
-    } catch (error) {
-        console.error("ডাটা সিঙ্ক করতে সমস্যা হয়েছে:", error);
-    }
+    setInterval(async () => {
+        try {
+            const q = query(
+                collection(db, "students"),
+                where("name", "==", savedName),
+                where("pin", "==", savedPin)
+            );
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    // যদি isAllowed true হয় এবং isManual false হয় (অর্থাৎ ব্যান তুলে নেওয়া হয়েছে)
+                    if (data.isAllowed === true && data.isManual === false) {
+                        window.location.href = "index.html";
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Permission check error:", e);
+        }
+    }, 5000);
 }
 
-copyStudentsToAccountBan();
+startRealtimePermissionChecker();
 </script>
 
 </body>
