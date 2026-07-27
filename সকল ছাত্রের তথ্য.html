@@ -27,19 +27,19 @@ input, .copy-btn {
     user-select: text;
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent;}
+
 body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;align-items:center;gap:15px;scroll-behavior:smooth;min-height:100vh;}
 
 .header-title{background:linear-gradient(135deg,#0a3622,#198754);color:white;padding:16px 20px;border-radius:14px;font-size:18px;font-weight:700;text-align:center;width:100%;max-width:430px;box-shadow:0 8px 15px rgba(25,135,84,.2);}
+
 .search-container{width:100%;max-width:430px;}
 .search-input{width:100%;padding:14px 20px;font-size:15px;border:2px solid #198754;border-radius:25px;outline:none;background:#fff;box-shadow:0 5px 15px rgba(0,0,0,.05);font-weight:500;}
 
-/* ফায়ারবেস লাইভ সিঙ্ক ট্র্যাকিং বক্স */
-.sync-loading-box {
-    display: flex;
-    background: #fff3cd;
-    border: 2px dashed #ffeeba;
-    color: #856404;
-    padding: 14px 18px;
+.status-oval-badge {
+    background: #e8f5e9;
+    border: 2px dashed #198754;
+    color: #0a3622;
+    padding: 12px 18px;
     border-radius: 16px;
     font-size: 13px;
     font-weight: 700;
@@ -47,38 +47,9 @@ body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;ali
     width: 100%;
     max-width: 430px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    flex-direction: column;
-    gap: 8px;
-    margin: 0 auto;
-}
-
-.sync-single-id-card {
-    background: #ffffff;
-    border: 1px solid #fde047;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 13px;
-    color: #713f12;
-    text-align: center;
-    font-weight: 800;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-}
-
-.status-oval-badge {
-    background: #fef2f2;
-    border: 2px dashed #fca5a5;
-    color: #dc2626;
-    padding: 14px 22px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: center;
-    width: 100%;
-    max-width: 430px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     line-height: 1.4;
     margin: 0 auto;
 }
@@ -94,7 +65,7 @@ body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;ali
 .highlight-match{color:#34d399;font-weight:800;}
 .suggest-dept{font-size:12px;color:#cbd5e1;font-weight:500;}
 
-.divider-text{width:100%;max-width:430px;font-size:14px;font-weight:700;color:#475569;margin-top:15px;border-bottom:2px solid #cbd5e1;padding-bottom:5px;}
+.divider-text{width:100%;max-width:430px;font-size:14px;font-weight:700;color:#475569;margin-top:5px;border-bottom:2px solid #cbd5e1;padding-bottom:5px;}
 .profiles-wrapper-container{width:100%;max-width:430px;display:flex;flex-direction:column;gap:25px;}
 
 .profile-area-wrapper{position:relative;width:100%;padding:7px;border-radius:26px;background:#e2e8f0;box-shadow:0 10px 30px rgba(0,0,0,.08);transition:.5s;scroll-margin-top:15px;transform:translateZ(0);will-change:transform;}
@@ -139,20 +110,12 @@ body{background:#f0f4f8;padding:20px 15px;display:flex;flex-direction:column;ali
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 মুতাওয়াসসিতাহ ছাত্রদের নাম লিখুন..." oninput="filterProfiles()">
 </div>
 
-<!-- লাইভ সিঙ্ক ট্র্যাকিং বক্স -->
-<div id="syncLoadingBox" class="sync-loading-box">
-    <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
-        <i class="fas fa-sync-alt fa-spin" id="syncIcon"></i> <span id="syncStatusText">লাইভ ডেটা সিঙ্ক হচ্ছে...</span>
-    </div>
-    <div id="syncDetailsText" style="font-size: 11px; color: #a16207; font-weight: 700;">প্রস্তুত হচ্ছে...</div>
-    <div id="syncSingleIdDisplay" class="sync-single-id-card">অপেক্ষা করুন...</div>
-    <button id="retrySyncBtn" onclick="retryFirebaseSync()" style="display:none; margin-top:5px; padding:8px 18px; background:#198754; color:#fff; border:none; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 3px 8px rgba(25,135,84,.3);">
-        🔄 আবার চেষ্টা করুন
-    </button>
-</div>
+<!-- আলাদা সিংক স্ট্যাটাস কন্টেইনার (যা কার্ডের সাথে ওভারল্যাপ করবে না) -->
+<div id="syncStatusContainer"></div>
 
 <div id="suggestList" class="suggest-list-container"></div>
 <div id="dividerText" class="divider-text">📋 সকল ছাত্রের বিস্তারিত প্রোফাইল বোর্ড</div>
+
 <div id="profilesContainer" class="profiles-wrapper-container"></div>
 
 <script>
@@ -172,7 +135,1265 @@ const db = firebase.firestore();
 
 window.activeStudents = [];
 
+// লোকাল ডাটা সোর্স (এখানে আপনার ছাত্রদের লিস্ট বাড়াতে বা এডিট করতে পারবেন)
 const rawSourceData = [
+  {
+    id: "student_rashed",
+    pin: "284764",
+    name: "মোহাঃ রাশেদুজ্জামান রাশেদ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/lulLc3g.jpeg",
+    father: "আবু বকর সিদ্দিক",
+    village: "কাওয়ামারা",
+    post: "বীর কদমতলী",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "B+",
+    dob: "20/07/2008",
+    mobile: "wa+imo01991508794",
+    socials: {
+      fb: "https://www.facebook.com/hm.rashedul.islam.869438",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+  {
+    id: "student_mobashir",
+    pin: "746974",
+    name: "মোহাঃ মোহাম্মদুল্লাহ মোবাশ্বির",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/CogFqdJ.jpeg",
+    father: "রফিকুল ইসলাম",
+    village: "কাশিপুর",
+    post: "ঝনকা বাজার",
+    thana: "মুক্তাগাছা",
+    district: "ময়মনসিংহ",
+    zip: "2210",
+    blood: "AB+",
+    dob: "19-01-2011",
+    mobile: "wa+imo01639452709",
+    socials: {
+      fb: "https://www.facebook.com/tareq.tareqhossin.92",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_sifat",
+    pin: "863698",
+    name: "মোহাঃ সিফাতুল্লাহ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/yi8DSNK.png",
+    father: "এনামুল হক",
+    village: "ধোকেরকুল",
+    post: "ধনবাড়ী",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "08-08-2007",
+    mobile: "01730518108",
+    socials: {
+      fb: "https://www.facebook.com/sifat.hasan.207744",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mufassil",
+    pin: "862468",
+    name: "মোহাঃ মুফাস্সিল হোসাইন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/5gR0oHK.jpeg",
+    father: "হারুনুর রশিদ",
+    village: "কামার্থী",
+    post: "কালিহাতী",
+    thana: "কালিহাতী",
+    district: "টাঙ্গাইল",
+    zip: "1970",
+    blood: "",
+    dob: "30-10-2005",
+    mobile: "wa01612834758",
+    socials: {
+      fb: "https://www.facebook.com/share/1UCp1i2q3v/",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "https://www.tiktok.com/@mdmofassal40?_r=1&_t=ZS-96obQkpiOdp",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_rafsan",
+    pin: "852223",
+    name: "মোহাঃ রাফসান আহমাদ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/JM2roKn.png",
+    father: "তোফায়েল আহমাদ",
+    village: "সিলিমপুর",
+    post: "সিলিমপুর",
+    thana: "দেলদুয়ার",
+    district: "টাঙ্গাইল",
+    zip: "1910",
+    blood: "",
+    dob: "11-10-2007",
+    mobile: "wa+imo01679155581",
+    socials: {
+      fb: "https://www.facebook.com/rafsan.rs.2024?mibextid=rS40aB7S9Ucbxw6v",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_ariful",
+    pin: "952975",
+    name: "মোহাঃ আরিফুল ইসলাম",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আব্দুল হাই",
+    village: "ছিট পাথালিয়া",
+    post: "রামকৃষ্ণ বাড়ি",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "15-04-2010",
+    mobile: "wa+imo01913373225",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_khalid",
+    pin: "244560",
+    name: "মোহাঃ খালিদুর রহমান আকন্দ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/6yK5g9S.png",
+    father: "রাসেল আকন্দ",
+    village: "ভাতিয়া",
+    post: "বাট্টা ভাট পাড়া",
+    thana: "তারাকান্দা",
+    district: "ময়মনসিংহ",
+    zip: "2252",
+    blood: "B+",
+    dob: "07-07-2009",
+ 
+    mobile: "wa+imo01903244560",
+    socials: {
+      fb: "https://www.facebook.com/profile.php?id=61587120207531",
+      yt: "@krpureapplicationlimitedbd",
+      tg: "t.me/KR_Khalidurrahmanakondo",
+      ig: "",
+      tk: "tiktok.com/@krpureapplication.bd",
+      wa: "",
+      imo: "",
+      email: "‎khalidurrahmanakondo@gmail.com"
+    }
+  },
+  {
+    id: "student_naim",
+    pin: "678699",
+    name: "মোহাঃ নাঈম হাসান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/QGOieZu.png",
+    father: "নুর নবী",
+    village: "বন্ধ চরপাড়া",
+    post: "হাদিরা বাজার",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "17-06-2006",
+    mobile: "wa+imo01956254249",
+    socials: {
+      fb: "https://www.facebook.com/n.a.e.e.m.dzu.17545",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_muhib",
+    pin: "899860",
+    name: "মোহাঃ মুহিবুল্লাহ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/Xxojtyf.png",
+    father: "মতিউর রহমান",
+    village: "কলেজপাড়া",
+    post: "ধনবাড়ী",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "23-02-2008",
+    mobile: "01913496870",
+    socials: {
+      fb: "https://www.facebook.com/h.m.mahin.501205",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "https://www.tiktok.com/@rdxrdx412?_r=1&_t=ZS-96qqH1SHOcL",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_siam",
+    pin: "245685",
+    name: "মোহাঃ সিয়াম হাসান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/3a3XCzJ.jpeg",
+    father: "আব্দুল কাইয়ুম",
+    village: "কয়া",
+    post: "ডি: কেন্দুয়া",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "18-02-2007",
+    mobile: "01641014032",
+    socials: {
+      fb: "https://www.facebook.com/s.h.siyam.206392",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_abuzar",
+    pin: "654236",
+    name: "আবু যর চাঁনপুরী",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আব্দুর রশিদ",
+    village: "চাঁদপুর",
+    post: "কে, মোহনপুর",
+    thana: "গোপালপুর",
+    district: "টাঙ্গাইল",
+    zip: "1990",
+    blood: "",
+    dob: "03-05-2009",
+    mobile: "wa+imo01906078676",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mahbubur",
+    pin: "698508",
+    name: "মাহবুবুর রহমান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "শহিদুল ইসলাম",
+    village: "বেতগাছিয়া",
+    post: "পুড়াকান্দুলিয়া",
+    thana: "ধোবাউড়া",
+    district: "ময়মনসিংহ",
+    zip: "2416",
+    blood: "",
+    dob: "24-06-2006",
+    mobile: "01403857969",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_hasibul",
+    pin: "652975",
+    name: "হাসিবুল হাসান লাবীব",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "দেলোয়ার হোসাইন",
+    village: "মহিষ পাড়া",
+    post: "গাড়বাজর",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "16-10-2010",
+    mobile: "wa01857716235",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_maidul",
+    pin: "632541",
+    name: "মাইদুল ইসলাম",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "লুৎফুর রহমান",
+    village: "পশ্চিম লঙ্কার চর",
+    post: "পশ্চিম লঙ্কার চর",
+    thana: "দেওয়ানগঞ্জ",
+    district: "জামালপুর",
+    zip: "2030",
+    blood: "",
+    dob: "11-02-2006",
+    mobile: "imo01750107224",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_safayet",
+    pin: "657856",
+    name: "সাফায়েত হোসেন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "নুর জাহাঙ্গীর আলম",
+    village: "বর-ভিটা",
+    post: "ছোনটিয়া বাজার",
+    thana: "জামালপুর",
+    district: "জামালপুর",
+    zip: "2052",
+    blood: "",
+    dob: "15-04-2008",
+    mobile: "wa+imo01812376433",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+  {
+    id: "student_abubakar",
+    pin: "105426",
+    name: "আবু বকর",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আজগর আলী",
+    village: "ব্রাক্ষনবাড়ি",
+    post: "আম্বাড়ীয়া",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "10-08-2005",
+    mobile: "01926347969",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_binyamin",
+    pin: "352456",
+    name: "বিন-ইয়ামিন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.ibb.co/zT0wJ8RT/1780636492871.jpg",
+    father: "ইউনুস আলী",
+    village: "সন্তোষ",
+    post: "শাহানশাহগঞ্জ",
+    thana: "টাঙ্গাইল",
+    district: "টাঙ্গাইল",
+    zip: "1902",
+    blood: "",
+    dob: "23-08-2009",
+    mobile: "01345069851",
+    socials: {
+      fb: "https://www.facebook.com/share/18tuBty3d1/",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "https://www.tiktok.com/@h.m.eyamin.khan?_r=1&_t=ZS-96tXonz47QS",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_abdullah",
+    pin: "085236",
+    name: "আব্দুল্লাহ আতিক",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "মাওলানা আরিফুল ইসলাম",
+    village: "ভিয়াইল",
+    post: "কালিহাতী",
+    thana: "কালিহাতী",
+    district: "টাঙ্গাইল",
+    zip: "1970",
+    blood: "",
+    dob: "03-07-2009",
+    mobile: "01795025395",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_yasin",
+    pin: "987456",
+    name: "ইয়াসিন আরাফাত",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "চান মিয়া",
+    village: "ঘোষবের",
+    post: "হালুয়াঘাট",
+    thana: "হালুয়াঘাট",
+    district: "ময়মনসিংহ",
+    zip: "2260",
+    blood: "",
+    dob: "06-09-2006",
+    mobile: "01989940888",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mahbubul",
+    pin: "365896",
+    name: "মাহবুবুল আলম",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "সাইদুল ইসলাম",
+    village: "ভবানীটেকি",
+    post: "আম্বাড়িয়া",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "27-06-2009",
+    mobile: "01719601570",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_rakibul",
+    pin: "980523",
+    name: "রাকিবুল ইসলাম",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "হাসমত আলী",
+    village: "প্রজাপুর",
+    post: "গোলাবাড়ী",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "06-10-2008",
+    mobile: "01883204741",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_kawsar",
+    pin: "369785",
+    name: "কাউসার আহমেদ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আজম আলী",
+    village: "স্হল",
+    post: "পুরাতন ঘাট",
+    thana: "সরিষাবাড়ী",
+    district: "জামালপুর",
+    zip: "2050",
+    blood: "",
+    dob: "10-08-2008",
+    mobile: "wa+imo01964048525",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_lokman",
+    pin: "805354",
+    name: "লোকমান হোসাইন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/DKKOB7n.jpeg",
+    father: "গোলাম মোস্তফা",
+    village: "পঞ্চাশী",
+    post: "পঞ্চাশী",
+    thana: "সরিষাবাড়ী",
+    district: "জামালপুর",
+    zip: "2050",
+    blood: "",
+    dob: "09-10-2007",
+    mobile: "imo01984135915",
+    socials: {
+      fb: "https://www.facebook.com/md.lukman.hossain.62920",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_nazmul",
+    pin: "807963",
+    name: "নাজমুল হাসান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/sqscfX5.jpeg",
+    father: "শামীম আকন্দ",
+    village: "মঠবাড়ী",
+    post: "আম্বাড়িয়া",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1997",
+    blood: "",
+    dob: "09-03-2008",
+    mobile: "wa+imo01962887739",
+    socials: {
+      fb: "https://www.facebook.com/md.nazmul.akanda.376173",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_bayzid",
+    pin: "875369",
+    name: "বাইজিদ হাসান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "জামিল আহমেদ",
+    village: "জাগিরাচালা",
+    post: "উখারিয়াবাড়ী",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1997",
+    blood: "",
+    dob: "29-07-2009",
+    mobile: "01974693950",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_shagor",
+    pin: "678429",
+    name: "মোহাঃ আব্দুল্লাহ সাগর",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/0kCV15W.png",
+    father: "আব্দুল হামিদ",
+    village: "চরভাতকুড়া",
+    post: "ধনবাড়ী ",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "",
+    blood: "",
+    dob: "03-11-2007",
+    mobile: "wa+imo01838220752",
+    socials: {
+      fb: "https://www.facebook.com/md.abdullah.sagor.2025",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_সিয়াম",
+    pin: "668429",
+    name: "মোহাঃ সিয়াম মাহমুদ ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/D8RZSnz.jpeg",
+    father: "আসাদুজ্জামান",
+    village: "পাইটকা",
+    post: "ধনবাড়ী ",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "",
+    blood: "",
+    dob: "07-06-2007",
+    mobile: "wa+imo01334843984",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+{
+id: "student_আতিকুর",
+pin: "829461",
+name: "আতিকুর রহমান",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "আইয়ুব আলী",
+village: "গোপদ",
+post: "মধুপুর",
+thana: "মধুপুর",
+district: "টাঙ্গাইল",
+zip: "1980",
+blood: "",
+dob: "10-09-2007",
+mobile: "wa01778275214",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_হাসান",
+pin: "374152",
+name: "হাসান মাহমুদ",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "ইমান আলী",
+village: "কাকরাইদ",
+post: "কাকরাইদ",
+thana: "মধুপুর",
+district: "টাঙ্গাইল",
+zip: "1980",
+blood: "",
+dob: "17-02-2008",
+mobile: "wa+imo01344959033",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_মাসউদ",
+pin: "518394",
+name: "মাসউদুর রহমান",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "আজিজুল হক",
+village: "পোল্যাকান্দি",
+post: "ফরাজী পাড়া",
+thana: "দেওয়ানগঞ্জ",
+district: "জামালপুর",
+zip: "2030",
+blood: "",
+dob: "13-11-2007",
+mobile: "wa+imo01833469118",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_রাকিব রাফী",
+pin: "942673",
+name: "রাকিবুল ইসলাম রাফি",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "আবুল কাসেম",
+village: "পোগলদিঘা",
+post: "পোগলদিঘা",
+thana: "সরিষাবাড়ী",
+district: "জামালপুর",
+zip: "2050",
+blood: "",
+dob: "31-12-2007",
+mobile: "wa+imo01923442175",
+socials: {
+fb: "https://www.facebook.com/hm.rakibul.islam.rafi.2024",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_নাজমুস সাকিব",
+pin: "265817",
+name: "নাজমুস সাকিব নাঈম",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "ফরহাদ আলী",
+village: "বন্ধ টাকুরিয়া",
+post: "ধনবাড়ী",
+thana: "ধনবাড়ী",
+district: "টাঙ্গাইল",
+zip: "1932",
+blood: "",
+dob: "05-05-2010",
+mobile: "01680745510",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+
+
+  {
+    id: "student_ibrahim",
+    pin: "885546",
+    name: "ইব্রাহীম",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আব্দুল কুদ্দুস",
+    village: "বিয়ারা",
+    post: "বিয়ারা",
+    thana: "জামালপুর",
+    district: "জামালপুর",
+    zip: "2003",
+    blood: "",
+    dob: "18-05-2005",
+    mobile: "01614613372",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: "khalidurrahmanakondo@gmail.com"
+    }
+  },
+{
+id: "student_সামিউল",
+pin: "713946",
+name: "সামিউল ইসলাম সাগর",
+title: "মুতাওয়াসসিতাহ",
+image: "https://i.imgur.com/EIQiPi8.png",
+father: "হারুন অর রশিদ",
+village: "চরপাড়া",
+post: "বীর কদমতলী",
+thana: "ধনবাড়ী",
+district: "টাঙ্গাইল",
+zip: "1932",
+blood: "",
+dob: "12-12-2005",
+mobile: "wa01728472859",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_সাইফুদ্দিন",
+pin: "482105",
+name: "সাইফুদ্দিন",
+title: "মুতাওয়াসসিতাহ",
+image: "https://i.imgur.com/NtXYINp.png",
+father: "মু'তালেব",
+village: "রামজীবনপুর",
+post: "সাজানপুর",
+thana: "গোপালপুর",
+district: "টাঙ্গাইল",
+zip: "1990",
+blood: "",
+dob: "03-09-2005",
+mobile: "wa+imo01872110009",
+socials: {
+fb: "https://www.facebook.com/profile.php?id=100076832791161",
+yt: "",
+tg: "",
+ig: "",
+tk: "https://www.tiktok.com/@sk.saif378?_r=1&_t=ZS-96jsB1odanI",
+wa: "",
+imo: "",
+email: ""
+}
+},
+{
+id: "student_ছাব্বির",
+pin: "694372",
+name: "ছাব্বির আহমেদ",
+title: "মুতাওয়াসসিতাহ",
+image: "",
+father: "হুমায়ুন কবির",
+village: "চকপাড়া",
+post: "ছোনটিয়া বাজার",
+thana: "জামালপুর",
+district: "জামালপুর",
+zip: "2000",
+blood: "",
+dob: "05-03-2008",
+mobile: "wa01825286708",
+socials: {
+fb: "",
+yt: "",
+tg: "",
+ig: "",
+tk: "",
+wa: "",
+imo: "",
+email: ""
+}
+},
+  {
+    id: "student_ahmadullah",
+    pin: "697236",
+    name: "আহমাদুল্লাহ আশরাফ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "মিয়া হোসেন",
+    village: "কুমার গাঁথা",
+    post: "মনতলা",
+    thana: "মুক্তাগাছা",
+    district: "ময়মনসিংহ",
+    zip: "2210",
+    blood: "",
+    dob: "05-06-2007",
+    mobile: "01733244011",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mahmudul1",
+    pin: "354962",
+    name: "মাহমুদুল হাসান ১",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "খোকন মিয়া",
+    village: "বড় গঙ্গাবর",
+    post: "রামকৃষ্ণ বাড়ি",
+    thana: "ধনবাড়ী",
+    district: "টাঙ্গাইল",
+    zip: "1932",
+    blood: "",
+    dob: "02-25-2009",
+    mobile: "01736248935",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mushfiqur",
+    pin: "684266",
+    name: "মুশফিকুর রহমান",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "জয়নাল আবেদীন",
+    village: "মেহারী",
+    post: "বেলুটিয়া",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "23-12-2008",
+    mobile: "01709287743",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_mahmudul2",
+    pin: "654852",
+    name: "মাহমুদুল হাসান ২",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "জয়নাল আবেদীন",
+    village: "মেহারী",
+    post: "বেলুটিয়া",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "24-12-2009",
+    mobile: "01709287743",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+  {
+    id: "student_mahadi",
+    pin: "158963",
+    name: "মাহাদী হাসান মিলন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "নেওয়াজ আলী",
+    village: "পাহার অনন্তপুর",
+    post: "বাবুগঞ্জ বাজার",
+    thana: "ফুলবাড়িয়া",
+    district: "ময়মনসিংহ",
+    zip: "2220",
+    blood: "",
+    dob: "15-07-2007",
+    mobile: "01772630517",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+  {
+    id: "student_sakil",
+    pin: "654366",
+    name: "শাকিল আহমেদ",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আব্দুর রহমান",
+    village: "খরমা মধ্যপাড়া",
+    post: "খড়মা",
+    thana: "দেওয়ানগঞ্জ",
+    district: "জামালপুর",
+    zip: "2030",
+    blood: "",
+    dob: "28-08-2008",
+    mobile: "01829954778",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_nazmulh",
+    pin: "975605",
+    name: "নাজমুল হুসাইন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "আকরাম হোসেন",
+    village: "উদনা পাড়া",
+    post: "বায়দের পাড়া",
+    thana: "সরিষাবাড়ী",
+    district: "জামালপুর",
+    zip: "2050",
+    blood: "",
+    dob: "12-05-2007",
+    mobile: "01946860230",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_abubakrs",
+    pin: "988264",
+    name: "আবু বকর সিদ্দিক",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/mzy1ERX.jpeg",
+    father: "হারুন অর রশিদ",
+    village: "কুয়ার বাইদ নতুন বাজার",
+    post: "গারোবাজার",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "16-08-2008",
+    mobile: "01784833219",
+    socials: {
+      fb: "https://www.facebook.com/profile.php?id=61583265837114",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_riadul",
+    pin: "654785",
+    name: "রিয়াদুল ইসলাম রিমন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "",
+    father: "নুর ইসলাম",
+    village: "জঙ্গলদী মধ্যপাড়া",
+    post: "১১ নং বদায়ের চড়",
+    thana: "শেরপুর",
+    district: "শেরপুর",
+    zip: "2100",
+    blood: "",
+    dob: "02-07-2008",
+    mobile: "01982114210",
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_nazim",
+    pin: "684635",
+    name: "নাজিমুদ্দিন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/Sn3TSKV.jpeg",
+    father: "বিলেত আলী",
+    village: "চর আইরমার",
+    post: "কামালেরবাত্তী",
+    thana: "বকশীগঞ্জ",
+    district: "জামালপুর",
+    zip: "2060",
+    blood: "",
+    dob: "01-01-2007",
+    mobile: "wa+imo01869292299",
+    socials: {
+      fb: "https://www.facebook.com/profile.php?id=100048360422596",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
+  {
+    id: "student_lamim",
+    pin: "689654",
+    name: "লামিম হোসাইন",
+    title: "মুতাওয়াসসিতাহ",
+    image: "https://i.imgur.com/hmPiIjf.png",
+    father: "সুলাইমান ইসলাম",
+    village: "গোপদ",
+    post: "মধুপুর",
+    thana: "মধুপুর",
+    district: "টাঙ্গাইল",
+    zip: "1996",
+    blood: "",
+    dob: "24-12-2009",
+    mobile: "013063445522",
+    socials: {
+      fb: "https://www.facebook.com/profile.php?id=61564181954791",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
+  },
+
   {
     id: "student_samiul",
     pin: "908465",
@@ -188,8 +1409,18 @@ const rawSourceData = [
     blood: "",
     dob: "07-05-2010",
     mobile: "01933192733",
-    socials: { fb: "", yt: "", tg: "", ig: "", tk: "", wa: "", imo: "", email: "" }
+    socials: {
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
+    }
   },
+
   {
     id: "student_rifat",
     pin: "852658",
@@ -207,9 +1438,16 @@ const rawSourceData = [
     mobile: "wa+imo01856809492",
     socials: {
       fb: "https://www.facebook.com/profile.php?id=61577020657585",
-      yt: "", tg: "", ig: "", tk: "", wa: "", imo: "", email: ""
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
+      email: ""
     }
   },
+
   {
     id: "student_ruhul",
     pin: "567558",
@@ -226,83 +1464,47 @@ const rawSourceData = [
     dob: "08-09-2010",
     mobile: "01979576098",
     socials: {
-      fb: "", yt: "", tg: "", ig: "", tk: "", wa: "", imo: "",
+      fb: "",
+      yt: "",
+      tg: "",
+      ig: "",
+      tk: "",
+      wa: "",
+      imo: "",
       email: "njhgffvb@gmail.com"
     }
-  }
+  },
 ];
-
-async function fastSyncAndFetchFromFirebase() {
+// রিয়েল-টাইম সিংক এবং যারটাই সিংক শেষ হবে তারটি সঙ্গে সঙ্গে রান বা রেন্ডার করার মডেল
+async function initAndSyncModel() {
     const collectionRef = db.collection("students");
-    const container = document.getElementById('profilesContainer');
-    const loadingBox = document.getElementById('syncLoadingBox');
-    const statusText = document.getElementById('syncStatusText');
-    const detailsText = document.getElementById('syncDetailsText');
-    const singleIdDisplay = document.getElementById('syncSingleIdDisplay');
-    const retryBtn = document.getElementById('retrySyncBtn');
-    const syncIcon = document.getElementById('syncIcon');
-
-    container.innerHTML = "";
-    loadingBox.style.display = "flex";
-    loadingBox.style.background = "#fff3cd";
-    loadingBox.style.borderColor = "#ffeeba";
-    loadingBox.style.color = "#856404";
-    if (syncIcon) {
-        syncIcon.className = "fas fa-sync-alt fa-spin";
-    }
-    statusText.innerText = "লাইভ ডেটা সিঙ্ক হচ্ছে...";
-    detailsText.innerText = `মোট আইটেম: ${convertToBanglaNumber(rawSourceData.length)} জন`;
-    singleIdDisplay.innerHTML = "⚡ সিঙ্কিং শুরু হলো...";
-    retryBtn.style.display = "none";
-
+    const syncStatusContainer = document.getElementById('syncStatusContainer');
+    const profilesContainer = document.getElementById('profilesContainer');
+    
+    let totalCount = rawSourceData.length;
     window.activeStudents = [];
+    profilesContainer.innerHTML = "";
 
-    try {
-        let existingSnapshot = await collectionRef.get();
-        let rawIds = new Set(rawSourceData.map(item => item.id));
+    for (let i = 0; i < totalCount; i++) {
+        let item = rawSourceData[i];
+        let currentNum = i + 1;
+        
+        // লাইভ কাউন্টার ও স্টুডেন্ট আইডি দেখানো হচ্ছে
+        syncStatusContainer.innerHTML = `<div class="status-oval-badge">⏳ মোট ${totalCount} জনের মধ্যে [${currentNum}/${totalCount}] এর তথ্য আনা হয়েছে...<br>স্টুডেন্ট আইডি: <span style="color:#198754; font-weight:800;">${item.id}</span></div>`;
 
-        let deletePromises = [];
-        existingSnapshot.forEach(doc => {
-            let data = doc.data();
-            let isManual = data.isManual === true || data.isManual === "true" || data.isManual === 1;
-            if (!rawIds.has(doc.id) && !isManual) {
-                deletePromises.push(collectionRef.doc(doc.id).delete());
-            }
-        });
-        if (deletePromises.length > 0) {
-            await Promise.all(deletePromises);
-        }
-
-        let tempFetchedList = [];
-        let completedCount = 0;
-
-        for (const item of rawSourceData) {
+        try {
             let docRef = collectionRef.doc(item.id);
-            let docSnap = await docRef.get();
-            
-            if (!docSnap.exists) {
-                await docRef.set({
-                    ...item,
-                    isManual: false,
-                    isAllowed: true,
-                    isBanned: false
-                });
-            } else {
-                let existing = docSnap.data();
-                let updates = {};
-                if (existing.isManual === undefined) updates.isManual = false;
-                if (existing.isAllowed === undefined) updates.isAllowed = true;
-                if (existing.isBanned === undefined) updates.isBanned = false;
-                if (Object.keys(updates).length > 0) {
-                    await docRef.update(updates);
-                }
-            }
+            // ফায়ারবেসে ডেটা সেভ (কোনো আগের ডেটা মোছা হবে না, merge: true আছে)
+            await docRef.set({
+                ...item,
+                isManual: false,
+                isAllowed: true,
+                isBanned: false
+            }, { merge: true });
 
-            let freshSnap = await docRef.get();
-            let studentData = freshSnap.data();
-            studentData.id = freshSnap.id;
-
+            let studentData = { ...item };
             const isBanned = studentData.isBanned === true || studentData.isBanned === "true" || studentData.isBanned === 1;
+            
             if (!isBanned) {
                 if (!studentData.socials) studentData.socials = {};
                 if (studentData.mobile) {
@@ -312,62 +1514,39 @@ async function fastSyncAndFetchFromFirebase() {
                     if (rawMobile.toLowerCase().includes("wa")) studentData.socials.wa = `https://wa.me/${number}`;
                     if (rawMobile.toLowerCase().includes("imo")) studentData.socials.imo = `imo://chat?phone=${number}`;
                 }
-                tempFetchedList.push(studentData);
+                
+                // যার সিংক শেষ, সঙ্গে সঙ্গে তাকে অ্যারেতে যুক্ত করে স্ক্রিনে রান বা রেন্ডার করা হবে
+                window.activeStudents.push(studentData);
+                renderAllStudents();
             }
-
-            completedCount++;
-            singleIdDisplay.innerHTML = `✅ সিঙ্ক হচ্ছে ID: [ ${item.id} ]`;
-            detailsText.innerText = `সম্পন্ন: ${convertToBanglaNumber(completedCount)} / ${convertToBanglaNumber(rawSourceData.length)} জন`;
-
-            // ইংরেজি অক্ষর প্রথমে এবং পরবর্তীতে বাংলা ক্রমানুসারে সাজানো
-            tempFetchedList.sort((a, b) => {
-                let nameA = (a.name || "").trim();
-                let nameB = (b.name || "").trim();
-
-                let isEngA = /^[A-Za-z]/.test(nameA);
-                let isEngB = /^[A-Za-z]/.test(nameB);
-
-                if (isEngA && !isEngB) return -1;
-                if (!isEngA && isEngB) return 1;
-
-                return nameA.localeCompare(nameB, 'bn', { sensitivity: 'accent' });
-            });
-
-            // প্রতিটি আইডি সিঙ্ক হওয়া মাত্রই স্ক্রিনে ইনস্ট্যান্ট রেন্ডার করা শুরু করবে (পুরো তালিকার জন্য অপেক্ষা করবে না)
-            window.activeStudents = tempFetchedList.map((st, idx) => {
-                st.originalIndex = idx + 1;
-                return st;
-            });
-
-            container.innerHTML = "";
-            window.activeStudents.forEach((st, idx) => {
-                container.innerHTML += generateProfileCardHtml(st, idx + 1);
-            });
+        } catch (err) {
+            console.error("Sync error for ID: " + item.id, err);
         }
-
-        statusText.innerText = "সকল আইডির সিঙ্ক ও সাজানো সম্পন্ন!";
-
-        setTimeout(() => {
-            loadingBox.style.display = "none";
-        }, 1000);
-
-    } catch (err) {
-        console.error("Firebase fetch error: ", err);
-        if (syncIcon) {
-            syncIcon.className = "fas fa-exclamation-triangle";
-        }
-        loadingBox.style.background = "#fef2f2";
-        loadingBox.style.borderColor = "#fca5a5";
-        loadingBox.style.color = "#dc2626";
-        statusText.innerText = "❌ ডেটা সিঙ্ক করতে সমস্যা হয়েছে!";
-        detailsText.innerText = "ইন্টারনেট কানেকশন বা WebView পলিসি চেক করুন।";
-        singleIdDisplay.style.display = "none";
-        retryBtn.style.display = "inline-block";
     }
+
+    // সব সিংক শেষ হলে স্ট্যাটাস মেসেজ রিমুভ করে দেওয়া হবে
+    syncStatusContainer.innerHTML = `<div class="status-oval-badge" style="background:#e8f5e9; border-color:#198754; color:#0a3622;">✅ ডেভেলপার KR Khalidur Rahman Akondo এর ডাটাবেজ থেকে সকল ছাত্রের ডেটা সফলভাবে লোড করা হয়েছে!</div>`;
+    setTimeout(() => {
+        syncStatusContainer.innerHTML = "";
+    }, 2500);
 }
 
-function retryFirebaseSync() {
-    fastSyncAndFetchFromFirebase();
+function renderAllStudents() {
+    const container = document.getElementById('profilesContainer');
+
+    // নামের বর্ণানুক্রম অনুসারে সাজানো
+    window.activeStudents.sort((a, b) => {
+        let nameA = (a.name || "").trim();
+        let nameB = (b.name || "").trim();
+        return nameA.localeCompare(nameB, 'bn', { sensitivity: 'accent' });
+    });
+
+    let htmlCards = "";
+    window.activeStudents.forEach((st, idx) => {
+        st.originalIndex = idx + 1;
+        htmlCards += generateProfileCardHtml(st, idx + 1);
+    });
+    container.innerHTML = htmlCards;
 }
 
 function generateProfileCardHtml(student, index) {
@@ -416,7 +1595,7 @@ function handleBtnClick(el, url) {
     const originalContent = el.innerHTML;
     el.innerHTML = "অপেক্ষা করুন...";
     el.disabled = true;
-    const win = window.open(url, '_blank');
+    window.open(url, '_blank');
     setTimeout(() => {
         el.innerHTML = originalContent;
         el.disabled = false;
@@ -443,7 +1622,6 @@ function renderImageHtml(imgLink, isSuggest = false) {
 function scrollToStudent(elementId){
     document.getElementById('searchInput').value = "";
     document.getElementById('suggestList').style.display = "none";
-    document.getElementById('dividerText').style.display = "block";
     document.getElementById('profilesContainer').style.display = "flex";
     const element = document.getElementById(elementId);
     if(element){
@@ -463,7 +1641,7 @@ function renderSuggestList(dataList, query, isError = false){
     const suggestContainer = document.getElementById('suggestList');
     if(isError){
         suggestContainer.style.display = "flex";
-        suggestContainer.innerHTML = `<div class="status-oval-badge" style="margin:0 auto; width:100%;">❌ সার্চ অনুযায়ী কোনো ছাত্রের নাম মেলেনি!</div>`;
+        suggestContainer.innerHTML = `<div class="status-oval-badge" style="margin:0 auto; width:100%;">❌ সার্চ অনুযায়ী কোনো ছাত্রের নাম পাওয়া যায়নি !</div>`;
         return;
     }
     if(dataList.length === 0){
@@ -476,7 +1654,7 @@ function renderSuggestList(dataList, query, isError = false){
         let serialNo = convertToBanglaNumber(student.originalIndex);
         let highlightedName = highlightText(student.name, query);
         let studentMediaHtml = renderImageHtml(student.image, true);
-        html += `<div class="suggest-item" onclick="scrollToStudent('${student.id}')">${studentMediaHtml}<div class="suggest-info"><span class="suggest-serial">ক্রমিক নং: ${serialNo}</span><span class="suggest-name">${highlightedName}</span><span class="suggest-dept">${student.title || 'মুতাওয়াসসিতাহ'}</span></div></div>`;
+        html += `<div class="suggest-item" onclick="scrollToStudent('${student.id}')">${studentMediaHtml}<div class="suggest-info"><span class="suggest-serial">ক্রমিক নং: ${serialNo} | আইডি: ${student.id}</span><span class="suggest-name">${highlightedName}</span><span class="suggest-dept">${student.title || 'মুতাওয়াসসিতাহ'}</span></div></div>`;
     });
     suggestContainer.innerHTML = html;
 }
@@ -497,19 +1675,17 @@ function getClickableUrl(url){
 
 function filterProfiles(){
     const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const dividerText = document.getElementById('dividerText');
+    const suggestContainer = document.getElementById('suggestList');
     const profilesContainer = document.getElementById('profilesContainer');
 
     let dataSource = window.activeStudents || [];
 
     if(query === ""){
         renderSuggestList([], "", false);
-        dividerText.style.display = "block";
         profilesContainer.style.display = "flex";
         return;
     }
 
-    dividerText.style.display = "none";
     profilesContainer.style.display = "none";
 
     const filtered = dataSource.filter(student => (student.name || "").toLowerCase().includes(query));
@@ -528,7 +1704,7 @@ function convertToBanglaNumber(numberStr){
 
 function copyNumber(text){
     if(navigator.clipboard && window.isSecureContext){
-        navigator.clipboard.writeText(text).then(showToast);
+        navigator.clipboard.writeText(text).then(() => showToast());
     } else {
         let textArea = document.createElement("textarea");
         textArea.value = text;
@@ -555,7 +1731,7 @@ function showToast(msg){
 }
 
 window.onload = () => {
-    fastSyncAndFetchFromFirebase();
+    initAndSyncModel();
 };
 </script>
 </body>
